@@ -72,4 +72,6 @@ Sarah.delete("/todos/:userId/:id", todoDelete);
 Sarah.put("/todos/:userId/:id", todoPut);
 Sarah.get("/todos/search/:userId/:query", todoSearch);
 
-Sarah.listen(3000);
+Sarah.listen(3000, () => {
+  console.log("ok started on api.clancy.lol");
+});

@@ -59,4 +59,6 @@ globals_1.Sarah.post("/todos/:userId", todo_post_1.todoPost);
 globals_1.Sarah.delete("/todos/:userId/:id", todo_delete_1.todoDelete);
 globals_1.Sarah.put("/todos/:userId/:id", todo_put_1.todoPut);
 globals_1.Sarah.get("/todos/search/:userId/:query", todo_search_1.todoSearch);
-globals_1.Sarah.listen(3000);
+globals_1.Sarah.listen(3000, () => {
+    console.log("ok started on api.clancy.lol");
+});
