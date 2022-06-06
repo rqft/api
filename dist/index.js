@@ -14,6 +14,7 @@ const image_resize_1 = require("./routes/image.resize");
 const image_rotate_1 = require("./routes/image.rotate");
 const image_spin_1 = require("./routes/image.spin");
 const image_tilt_1 = require("./routes/image.tilt");
+const image_tint_1 = require("./routes/image.tint");
 const origin_1 = require("./routes/origin");
 const tag_delete_1 = require("./routes/tag.delete");
 const tag_get_1 = require("./routes/tag.get");
@@ -28,7 +29,6 @@ const todo_post_1 = require("./routes/todo.post");
 const todo_put_1 = require("./routes/todo.put");
 const todo_search_1 = require("./routes/todo.search");
 globals_1.Sarah.use((req, res, next) => {
-    console.log(req.params);
     res.contentType("application/json");
     if (globals_1.NeedsNoAuth.includes(req.path)) {
         next();
@@ -55,6 +55,7 @@ globals_1.Sarah.get("/image/color/:size/:color", image_color_1.imageColor);
 globals_1.Sarah.get("/image/resize/:size", image_resize_1.imageResize);
 globals_1.Sarah.get("/image/rotate/:deg", image_rotate_1.imageRotate);
 globals_1.Sarah.get("/image/tilt/:amount", image_tilt_1.imageTilt);
+globals_1.Sarah.get("/image/tint/:color", image_tint_1.imageTint);
 globals_1.Sarah.get("/todos/:userId", todo_list_1.todoList);
 globals_1.Sarah.get("/todos/:userId/:id", todo_get_1.todoGet);
 globals_1.Sarah.post("/todos/:userId", todo_post_1.todoPost);

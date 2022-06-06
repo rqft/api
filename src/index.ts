@@ -12,6 +12,7 @@ import { imageResize } from "./routes/image.resize";
 import { imageRotate } from "./routes/image.rotate";
 import { imageSpin } from "./routes/image.spin";
 import { imageTilt } from "./routes/image.tilt";
+import { imageTint } from "./routes/image.tint";
 import { origin } from "./routes/origin";
 import { tagDelete } from "./routes/tag.delete";
 import { tagGet } from "./routes/tag.get";
@@ -28,8 +29,6 @@ import { todoSearch } from "./routes/todo.search";
 
 // middleware
 Sarah.use((req, res, next) => {
-  console.log(req.params);
-
   res.contentType("application/json");
   if (NeedsNoAuth.includes(req.path)) {
     next();
@@ -65,6 +64,7 @@ Sarah.get("/image/color/:size/:color", imageColor);
 Sarah.get("/image/resize/:size", imageResize);
 Sarah.get("/image/rotate/:deg", imageRotate);
 Sarah.get("/image/tilt/:amount", imageTilt);
+Sarah.get("/image/tint/:color", imageTint);
 
 // todos
 Sarah.get("/todos/:userId", todoList);

@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.decodeImage = exports.binary = exports.base64 = exports.ConversionMethods = void 0;
+exports.fillColorCode = exports.decodeImage = exports.binary = exports.base64 = exports.ConversionMethods = void 0;
 const imagescript_1 = require("imagescript");
+const error_1 = require("./models/error");
 var ConversionMethods;
 (function (ConversionMethods) {
     ConversionMethods["ENCODE"] = "encode";
@@ -39,3 +40,38 @@ async function decodeImage(data) {
     return output;
 }
 exports.decodeImage = decodeImage;
+function fillColorCode(color, opacity, response) {
+    if (!color) {
+        (0, error_1.stop)(response, 400, "No color provided");
+        throw null;
+    }
+    const opacityHex = Math.round(opacity * 255).toString(16);
+    if (color.startsWith("#")) {
+        color = color.slice(1);
+    }
+    switch (color.length) {
+        case 3: {
+            const [r, g, b] = color.split("");
+            color = r + r + g + g + b + b + opacityHex;
+            break;
+        }
+        case 4: {
+            const [r, g, b, a] = color.split("");
+            color = r + r + g + g + b + b + a + a;
+            break;
+        }
+        case 6: {
+            color = color + opacityHex;
+            break;
+        }
+        case 8: {
+            break;
+        }
+        default: {
+            (0, error_1.stop)(response, 400, "Invalid hex code");
+            throw null;
+        }
+    }
+    return parseInt(color, 16);
+}
+exports.fillColorCode = fillColorCode;
