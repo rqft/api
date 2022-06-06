@@ -11,6 +11,7 @@ import { imageFlop } from "./routes/image.flop";
 import { imageResize } from "./routes/image.resize";
 import { imageRotate } from "./routes/image.rotate";
 import { imageSpin } from "./routes/image.spin";
+import { imageTilt } from "./routes/image.tilt";
 import { origin } from "./routes/origin";
 import { tagDelete } from "./routes/tag.delete";
 import { tagGet } from "./routes/tag.get";
@@ -63,6 +64,7 @@ Sarah.get("/image/spin", imageSpin);
 Sarah.get("/image/color/:size/:color", imageColor);
 Sarah.get("/image/resize/:size", imageResize);
 Sarah.get("/image/rotate/:deg", imageRotate);
+Sarah.get("/image/tilt/:amount", imageTilt);
 
 // todos
 Sarah.get("/todos/:userId", todoList);
