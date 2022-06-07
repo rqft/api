@@ -63,7 +63,7 @@ Sarah.delete("/tags/:key", tagDelete);
 Sarah.get("/tags/search/:query", tagSearch);
 
 // image manip
-Sarah.get("/image/averageColor", imageAverageColor);
+Sarah.get("/image/average-color", imageAverageColor);
 Sarah.get("/image/brightness/:amount", imageBrightness);
 Sarah.get("/image/color/:size/:color", imageColor);
 Sarah.get("/image/fisheye/:amount", imageFisheye);

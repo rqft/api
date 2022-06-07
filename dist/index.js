@@ -54,7 +54,7 @@ globals_1.Sarah.get("/tags/:key", tag_get_1.tagGet);
 globals_1.Sarah.post("/tags/:key", tag_post_1.tagPost);
 globals_1.Sarah.delete("/tags/:key", tag_delete_1.tagDelete);
 globals_1.Sarah.get("/tags/search/:query", tag_search_1.tagSearch);
-globals_1.Sarah.get("/image/averageColor", image_averagecolor_1.imageAverageColor);
+globals_1.Sarah.get("/image/average-color", image_averagecolor_1.imageAverageColor);
 globals_1.Sarah.get("/image/brightness/:amount", image_brightness_1.imageBrightness);
 globals_1.Sarah.get("/image/color/:size/:color", image_color_1.imageColor);
 globals_1.Sarah.get("/image/fisheye/:amount", image_fisheye_1.imageFisheye);
