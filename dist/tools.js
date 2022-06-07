@@ -1,7 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fillColorCode = exports.decodeImage = exports.binary = exports.base64 = exports.ConversionMethods = void 0;
+exports.createImageEditor = exports.fillColorCode = exports.decodeImage = exports.binary = exports.base64 = exports.ConversionMethods = void 0;
 const imagescript_1 = require("imagescript");
+const node_fetch_1 = __importDefault(require("node-fetch"));
 const error_1 = require("./models/error");
 var ConversionMethods;
 (function (ConversionMethods) {
@@ -43,7 +47,6 @@ exports.decodeImage = decodeImage;
 function fillColorCode(color, opacity, response) {
     if (!color) {
         (0, error_1.stop)(response, 400, "No color provided");
-        throw null;
     }
     const opacityHex = Math.round(opacity * 255).toString(16);
     if (color.startsWith("#")) {
@@ -69,9 +72,25 @@ function fillColorCode(color, opacity, response) {
         }
         default: {
             (0, error_1.stop)(response, 400, "Invalid hex code");
-            throw null;
         }
     }
     return parseInt(color, 16);
 }
 exports.fillColorCode = fillColorCode;
+async function createImageEditor(req, res, callee) {
+    const url = req.query.url;
+    if (url) {
+        const request = await (0, node_fetch_1.default)(url);
+        const data = await request.buffer();
+        let editor = await decodeImage(data);
+        editor = await callee(editor);
+        const u8 = await editor.encode();
+        const sent = Buffer.from(u8);
+        res.setHeader("Content-Type", "image/png");
+        res.send(sent);
+    }
+    else {
+        (0, error_1.stop)(res, 400, "No image URL provided");
+    }
+}
+exports.createImageEditor = createImageEditor;

@@ -6,10 +6,15 @@ import { base64Encode } from "./routes/base64.encode";
 import { binaryDecode } from "./routes/binary.decode";
 import { binaryEncode } from "./routes/binary.encode";
 import { endpoints } from "./routes/endpoints";
+import { imageAverageColor } from "./routes/image.averagecolor";
+import { imageBrightness } from "./routes/image.brightness";
 import { imageColor } from "./routes/image.color";
+import { imageFisheye } from "./routes/image.fisheye";
 import { imageFlop } from "./routes/image.flop";
+import { imageInvert } from "./routes/image.invert";
 import { imageResize } from "./routes/image.resize";
 import { imageRotate } from "./routes/image.rotate";
+import { imageSaturation } from "./routes/image.saturation";
 import { imageSpin } from "./routes/image.spin";
 import { imageTilt } from "./routes/image.tilt";
 import { imageTint } from "./routes/image.tint";
@@ -58,11 +63,16 @@ Sarah.delete("/tags/:key", tagDelete);
 Sarah.get("/tags/search/:query", tagSearch);
 
 // image manip
-Sarah.get("/image/mirror", imageFlop);
-Sarah.get("/image/spin", imageSpin);
+Sarah.get("/image/averageColor", imageAverageColor);
+Sarah.get("/image/brightness/:amount", imageBrightness);
 Sarah.get("/image/color/:size/:color", imageColor);
+Sarah.get("/image/fisheye/:amount", imageFisheye);
+Sarah.get("/image/mirror", imageFlop);
+Sarah.get("/image/invert/:method", imageInvert);
 Sarah.get("/image/resize/:size", imageResize);
 Sarah.get("/image/rotate/:deg", imageRotate);
+Sarah.get("/image/saturation/:amount", imageSaturation);
+Sarah.get("/image/spin", imageSpin);
 Sarah.get("/image/tilt/:amount", imageTilt);
 Sarah.get("/image/tint/:color", imageTint);
 
@@ -76,4 +86,12 @@ Sarah.get("/todos/search/:userId/:query", todoSearch);
 
 Sarah.listen(3000, () => {
   console.log("ok started on api.clancy.lol");
+});
+
+process.on("unhandledRejection", (reason) => {
+  if (reason === null) {
+    return;
+  }
+
+  console.error(reason);
 });

@@ -9,6 +9,7 @@ export function give<T>(
   res: Response,
   data: T,
   status: Error = { state: "ok", message: undefined, code: undefined }
-): void {
+): never {
   res.send({ data, status });
+  throw null;
 }

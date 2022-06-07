@@ -12,9 +12,7 @@ export interface ErrorBad {
   state: "error";
 }
 export type Error = ErrorOk | ErrorBad;
-export function stop(res: Response, code: number, message: string) {
+export function stop(res: Response, code: number, message: string): never {
   res.status(code);
   give(res, null, { state: "error", message, code });
-  res.end();
-  return null;
 }

@@ -1,5 +1,6 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import { decode, GIF, Image } from "imagescript";
+import fetch from "node-fetch";
 import { stop } from "./models/error";
 
 export enum ConversionMethods {
@@ -42,7 +43,6 @@ export function fillColorCode(
 ) {
   if (!color) {
     stop(response, 400, "No color provided");
-    throw null;
   }
 
   const opacityHex = Math.round(opacity * 255).toString(16);
@@ -70,9 +70,33 @@ export function fillColorCode(
     }
     default: {
       stop(response, 400, "Invalid hex code");
-      throw null;
     }
   }
 
   return parseInt(color, 16);
+}
+
+export async function createImageEditor(
+  req: Request,
+  res: Response,
+  callee: (editor: Image) => Image | Promise<Image> | never
+) {
+  const url = req.query.url as string;
+
+  if (url) {
+    const request = await fetch(url);
+    const data = await request.buffer();
+    let editor = await decodeImage(data);
+
+    editor = await callee(editor);
+
+    const u8: Uint8Array = await editor.encode();
+
+    const sent = Buffer.from(u8);
+    res.setHeader("Content-Type", "image/png");
+
+    res.send(sent);
+  } else {
+    stop(res, 400, "No image URL provided");
+  }
 }

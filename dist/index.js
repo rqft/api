@@ -8,10 +8,15 @@ const base64_encode_1 = require("./routes/base64.encode");
 const binary_decode_1 = require("./routes/binary.decode");
 const binary_encode_1 = require("./routes/binary.encode");
 const endpoints_1 = require("./routes/endpoints");
+const image_averagecolor_1 = require("./routes/image.averagecolor");
+const image_brightness_1 = require("./routes/image.brightness");
 const image_color_1 = require("./routes/image.color");
+const image_fisheye_1 = require("./routes/image.fisheye");
 const image_flop_1 = require("./routes/image.flop");
+const image_invert_1 = require("./routes/image.invert");
 const image_resize_1 = require("./routes/image.resize");
 const image_rotate_1 = require("./routes/image.rotate");
+const image_saturation_1 = require("./routes/image.saturation");
 const image_spin_1 = require("./routes/image.spin");
 const image_tilt_1 = require("./routes/image.tilt");
 const image_tint_1 = require("./routes/image.tint");
@@ -49,11 +54,16 @@ globals_1.Sarah.get("/tags/:key", tag_get_1.tagGet);
 globals_1.Sarah.post("/tags/:key", tag_post_1.tagPost);
 globals_1.Sarah.delete("/tags/:key", tag_delete_1.tagDelete);
 globals_1.Sarah.get("/tags/search/:query", tag_search_1.tagSearch);
-globals_1.Sarah.get("/image/mirror", image_flop_1.imageFlop);
-globals_1.Sarah.get("/image/spin", image_spin_1.imageSpin);
+globals_1.Sarah.get("/image/averageColor", image_averagecolor_1.imageAverageColor);
+globals_1.Sarah.get("/image/brightness/:amount", image_brightness_1.imageBrightness);
 globals_1.Sarah.get("/image/color/:size/:color", image_color_1.imageColor);
+globals_1.Sarah.get("/image/fisheye/:amount", image_fisheye_1.imageFisheye);
+globals_1.Sarah.get("/image/mirror", image_flop_1.imageFlop);
+globals_1.Sarah.get("/image/invert/:method", image_invert_1.imageInvert);
 globals_1.Sarah.get("/image/resize/:size", image_resize_1.imageResize);
 globals_1.Sarah.get("/image/rotate/:deg", image_rotate_1.imageRotate);
+globals_1.Sarah.get("/image/saturation/:amount", image_saturation_1.imageSaturation);
+globals_1.Sarah.get("/image/spin", image_spin_1.imageSpin);
 globals_1.Sarah.get("/image/tilt/:amount", image_tilt_1.imageTilt);
 globals_1.Sarah.get("/image/tint/:color", image_tint_1.imageTint);
 globals_1.Sarah.get("/todos/:userId", todo_list_1.todoList);
@@ -64,4 +74,10 @@ globals_1.Sarah.put("/todos/:userId/:id", todo_put_1.todoPut);
 globals_1.Sarah.get("/todos/search/:userId/:query", todo_search_1.todoSearch);
 globals_1.Sarah.listen(3000, () => {
     console.log("ok started on api.clancy.lol");
+});
+process.on("unhandledRejection", (reason) => {
+    if (reason === null) {
+        return;
+    }
+    console.error(reason);
 });

@@ -1,18 +1,19 @@
 import express from "express";
 import { stop } from "../models/error";
 import { createImageEditor } from "../tools";
-export async function imageRotate(
+export async function imageBrightness(
   req: express.Request,
   res: express.Response
 ): Promise<void> {
   return createImageEditor(req, res, async (editor) => {
-    const deg = Number.parseInt(req.params.deg || "0");
+    const amount = Number.parseInt(req.params.amount || "0");
+    const scaled = req.query.scaled === "true";
 
-    if (Number.isNaN(deg)) {
-      stop(res, 400, "No angle provided");
+    if (Number.isNaN(amount)) {
+      stop(res, 400, "No amount provided");
     }
 
-    editor.rotate(deg);
+    editor.lightness(amount, scaled);
 
     return editor;
   });

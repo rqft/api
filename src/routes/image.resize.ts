@@ -1,22 +1,16 @@
 import express from "express";
 import { Image } from "imagescript/";
-import fetch from "node-fetch";
 import { stop } from "../models/error";
-import { decodeImage } from "../tools";
+import { createImageEditor } from "../tools";
 export async function imageResize(
   req: express.Request,
   res: express.Response
 ): Promise<void> {
-  const url = req.query.url as string;
-  let size = req.params.size;
-  if (!size) {
-    size = "1";
-  }
-
-  if (url) {
-    const request = await fetch(url);
-    const data = await request.buffer();
-    const editor = await decodeImage(data);
+  return createImageEditor(req, res, async (editor) => {
+    let size = req.params.size;
+    if (!size) {
+      size = "1";
+    }
 
     switch (true) {
       case /^\d+x\d+$/.test(size): {
@@ -40,17 +34,9 @@ export async function imageResize(
       }
       default: {
         stop(res, 400, `Invalid size: ${size}`);
-        return;
       }
     }
 
-    const u8: Uint8Array = await editor.encode();
-
-    const sent = Buffer.from(u8);
-    res.setHeader("Content-Type", "image/png");
-
-    res.send(sent);
-  } else {
-    stop(res, 400, "No image URL provided");
-  }
+    return editor;
+  });
 }
