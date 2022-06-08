@@ -33,6 +33,7 @@ const todo_list_1 = require("./routes/todo.list");
 const todo_post_1 = require("./routes/todo.post");
 const todo_put_1 = require("./routes/todo.put");
 const todo_search_1 = require("./routes/todo.search");
+const tools_1 = require("./tools");
 globals_1.Sarah.use((req, res, next) => {
     res.contentType("application/json");
     if (globals_1.NeedsNoAuth.includes(req.path)) {
@@ -73,6 +74,11 @@ globals_1.Sarah.delete("/todos/:userId/:id", todo_delete_1.todoDelete);
 globals_1.Sarah.put("/todos/:userId/:id", todo_put_1.todoPut);
 globals_1.Sarah.get("/todos/search/:userId/:query", todo_search_1.todoSearch);
 globals_1.Sarah.listen(3000, () => {
+    (0, tools_1.syncFromGit)("/colors.json");
+    (0, tools_1.syncFromGit)("/mutes.json");
+    (0, tools_1.syncFromGit)("/prefixes.json");
+    (0, tools_1.syncFromGit)("/tags.json");
+    (0, tools_1.syncFromGit)("/todo.json");
     console.log("ok started on api.clancy.lol");
 });
 process.on("unhandledRejection", (reason) => {

@@ -11,6 +11,9 @@
     "type": "git",
     "url": "git+https://github.com/rqft/api.git"
   },
+  "nodemonConfig": {
+    "ignore": ["kv/"]
+  },
   "author": "",
   "license": "ISC",
   "bugs": {

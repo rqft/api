@@ -3,7 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createImageEditor = exports.fillColorCode = exports.decodeImage = exports.binary = exports.base64 = exports.ConversionMethods = void 0;
+exports.syncFromGit = exports.createImageEditor = exports.fillColorCode = exports.decodeImage = exports.binary = exports.base64 = exports.ConversionMethods = void 0;
+const fs_1 = __importDefault(require("fs"));
 const imagescript_1 = require("imagescript");
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const error_1 = require("./models/error");
@@ -94,3 +95,11 @@ async function createImageEditor(req, res, callee) {
     }
 }
 exports.createImageEditor = createImageEditor;
+async function syncFromGit(path) {
+    const url = "https://raw.githubusercontent.com/rqft/kv/main";
+    const request = await (0, node_fetch_1.default)(url + path);
+    const data = await request.buffer();
+    fs_1.default.writeFileSync(`kv${path}`, data);
+    return null;
+}
+exports.syncFromGit = syncFromGit;
