@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import fs from "fs";
 import { decode, GIF, Image } from "imagescript";
 import fetch from "node-fetch";
 import { stop } from "./models/error";
@@ -100,14 +99,4 @@ export async function createImageEditor(
   } else {
     stop(res, 400, "No image URL provided");
   }
-}
-
-export async function syncFromGit(path: string) {
-  const url = "https://raw.githubusercontent.com/rqft/kv/main";
-  const request = await fetch(url + path);
-
-  const data = await request.buffer();
-  fs.writeFileSync(`kv${path}`, data);
-
-  return null;
 }

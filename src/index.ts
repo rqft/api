@@ -31,7 +31,6 @@ import { todoList } from "./routes/todo.list";
 import { todoPost } from "./routes/todo.post";
 import { todoPut } from "./routes/todo.put";
 import { todoSearch } from "./routes/todo.search";
-import { syncFromGit } from "./tools";
 
 // middleware
 Sarah.use((req, res, next) => {
@@ -86,13 +85,6 @@ Sarah.put("/todos/:userId/:id", todoPut);
 Sarah.get("/todos/search/:userId/:query", todoSearch);
 
 Sarah.listen(3000, () => {
-  // sync up the database
-  syncFromGit("/colors.json");
-  syncFromGit("/mutes.json");
-  syncFromGit("/prefixes.json");
-  syncFromGit("/tags.json");
-  syncFromGit("/todo.json");
-
   console.log("ok started on api.clancy.lol");
 });
 
