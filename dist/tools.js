@@ -3,9 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createImageEditor = exports.fillColorCode = exports.decodeImage = exports.binary = exports.base64 = exports.ConversionMethods = void 0;
+exports.createFFmpegEditor = exports.createImageEditor = exports.fillColorCode = exports.decodeImage = exports.binary = exports.base64 = exports.ConversionMethods = void 0;
 const imagescript_1 = require("imagescript");
 const node_fetch_1 = __importDefault(require("node-fetch"));
+const node_child_process_1 = require("node:child_process");
+const node_fs_1 = require("node:fs");
 const error_1 = require("./models/error");
 var ConversionMethods;
 (function (ConversionMethods) {
@@ -94,3 +96,25 @@ async function createImageEditor(req, res, callee) {
     }
 }
 exports.createImageEditor = createImageEditor;
+async function createFFmpegEditor(req, res, options) {
+    const url = req.query.url;
+    if (url) {
+        const request = await (0, node_fetch_1.default)(url);
+        const data = await request.buffer();
+        const args = [
+            "-y",
+            "-i",
+            "-",
+            ...options.args.flat(1),
+            `output/${options.destination}`,
+        ];
+        (0, node_child_process_1.execSync)(`ffmpeg ${args.join(" ")}`, { input: data });
+        res.setHeader("Content-Type", options.mimetype);
+        res.setHeader("Content-Disposition", `attachment; filename="${options.destination}"`);
+        res.send((0, node_fs_1.readFileSync)(`output/${options.destination}`));
+    }
+    else {
+        (0, error_1.stop)(res, 400, "No media URL provided");
+    }
+}
+exports.createFFmpegEditor = createFFmpegEditor;

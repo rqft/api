@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { decode, GIF, Image } from "imagescript";
 import fetch from "node-fetch";
+import { execSync } from "node:child_process";
+import { readFileSync } from "node:fs";
 import { stop } from "./models/error";
-
 export enum ConversionMethods {
   ENCODE = "encode",
   DECODE = "decode",
@@ -100,43 +101,40 @@ export async function createImageEditor(
     stop(res, 400, "No image URL provided");
   }
 }
-// export async function createFFmpegEditor(
-//   req: Request,
-//   res: Response,
-//   options: Array<string>
-// ) {
-//   const url = req.query.url as string;
+export interface FFMpegOptions {
+  args: Array<[string, string]>;
+  mimetype: string;
+  destination: string;
+}
+export async function createFFmpegEditor(
+  req: Request,
+  res: Response,
+  options: FFMpegOptions
+) {
+  const url = req.query.url as string;
 
-//   if (url) {
-//     const request = await fetch(url);
-//     const data = await request.buffer();
+  if (url) {
+    const request = await fetch(url);
+    const data = await request.buffer();
 
-//     const output = new Stream.PassThrough();
+    const args = [
+      "-y",
+      "-i",
+      "-",
+      ...options.args.flat(1),
+      `output/${options.destination}`,
+    ];
 
-//     const used = ChildProcess.spawn("ffmpeg", [
-//       "-i",
-//       "pipe:0",
-//       ...options,
-//       "pipe:1",
-//     ]);
+    execSync(`ffmpeg ${args.join(" ")}`, { input: data });
 
-//     // logging
-//     used.stdout.on("data", (data) => {
-//       console.log(data.toString());
-//     });
-//     used.stderr.on("data", (data) => {
-//       console.log(data.toString());
-//     });
+    res.setHeader("Content-Type", options.mimetype);
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${options.destination}"`
+    );
 
-//     used.stdin.write(data);
-//     used.stdin.end();
-
-//     used.stdout.pipe(output);
-
-//     res.setHeader("Content-Type", "audio/wav");
-//     output.end();
-//     output.pipe(res);
-//   } else {
-//     stop(res, 400, "No media URL provided");
-//   }
-// }
+    res.send(readFileSync(`output/${options.destination}`));
+  } else {
+    stop(res, 400, "No media URL provided");
+  }
+}

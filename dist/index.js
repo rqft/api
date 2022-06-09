@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const auth_1 = require("./auth");
 const globals_1 = require("./globals");
+const audio_extract_1 = require("./routes/audio.extract");
+const audio_pitch_1 = require("./routes/audio.pitch");
+const audio_volume_1 = require("./routes/audio.volume");
 const authorized_1 = require("./routes/authorized");
 const base64_decode_1 = require("./routes/base64.decode");
 const base64_encode_1 = require("./routes/base64.encode");
@@ -66,6 +69,9 @@ globals_1.Sarah.get("/image/saturation/:amount", image_saturation_1.imageSaturat
 globals_1.Sarah.get("/image/spin", image_spin_1.imageSpin);
 globals_1.Sarah.get("/image/tilt/:amount", image_tilt_1.imageTilt);
 globals_1.Sarah.get("/image/tint/:color", image_tint_1.imageTint);
+globals_1.Sarah.get("/audio/volume", audio_volume_1.audioVolume);
+globals_1.Sarah.get("/audio/pitch", audio_pitch_1.audioPitch);
+globals_1.Sarah.get("/audio/extract", audio_extract_1.audioExtract);
 globals_1.Sarah.get("/todos/:userId", todo_list_1.todoList);
 globals_1.Sarah.get("/todos/:userId/:id", todo_get_1.todoGet);
 globals_1.Sarah.post("/todos/:userId", todo_post_1.todoPost);

@@ -1,5 +1,8 @@
 import { auth } from "./auth";
 import { NeedsNoAuth, Sarah } from "./globals";
+import { audioExtract } from "./routes/audio.extract";
+import { audioPitch } from "./routes/audio.pitch";
+import { audioVolume } from "./routes/audio.volume";
 import { authorized } from "./routes/authorized";
 import { base64Decode } from "./routes/base64.decode";
 import { base64Encode } from "./routes/base64.encode";
@@ -77,7 +80,9 @@ Sarah.get("/image/tilt/:amount", imageTilt);
 Sarah.get("/image/tint/:color", imageTint);
 
 // audio manip
-// Sarah.get("/audio/volume/:amount", audioVolume);
+Sarah.get("/audio/volume", audioVolume);
+Sarah.get("/audio/pitch", audioPitch);
+Sarah.get("/audio/extract", audioExtract);
 
 // todos
 Sarah.get("/todos/:userId", todoList);
