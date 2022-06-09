@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { createFFmpegEditor } from "../tools";
 
 export async function audioVolume(req: Request, res: Response) {
-  const amount = req.query.volume as string;
+  const amount = req.params.amount as string;
 
   return await createFFmpegEditor(req, res, {
     args: [

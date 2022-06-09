@@ -80,8 +80,8 @@ Sarah.get("/image/tilt/:amount", imageTilt);
 Sarah.get("/image/tint/:color", imageTint);
 
 // audio manip
-Sarah.get("/audio/volume", audioVolume);
-Sarah.get("/audio/pitch", audioPitch);
+Sarah.get("/audio/volume/:amount", audioVolume);
+Sarah.get("/audio/pitch/:amount", audioPitch);
 Sarah.get("/audio/extract", audioExtract);
 
 // todos

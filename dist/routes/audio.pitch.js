@@ -4,7 +4,7 @@ exports.audioPitch = void 0;
 const error_1 = require("../models/error");
 const tools_1 = require("../tools");
 async function audioPitch(req, res) {
-    const pitch = req.query.pitch;
+    const pitch = req.params.amount;
     const amount = Number(pitch) || 0;
     if (Number.isNaN(amount)) {
         (0, error_1.stop)(res, 400, "Invalid pitch");

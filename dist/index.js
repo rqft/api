@@ -69,8 +69,8 @@ globals_1.Sarah.get("/image/saturation/:amount", image_saturation_1.imageSaturat
 globals_1.Sarah.get("/image/spin", image_spin_1.imageSpin);
 globals_1.Sarah.get("/image/tilt/:amount", image_tilt_1.imageTilt);
 globals_1.Sarah.get("/image/tint/:color", image_tint_1.imageTint);
-globals_1.Sarah.get("/audio/volume", audio_volume_1.audioVolume);
-globals_1.Sarah.get("/audio/pitch", audio_pitch_1.audioPitch);
+globals_1.Sarah.get("/audio/volume/:amount", audio_volume_1.audioVolume);
+globals_1.Sarah.get("/audio/pitch/:amount", audio_pitch_1.audioPitch);
 globals_1.Sarah.get("/audio/extract", audio_extract_1.audioExtract);
 globals_1.Sarah.get("/todos/:userId", todo_list_1.todoList);
 globals_1.Sarah.get("/todos/:userId/:id", todo_get_1.todoGet);

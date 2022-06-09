@@ -3,7 +3,7 @@ import { stop } from "../models/error";
 import { createFFmpegEditor } from "../tools";
 
 export async function audioPitch(req: Request, res: Response) {
-  const pitch = req.query.pitch as string;
+  const pitch = req.params.amount as string;
 
   const amount = Number(pitch) || 0;
 
