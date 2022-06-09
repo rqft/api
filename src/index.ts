@@ -76,6 +76,9 @@ Sarah.get("/image/spin", imageSpin);
 Sarah.get("/image/tilt/:amount", imageTilt);
 Sarah.get("/image/tint/:color", imageTint);
 
+// audio manip
+// Sarah.get("/audio/volume/:amount", audioVolume);
+
 // todos
 Sarah.get("/todos/:userId", todoList);
 Sarah.get("/todos/:userId/:id", todoGet);

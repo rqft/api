@@ -100,3 +100,43 @@ export async function createImageEditor(
     stop(res, 400, "No image URL provided");
   }
 }
+// export async function createFFmpegEditor(
+//   req: Request,
+//   res: Response,
+//   options: Array<string>
+// ) {
+//   const url = req.query.url as string;
+
+//   if (url) {
+//     const request = await fetch(url);
+//     const data = await request.buffer();
+
+//     const output = new Stream.PassThrough();
+
+//     const used = ChildProcess.spawn("ffmpeg", [
+//       "-i",
+//       "pipe:0",
+//       ...options,
+//       "pipe:1",
+//     ]);
+
+//     // logging
+//     used.stdout.on("data", (data) => {
+//       console.log(data.toString());
+//     });
+//     used.stderr.on("data", (data) => {
+//       console.log(data.toString());
+//     });
+
+//     used.stdin.write(data);
+//     used.stdin.end();
+
+//     used.stdout.pipe(output);
+
+//     res.setHeader("Content-Type", "audio/wav");
+//     output.end();
+//     output.pipe(res);
+//   } else {
+//     stop(res, 400, "No media URL provided");
+//   }
+// }
