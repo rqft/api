@@ -38,10 +38,18 @@ function binary(data, method) {
     }
 }
 exports.binary = binary;
-async function decodeImage(data) {
-    const output = await (0, imagescript_1.decode)(data, true);
-    if (output instanceof imagescript_1.GIF) {
-        return output[0];
+async function decodeImage(data, first) {
+    const output = await (0, imagescript_1.decode)(data, first);
+    if (output instanceof imagescript_1.Image) {
+        if (first) {
+            return output;
+        }
+        return [output];
+    }
+    if (first) {
+        if (0 in output) {
+            return output[0];
+        }
     }
     return output;
 }
@@ -84,12 +92,44 @@ async function createImageEditor(req, res, callee) {
     if (url) {
         const request = await (0, node_fetch_1.default)(url);
         const data = await request.buffer();
-        let editor = await decodeImage(data);
+        let editor = await decodeImage(data, false);
+        if (!Array.isArray(editor)) {
+            editor = [editor];
+        }
         editor = await callee(editor);
-        const u8 = await editor.encode();
-        const sent = Buffer.from(u8);
-        res.setHeader("Content-Type", "image/png");
-        res.send(sent);
+        if (!Array.isArray(editor)) {
+            editor = [editor];
+        }
+        let u8 = null;
+        let contentType = "image/png";
+        switch (editor.length) {
+            case 0: {
+                (0, error_1.stop)(res, 400, "No frames found");
+            }
+            case 1: {
+                const [image] = editor;
+                u8 = await image.encode();
+                break;
+            }
+            default: {
+                contentType = "image/gif";
+                const frames = [];
+                for (const image of editor) {
+                    if (image instanceof imagescript_1.Frame) {
+                        frames.push(image);
+                        continue;
+                    }
+                    frames.push(imagescript_1.Frame.from(image));
+                }
+                const gif = new imagescript_1.GIF(frames);
+                u8 = await gif.encode();
+            }
+        }
+        if (u8) {
+            const sent = Buffer.from(u8);
+            res.setHeader("Content-Type", contentType);
+            res.send(sent);
+        }
     }
     else {
         (0, error_1.stop)(res, 400, "No image URL provided");

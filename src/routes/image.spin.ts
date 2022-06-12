@@ -12,7 +12,8 @@ export async function imageSpin(
   if (url) {
     const request = await fetch(url);
     const data = await request.buffer();
-    const editor = await decodeImage(data);
+    const editor = await decodeImage(data, true);
+
     editor.resize(MAX_IMAGE_SIZE, MAX_IMAGE_SIZE);
     editor.cropCircle();
 
@@ -20,7 +21,15 @@ export async function imageSpin(
     for (let i = 0; i < 360; i += 15) {
       const frame = editor.clone();
       frame.rotate(i, false);
-      composite.push(Frame.from(frame, undefined, undefined, undefined, Frame.DISPOSAL_BACKGROUND));
+      composite.push(
+        Frame.from(
+          frame,
+          undefined,
+          undefined,
+          undefined,
+          Frame.DISPOSAL_BACKGROUND
+        )
+      );
     }
 
     const gif = new GIF(composite);

@@ -1,5 +1,6 @@
 // editor.fisheye
 import express from "express";
+import { Image } from "imagescript";
 import { stop } from "../models/error";
 import { createImageEditor } from "../tools";
 export async function imageFisheye(
@@ -13,8 +14,14 @@ export async function imageFisheye(
       stop(res, 400, "No amount provided");
     }
 
-    editor.fisheye(amount);
+    const frames: Array<Image> = [];
 
-    return editor;
+    for (const image of editor) {
+      const frame = image.clone();
+      frame.fisheye(amount);
+      frames.push(frame);
+    }
+
+    return frames;
   });
 }

@@ -1,4 +1,5 @@
 import express from "express";
+import { Image } from "imagescript";
 import { stop } from "../models/error";
 import { createImageEditor } from "../tools";
 export async function imageBrightness(
@@ -13,8 +14,14 @@ export async function imageBrightness(
       stop(res, 400, "No amount provided");
     }
 
-    editor.lightness(amount, scaled);
+    const frames: Array<Image> = [];
 
-    return editor;
+    for (const frame of editor) {
+      const image = frame.clone();
+      image.lightness(amount, scaled);
+      frames.push(image);
+    }
+
+    return frames;
   });
 }

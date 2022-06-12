@@ -1,32 +1,39 @@
 // editor.fisheye
 import express from "express";
+import { Image } from "imagescript";
 import { stop } from "../models/error";
 import { createImageEditor } from "../tools";
 export async function imageInvert(
   req: express.Request,
   res: express.Response
 ): Promise<void> {
-  return createImageEditor(req, res, async (editor) => {
+  return createImageEditor(req, res, async (images) => {
     const method = (req.params.method as InvertMethods) || InvertMethods.INVERT;
 
-    switch (method) {
-      case InvertMethods.INVERT:
-        editor.invert();
-        break;
-      case InvertMethods.INVERT_HUE:
-        editor.invertHue();
-        break;
-      case InvertMethods.INVERT_SATURATION:
-        editor.invertSaturation();
-        break;
-      case InvertMethods.INVERT_VALUE:
-        editor.invertValue();
-        break;
-      default:
-        stop(res, 400, "No method provided");
+    const frames: Array<Image> = [];
+
+    for (const editor of images) {
+      switch (method) {
+        case InvertMethods.INVERT:
+          editor.invert();
+          break;
+        case InvertMethods.INVERT_HUE:
+          editor.invertHue();
+          break;
+        case InvertMethods.INVERT_SATURATION:
+          editor.invertSaturation();
+          break;
+        case InvertMethods.INVERT_VALUE:
+          editor.invertValue();
+          break;
+        default:
+          stop(res, 400, "No method provided");
+      }
+
+      frames.push(editor);
     }
 
-    return editor;
+    return frames;
   });
 }
 

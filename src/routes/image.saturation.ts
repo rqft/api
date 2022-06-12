@@ -1,4 +1,5 @@
 import express from "express";
+import { Image } from "imagescript";
 import { stop } from "../models/error";
 import { createImageEditor } from "../tools";
 export async function imageSaturation(
@@ -13,8 +14,14 @@ export async function imageSaturation(
       stop(res, 400, "No amount provided");
     }
 
-    editor.saturation(amount, scaled);
+    const frames: Array<Image> = [];
 
-    return editor;
+    for (const frame of editor) {
+      const image = frame.clone();
+      image.saturation(amount, scaled);
+      frames.push(image);
+    }
+
+    return frames;
   });
 }

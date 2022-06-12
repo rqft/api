@@ -9,7 +9,11 @@ async function imageFlop(req, res) {
         if (!(method in MirrorMethods)) {
             (0, error_1.stop)(res, 400, `Invalid method: ${method}`);
         }
-        return mirror(editor, method);
+        const frames = [];
+        for (const frame of editor) {
+            frames.push(mirror(frame, method));
+        }
+        return frames;
     });
 }
 exports.imageFlop = imageFlop;

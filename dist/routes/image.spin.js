@@ -14,7 +14,7 @@ async function imageSpin(req, res) {
     if (url) {
         const request = await (0, node_fetch_1.default)(url);
         const data = await request.buffer();
-        const editor = await (0, tools_1.decodeImage)(data);
+        const editor = await (0, tools_1.decodeImage)(data, true);
         editor.resize(exports.MAX_IMAGE_SIZE, exports.MAX_IMAGE_SIZE);
         editor.cropCircle();
         const composite = [];

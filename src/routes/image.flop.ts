@@ -12,7 +12,13 @@ export async function imageFlop(
       stop(res, 400, `Invalid method: ${method}`);
     }
 
-    return mirror(editor, method);
+    const frames: Array<Image> = [];
+
+    for (const frame of editor) {
+      frames.push(mirror(frame, method));
+    }
+
+    return frames;
   });
 }
 export enum MirrorMethods {

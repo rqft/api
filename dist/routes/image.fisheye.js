@@ -9,8 +9,13 @@ async function imageFisheye(req, res) {
         if (Number.isNaN(amount)) {
             (0, error_1.stop)(res, 400, "No amount provided");
         }
-        editor.fisheye(amount);
-        return editor;
+        const frames = [];
+        for (const image of editor) {
+            const frame = image.clone();
+            frame.fisheye(amount);
+            frames.push(frame);
+        }
+        return frames;
     });
 }
 exports.imageFisheye = imageFisheye;

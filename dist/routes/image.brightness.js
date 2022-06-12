@@ -10,8 +10,13 @@ async function imageBrightness(req, res) {
         if (Number.isNaN(amount)) {
             (0, error_1.stop)(res, 400, "No amount provided");
         }
-        editor.lightness(amount, scaled);
-        return editor;
+        const frames = [];
+        for (const frame of editor) {
+            const image = frame.clone();
+            image.lightness(amount, scaled);
+            frames.push(image);
+        }
+        return frames;
     });
 }
 exports.imageBrightness = imageBrightness;

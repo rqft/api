@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { decode, GIF, Image } from "imagescript";
+import { decode, Frame, GIF, Image } from "imagescript";
 import fetch from "node-fetch";
 import { execSync } from "node:child_process";
 import { readFileSync } from "node:fs";
@@ -30,11 +30,33 @@ export function binary(data: string, method: ConversionMethods) {
         .join("");
   }
 }
-export async function decodeImage(data: Buffer | Uint8Array): Promise<Image> {
-  const output = await decode(data, true);
-  if (output instanceof GIF) {
-    return output[0] as unknown as Image;
+export async function decodeImage(
+  data: Buffer | Uint8Array,
+  first?: true
+): Promise<Image>;
+export async function decodeImage(
+  data: Buffer | Uint8Array,
+  first?: false
+): Promise<Array<Image>>;
+export async function decodeImage(
+  data: Buffer | Uint8Array,
+  first?: boolean
+): Promise<Array<Image> | Image> {
+  const output = await decode(data, first);
+  if (output instanceof Image) {
+    if (first) {
+      return output;
+    }
+
+    return [output];
   }
+
+  if (first) {
+    if (0 in output) {
+      return output[0]!;
+    }
+  }
+
   return output;
 }
 export function fillColorCode(
@@ -77,26 +99,73 @@ export function fillColorCode(
   return parseInt(color, 16);
 }
 
+export type ArrayOr<T> = T | Array<T>;
+export type PromiseOr<T> = T | Promise<T>;
+
 export async function createImageEditor(
   req: Request,
   res: Response,
-  callee: (editor: Image) => Image | Promise<Image> | never
+  callee: (
+    editor: Array<Image>
+  ) => PromiseOr<ArrayOr<Image>> | PromiseOr<ArrayOr<Frame>> | never
 ) {
   const url = req.query.url as string;
 
   if (url) {
     const request = await fetch(url);
     const data = await request.buffer();
-    let editor = await decodeImage(data);
+    let editor: Awaited<ReturnType<typeof callee>> = await decodeImage(
+      data,
+      false
+    );
+
+    if (!Array.isArray(editor)) {
+      editor = [editor];
+    }
 
     editor = await callee(editor);
 
-    const u8: Uint8Array = await editor.encode();
+    if (!Array.isArray(editor)) {
+      editor = [editor];
+    }
 
-    const sent = Buffer.from(u8);
-    res.setHeader("Content-Type", "image/png");
+    let u8: Uint8Array | null = null;
+    let contentType: string = "image/png";
+    switch (editor.length) {
+      case 0: {
+        stop(res, 400, "No frames found");
+      }
 
-    res.send(sent);
+      case 1: {
+        const [image] = editor;
+        u8 = await image!.encode();
+        break;
+      }
+
+      default: {
+        contentType = "image/gif";
+        const frames: Array<Frame> = [];
+
+        for (const image of editor) {
+          if (image instanceof Frame) {
+            frames.push(image);
+            continue;
+          }
+
+          frames.push(Frame.from(image));
+        }
+
+        const gif = new GIF(frames);
+        u8 = await gif.encode();
+      }
+    }
+
+    if (u8) {
+      const sent = Buffer.from(u8);
+      res.setHeader("Content-Type", contentType);
+
+      res.send(sent);
+    }
   } else {
     stop(res, 400, "No image URL provided");
   }

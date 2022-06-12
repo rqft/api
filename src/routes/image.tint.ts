@@ -14,12 +14,18 @@ export async function imageTint(
       stop(res, 400, "Invalid opacity");
     }
 
-    const color = fillColorCode(req.params.color, opacity, res);
+    const frames: Array<Image> = [];
 
-    const copy = new Image(editor.width, editor.height);
-    copy.fill(color);
-    editor.composite(copy);
+    for (const image of editor) {
+      const color = fillColorCode(req.params.color, opacity, res);
 
-    return editor;
+      const copy = new Image(image.width, image.height);
+      copy.fill(color);
+      image.composite(copy);
+
+      frames.push(image);
+    }
+
+    return frames;
   });
 }

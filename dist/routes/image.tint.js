@@ -10,11 +10,15 @@ async function imageTint(req, res) {
         if (opacity < 0 || opacity > 1) {
             (0, error_1.stop)(res, 400, "Invalid opacity");
         }
-        const color = (0, tools_1.fillColorCode)(req.params.color, opacity, res);
-        const copy = new imagescript_1.Image(editor.width, editor.height);
-        copy.fill(color);
-        editor.composite(copy);
-        return editor;
+        const frames = [];
+        for (const image of editor) {
+            const color = (0, tools_1.fillColorCode)(req.params.color, opacity, res);
+            const copy = new imagescript_1.Image(image.width, image.height);
+            copy.fill(color);
+            image.composite(copy);
+            frames.push(image);
+        }
+        return frames;
     });
 }
 exports.imageTint = imageTint;

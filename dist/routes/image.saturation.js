@@ -10,8 +10,13 @@ async function imageSaturation(req, res) {
         if (Number.isNaN(amount)) {
             (0, error_1.stop)(res, 400, "No amount provided");
         }
-        editor.saturation(amount, scaled);
-        return editor;
+        const frames = [];
+        for (const frame of editor) {
+            const image = frame.clone();
+            image.saturation(amount, scaled);
+            frames.push(image);
+        }
+        return frames;
     });
 }
 exports.imageSaturation = imageSaturation;

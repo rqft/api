@@ -9,8 +9,13 @@ async function imageRotate(req, res) {
         if (Number.isNaN(deg)) {
             (0, error_1.stop)(res, 400, "No angle provided");
         }
-        editor.rotate(deg);
-        return editor;
+        const frames = [];
+        for (const image of editor) {
+            const frame = image.clone();
+            frame.rotate(deg);
+            frames.push(frame);
+        }
+        return frames;
     });
 }
 exports.imageRotate = imageRotate;

@@ -6,6 +6,6 @@ export async function imageAverageColor(
   res: express.Response
 ): Promise<void> {
   return createImageEditor(req, res, async (editor) => {
-    give(res, editor.averageColor());
+    give(res, editor[0]!.averageColor());
   });
 }

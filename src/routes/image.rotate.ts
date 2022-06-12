@@ -1,4 +1,5 @@
 import express from "express";
+import { Image } from "imagescript";
 import { stop } from "../models/error";
 import { createImageEditor } from "../tools";
 export async function imageRotate(
@@ -12,8 +13,14 @@ export async function imageRotate(
       stop(res, 400, "No angle provided");
     }
 
-    editor.rotate(deg);
+    const frames: Array<Image> = [];
 
-    return editor;
+    for (const image of editor) {
+      const frame = image.clone();
+      frame.rotate(deg);
+      frames.push(frame);
+    }
+
+    return frames;
   });
 }
