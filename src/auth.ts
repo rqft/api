@@ -1,6 +1,6 @@
 import express from "express";
 import { Authorized } from "./globals";
-import { stop } from "./models/error";
+import { stop } from "./models/result";
 export function auth(
   req: express.Request,
   res: express.Response,

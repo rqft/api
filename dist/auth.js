@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isAuthorized = exports.auth = void 0;
 const globals_1 = require("./globals");
-const error_1 = require("./models/error");
+const result_1 = require("./models/result");
 function auth(req, res, next) {
     const token = req.headers.authorization || req.query.token;
     if (token) {
@@ -10,11 +10,11 @@ function auth(req, res, next) {
             next();
         }
         else {
-            (0, error_1.stop)(res, 401, "Unauthorized");
+            (0, result_1.stop)(res, 401, "Unauthorized");
         }
     }
     else {
-        (0, error_1.stop)(res, 400, "No token provided");
+        (0, result_1.stop)(res, 400, "No token provided");
     }
 }
 exports.auth = auth;
