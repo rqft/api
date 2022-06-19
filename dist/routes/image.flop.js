@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.mirror = exports.MirrorMethods = exports.imageFlop = void 0;
-const error_1 = require("../models/error");
+const result_1 = require("../models/result");
 const tools_1 = require("../tools");
 async function imageFlop(req, res) {
     return (0, tools_1.createImageEditor)(req, res, async (editor) => {
         const method = req.query.method || MirrorMethods.LEFT;
         if (!(method in MirrorMethods)) {
-            (0, error_1.stop)(res, 400, `Invalid method: ${method}`);
+            (0, result_1.stop)(res, 400, `Invalid method: ${method}`);
         }
         const frames = [];
         for (const frame of editor) {

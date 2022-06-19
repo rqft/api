@@ -3,33 +3,8 @@ import { decode, Frame, GIF, Image } from "imagescript";
 import fetch from "node-fetch";
 import { execSync } from "node:child_process";
 import { readFileSync } from "node:fs";
-import { stop } from "./models/error";
-export enum ConversionMethods {
-  ENCODE = "encode",
-  DECODE = "decode",
-}
-export function base64(data: string, method: ConversionMethods): string {
-  switch (method) {
-    case ConversionMethods.ENCODE:
-      return Buffer.from(data).toString("base64");
-    case ConversionMethods.DECODE:
-      return Buffer.from(data, "base64").toString();
-  }
-}
-export function binary(data: string, method: ConversionMethods) {
-  switch (method) {
-    case ConversionMethods.ENCODE:
-      return data
-        .split("")
-        .map((c) => c.charCodeAt(0).toString(2))
-        .join("");
-    case ConversionMethods.DECODE:
-      return data
-        .split("")
-        .map((c) => String.fromCharCode(parseInt(c, 2)))
-        .join("");
-  }
-}
+import { stop } from "./models/result";
+
 export async function decodeImage(
   data: Buffer | Uint8Array,
   first?: true

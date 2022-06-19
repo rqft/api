@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { stop } from "../models/error";
+import { stop } from "../models/result";
+
 import { createFFmpegEditor } from "../tools";
 
 export async function audioPitch(req: Request, res: Response) {

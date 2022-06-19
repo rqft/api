@@ -1,7 +1,6 @@
 import express from "express";
 import { isAuthorized } from "../auth";
-import { stop } from "../models/error";
-import { give } from "../models/result";
+import { give, stop } from "../models/result";
 
 export function authorized(req: express.Request, res: express.Response): void {
   const token = req.headers.authorization || (req.query.token as string);

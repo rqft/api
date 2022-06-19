@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.audioPitch = void 0;
-const error_1 = require("../models/error");
+const result_1 = require("../models/result");
 const tools_1 = require("../tools");
 async function audioPitch(req, res) {
     const pitch = req.params.amount;
     const amount = Number(pitch) || 0;
     if (Number.isNaN(amount)) {
-        (0, error_1.stop)(res, 400, "Invalid pitch");
+        (0, result_1.stop)(res, 400, "Invalid pitch");
     }
     return await (0, tools_1.createFFmpegEditor)(req, res, {
         args: [

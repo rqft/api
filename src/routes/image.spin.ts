@@ -1,7 +1,7 @@
 import express from "express";
 import { Frame, GIF } from "imagescript";
 import fetch from "node-fetch";
-import { stop } from "../models/error";
+import { stop } from "../models/result";
 import { decodeImage } from "../tools";
 export const MAX_IMAGE_SIZE = 256;
 export async function imageSpin(

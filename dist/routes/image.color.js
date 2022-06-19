@@ -2,14 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.imageColor = void 0;
 const imagescript_1 = require("imagescript/");
-const error_1 = require("../models/error");
+const result_1 = require("../models/result");
 const tools_1 = require("../tools");
 async function imageColor(req, res) {
     let [width, height] = (req.params.size || "512x512")
         .split("x")
         .map((x) => Number.parseInt(x));
     if (!width && !height) {
-        (0, error_1.stop)(res, 400, "Invalid image size");
+        (0, result_1.stop)(res, 400, "Invalid image size");
     }
     else if (!width) {
         width = height;

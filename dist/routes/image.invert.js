@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InvertMethods = exports.imageInvert = void 0;
-const error_1 = require("../models/error");
+const result_1 = require("../models/result");
 const tools_1 = require("../tools");
 async function imageInvert(req, res) {
     return (0, tools_1.createImageEditor)(req, res, async (images) => {
@@ -22,7 +22,7 @@ async function imageInvert(req, res) {
                     editor.invertValue();
                     break;
                 default:
-                    (0, error_1.stop)(res, 400, "No method provided");
+                    (0, result_1.stop)(res, 400, "No method provided");
             }
             frames.push(editor);
         }

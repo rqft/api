@@ -4,10 +4,6 @@ import { audioExtract } from "./routes/audio.extract";
 import { audioPitch } from "./routes/audio.pitch";
 import { audioVolume } from "./routes/audio.volume";
 import { authorized } from "./routes/authorized";
-import { base64Decode } from "./routes/base64.decode";
-import { base64Encode } from "./routes/base64.encode";
-import { binaryDecode } from "./routes/binary.decode";
-import { binaryEncode } from "./routes/binary.encode";
 import { endpoints } from "./routes/endpoints";
 import { imageAverageColor } from "./routes/image.averagecolor";
 import { imageBrightness } from "./routes/image.brightness";
@@ -28,6 +24,7 @@ import { tagInspect } from "./routes/tag.inspect";
 import { tagList } from "./routes/tag.list";
 import { tagPost } from "./routes/tag.post";
 import { tagSearch } from "./routes/tag.search";
+import { textConvert } from "./routes/text.encode";
 import { todoDelete } from "./routes/todo.delete";
 import { todoGet } from "./routes/todo.get";
 import { todoList } from "./routes/todo.list";
@@ -50,12 +47,6 @@ Sarah.use((req, res, next) => {
 Sarah.get("/authorized", authorized);
 Sarah.get("/origin", origin);
 Sarah.get("/endpoints", endpoints);
-
-// tools
-Sarah.get("/base64/encode", base64Encode);
-Sarah.get("/base64/decode", base64Decode);
-Sarah.get("/binary/encode", binaryEncode);
-Sarah.get("/binary/decode", binaryDecode);
 
 // tags
 Sarah.get("/tags/list", tagList);
@@ -83,6 +74,9 @@ Sarah.get("/image/tint/:color", imageTint);
 Sarah.get("/audio/volume/:amount", audioVolume);
 Sarah.get("/audio/pitch/:amount", audioPitch);
 Sarah.get("/audio/extract", audioExtract);
+
+// text manip
+Sarah.get("/text/convert/:conversion/:method", textConvert);
 
 // todos
 Sarah.get("/todos/:userId", todoList);

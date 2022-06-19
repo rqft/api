@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authorized = void 0;
 const auth_1 = require("../auth");
-const error_1 = require("../models/error");
 const result_1 = require("../models/result");
 function authorized(req, res) {
     const token = req.headers.authorization || req.query.token;
@@ -15,7 +14,7 @@ function authorized(req, res) {
         }
     }
     else {
-        (0, error_1.stop)(res, 400, "No token provided");
+        (0, result_1.stop)(res, 400, "No token provided");
     }
 }
 exports.authorized = authorized;

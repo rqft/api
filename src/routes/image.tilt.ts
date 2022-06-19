@@ -1,5 +1,5 @@
 import express from "express";
-import { stop } from "../models/error";
+import { stop } from "../models/result";
 import { createImageEditor } from "../tools";
 export async function imageTilt(
   req: express.Request,

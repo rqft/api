@@ -1,4 +1,4 @@
-// ffmpeg -i - output.mp3import { Request, Response } from "express";
+// ffmpeg -i - output.mp3
 import { Request, Response } from "express";
 import { createFFmpegEditor } from "../tools";
 

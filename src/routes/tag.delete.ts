@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { KV } from "../globals";
-import { stop } from "../models/error";
-import { give } from "../models/result";
+import { give, stop } from "../models/result";
 
 export function tagDelete(req: Request, res: Response): void {
   const key = req.params.key;

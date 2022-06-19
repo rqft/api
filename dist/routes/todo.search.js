@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.todoSearch = void 0;
 const globals_1 = require("../globals");
-const error_1 = require("../models/error");
 const result_1 = require("../models/result");
 function todoSearch(req, res) {
     const userId = req.params.userId;
@@ -27,7 +26,7 @@ function todoSearch(req, res) {
             .slice(0, 25));
     }
     else {
-        (0, error_1.stop)(res, 400, "No user provided");
+        (0, result_1.stop)(res, 400, "No user provided");
     }
 }
 exports.todoSearch = todoSearch;

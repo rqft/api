@@ -3,41 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createFFmpegEditor = exports.createImageEditor = exports.fillColorCode = exports.decodeImage = exports.binary = exports.base64 = exports.ConversionMethods = void 0;
+exports.createFFmpegEditor = exports.createImageEditor = exports.fillColorCode = exports.decodeImage = void 0;
 const imagescript_1 = require("imagescript");
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const node_child_process_1 = require("node:child_process");
 const node_fs_1 = require("node:fs");
-const error_1 = require("./models/error");
-var ConversionMethods;
-(function (ConversionMethods) {
-    ConversionMethods["ENCODE"] = "encode";
-    ConversionMethods["DECODE"] = "decode";
-})(ConversionMethods = exports.ConversionMethods || (exports.ConversionMethods = {}));
-function base64(data, method) {
-    switch (method) {
-        case ConversionMethods.ENCODE:
-            return Buffer.from(data).toString("base64");
-        case ConversionMethods.DECODE:
-            return Buffer.from(data, "base64").toString();
-    }
-}
-exports.base64 = base64;
-function binary(data, method) {
-    switch (method) {
-        case ConversionMethods.ENCODE:
-            return data
-                .split("")
-                .map((c) => c.charCodeAt(0).toString(2))
-                .join("");
-        case ConversionMethods.DECODE:
-            return data
-                .split("")
-                .map((c) => String.fromCharCode(parseInt(c, 2)))
-                .join("");
-    }
-}
-exports.binary = binary;
+const result_1 = require("./models/result");
 async function decodeImage(data, first) {
     const output = await (0, imagescript_1.decode)(data, first);
     if (output instanceof imagescript_1.Image) {
@@ -56,7 +27,7 @@ async function decodeImage(data, first) {
 exports.decodeImage = decodeImage;
 function fillColorCode(color, opacity, response) {
     if (!color) {
-        (0, error_1.stop)(response, 400, "No color provided");
+        (0, result_1.stop)(response, 400, "No color provided");
     }
     const opacityHex = Math.round(opacity * 255).toString(16);
     if (color.startsWith("#")) {
@@ -81,7 +52,7 @@ function fillColorCode(color, opacity, response) {
             break;
         }
         default: {
-            (0, error_1.stop)(response, 400, "Invalid hex code");
+            (0, result_1.stop)(response, 400, "Invalid hex code");
         }
     }
     return parseInt(color, 16);
@@ -104,7 +75,7 @@ async function createImageEditor(req, res, callee) {
         let contentType = "image/png";
         switch (editor.length) {
             case 0: {
-                (0, error_1.stop)(res, 400, "No frames found");
+                (0, result_1.stop)(res, 400, "No frames found");
             }
             case 1: {
                 const [image] = editor;
@@ -132,7 +103,7 @@ async function createImageEditor(req, res, callee) {
         }
     }
     else {
-        (0, error_1.stop)(res, 400, "No image URL provided");
+        (0, result_1.stop)(res, 400, "No image URL provided");
     }
 }
 exports.createImageEditor = createImageEditor;
@@ -154,7 +125,7 @@ async function createFFmpegEditor(req, res, options) {
         res.send((0, node_fs_1.readFileSync)(`output/${options.destination}`));
     }
     else {
-        (0, error_1.stop)(res, 400, "No media URL provided");
+        (0, result_1.stop)(res, 400, "No media URL provided");
     }
 }
 exports.createFFmpegEditor = createFFmpegEditor;

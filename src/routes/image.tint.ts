@@ -1,6 +1,6 @@
 import express from "express";
 import { Image } from "imagescript";
-import { stop } from "../models/error";
+import { stop } from "../models/result";
 import { createImageEditor, fillColorCode } from "../tools";
 
 export async function imageTint(

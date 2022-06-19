@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.imageSpin = exports.MAX_IMAGE_SIZE = void 0;
 const imagescript_1 = require("imagescript");
 const node_fetch_1 = __importDefault(require("node-fetch"));
-const error_1 = require("../models/error");
+const result_1 = require("../models/result");
 const tools_1 = require("../tools");
 exports.MAX_IMAGE_SIZE = 256;
 async function imageSpin(req, res) {
@@ -30,7 +30,7 @@ async function imageSpin(req, res) {
         res.send(sent);
     }
     else {
-        (0, error_1.stop)(res, 400, "No image URL provided");
+        (0, result_1.stop)(res, 400, "No image URL provided");
     }
 }
 exports.imageSpin = imageSpin;
