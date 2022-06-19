@@ -2,12 +2,12 @@ import { Response } from "express";
 
 export interface Result<T> {
   data: T;
-  status: Error;
+  status: Status;
 }
 export function give<T>(
   res: Response,
   data: T,
-  status: Error = {
+  status: Status = {
     state: ResultState.OK,
     message: undefined,
     code: undefined,
@@ -22,18 +22,19 @@ export enum ResultState {
   ERROR = "error",
 }
 
-export interface ErrorOk {
+export interface Ok {
   message?: undefined;
   code?: undefined;
   state: ResultState.OK;
 }
-export interface ErrorBad {
+
+export interface Err {
   message: string;
   code: number;
   state: ResultState.ERROR;
 }
 
-export type Error = ErrorOk | ErrorBad;
+export type Status = Ok | Err;
 export function stop(res: Response, code: number, message: string): never {
   res.status(code);
   give(res, null, { state: ResultState.ERROR, message, code });
