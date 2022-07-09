@@ -1,12 +1,12 @@
-import { Request, Response } from "express";
+import { Input, Output } from "kevin-http";
 import { KV } from "../globals";
 import { give, stop } from "../models/result";
 
-export function todoSearch(req: Request, res: Response): void {
-  const userId = req.params.userId;
+export function todoSearch(req: Input, res: Output): void {
+  const userId = req.params.get("userId");
 
   if (userId) {
-    const query = req.params.query;
+    const query = req.params.get("query");
 
     let choices = (KV.todo.get<Array<string>>(userId) || []).map((x, i) => ({
       data: x,

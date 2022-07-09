@@ -1,11 +1,15 @@
-import express from "express";
+import { Constants, Input, Output } from "kevin-http";
 import { give } from "../models/result";
-export async function endpoints(
-  _req: express.Request,
-  res: express.Response
-): Promise<void> {
-  const routes: Array<string> = res.app._router.stack
-    .filter((x: { route?: unknown }) => x.route)
-    .map((x: { route: { path: string } }) => x.route.path);
-  give(res, routes);
+export async function endpoints(_req: Input, res: Output): Promise<void> {
+  res.setHeader("content-type", "text/plain");
+  const endpoints: Array<string> = [];
+  for (const k in _req.client.endpoints) {
+    const key: Constants.HTTPVerbs = k as Constants.HTTPVerbs;
+    const collection = _req.client.endpoints[key];
+
+    for (const [, value] of collection) {
+      endpoints.push(value.path);
+    }
+  }
+  give(res, endpoints);
 }

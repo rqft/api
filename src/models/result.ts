@@ -1,11 +1,11 @@
-import { Response } from "express";
+import { Output } from "kevin-http";
 
 export interface Result<T> {
   data: T;
   status: Status;
 }
 export function give<T>(
-  res: Response,
+  res: Output,
   data: T,
   status: Status = {
     state: ResultState.OK,
@@ -35,7 +35,7 @@ export interface Err {
 }
 
 export type Status = Ok | Err;
-export function stop(res: Response, code: number, message: string): never {
-  res.status(code);
+export function stop(res: Output, code: number, message: string): never {
+  res.setStatus(code);
   give(res, null, { state: ResultState.ERROR, message, code });
 }

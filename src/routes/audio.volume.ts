@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
+import { Input, Output } from "kevin-http";
 import { createFFmpegEditor } from "../tools";
 
-export async function audioVolume(req: Request, res: Response) {
-  const amount = req.params.amount as string;
+export async function audioVolume(req: Input, res: Output) {
+  const amount = req.params.get("amount");
 
   return await createFFmpegEditor(req, res, {
     args: [

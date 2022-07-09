@@ -1,14 +1,12 @@
 // editor.fisheye
-import express from "express";
 import { Image } from "imagescript";
+import { Input, Output } from "kevin-http";
 import { stop } from "../models/result";
 import { createImageEditor } from "../tools";
-export async function imageInvert(
-  req: express.Request,
-  res: express.Response
-): Promise<void> {
+export async function imageInvert(req: Input, res: Output): Promise<void> {
   return createImageEditor(req, res, async (images) => {
-    const method = (req.params.method as InvertMethods) || InvertMethods.INVERT;
+    const method =
+      (req.params.get("method") as InvertMethods) || InvertMethods.INVERT;
 
     const frames: Array<Image> = [];
 

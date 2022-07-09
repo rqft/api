@@ -1,14 +1,11 @@
 // editor.fisheye
-import express from "express";
 import { Image } from "imagescript";
+import { Input, Output } from "kevin-http";
 import { stop } from "../models/result";
 import { createImageEditor } from "../tools";
-export async function imageFisheye(
-  req: express.Request,
-  res: express.Response
-): Promise<void> {
+export async function imageFisheye(req: Input, res: Output): Promise<void> {
   return createImageEditor(req, res, async (editor) => {
-    const amount = Number.parseInt(req.params.amount || "2");
+    const amount = Number.parseInt(req.params.get("amount") || "2");
 
     if (Number.isNaN(amount)) {
       stop(res, 400, "No amount provided");

@@ -16,7 +16,7 @@ var ResultState;
     ResultState["ERROR"] = "error";
 })(ResultState = exports.ResultState || (exports.ResultState = {}));
 function stop(res, code, message) {
-    res.status(code);
+    res.setStatus(code);
     give(res, null, { state: ResultState.ERROR, message, code });
 }
 exports.stop = stop;

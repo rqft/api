@@ -6,7 +6,7 @@ const result_1 = require("../models/result");
 const tools_1 = require("../tools");
 async function imageResize(req, res) {
     return (0, tools_1.createImageEditor)(req, res, async (editor) => {
-        let size = req.params.size || "1";
+        let size = req.params.get("size") || "1";
         const frames = [];
         for (const image of editor) {
             switch (true) {

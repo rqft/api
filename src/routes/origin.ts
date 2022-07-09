@@ -1,5 +1,8 @@
-import { Request, Response } from "express";
+import { Input, Output } from "kevin-http";
 import { give } from "../models/result";
-export function origin(req: Request, res: Response): void {
-  give(res, req.headers["x-forwarded-for"] || req.socket.remoteAddress || null);
+export function origin(req: Input, res: Output): void {
+  give(
+    res,
+    req.headers.get("x-forwarded-for") || req.data.socket.remoteAddress || null
+  );
 }

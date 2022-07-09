@@ -1,14 +1,11 @@
-import express from "express";
 import { Image } from "imagescript";
+import { Input, Output } from "kevin-http";
 import { stop } from "../models/result";
 import { createImageEditor } from "../tools";
-export async function imageBrightness(
-  req: express.Request,
-  res: express.Response
-): Promise<void> {
+export async function imageBrightness(req: Input, res: Output): Promise<void> {
   return createImageEditor(req, res, async (editor) => {
-    const amount = Number.parseInt(req.params.amount || "0");
-    const scaled = req.query.scaled === "true";
+    const amount = Number.parseInt(req.params.get("amount") || "0");
+    const scaled = req.query.get("amount") === "true";
 
     if (Number.isNaN(amount)) {
       stop(res, 400, "No amount provided");

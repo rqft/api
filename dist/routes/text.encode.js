@@ -3,13 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.caesar = exports.Encoders = exports.Conversion = exports.ConversionMethods = exports.textConvert = void 0;
 const result_1 = require("../models/result");
 function textConvert(req, res) {
-    const conversion = req.params.conversion;
-    const method = req.params.method;
-    const data = req.query.data;
+    const conversion = req.params.get("conversion");
+    const method = req.params.get("method");
+    const data = req.query.get("data");
     if (!data) {
         (0, result_1.stop)(res, 400, "No data provided");
     }
-    const result = exports.Encoders[conversion][method](data, req.query);
+    const result = exports.Encoders[conversion][method](data, req.query.toJSON());
     return (0, result_1.give)(res, result);
 }
 exports.textConvert = textConvert;

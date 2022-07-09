@@ -1,12 +1,9 @@
-import express from "express";
+import { Input, Output } from "kevin-http";
 import { stop } from "../models/result";
 import { createImageEditor } from "../tools";
-export async function imageTilt(
-  req: express.Request,
-  res: express.Response
-): Promise<void> {
+export async function imageTilt(req: Input, res: Output): Promise<void> {
   return createImageEditor(req, res, async (editor) => {
-    const amount = Number(req.params.amount) || 12;
+    const amount = Number(req.params.get("amount")) || 12;
 
     const [image] = editor;
 

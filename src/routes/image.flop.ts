@@ -1,13 +1,11 @@
-import express from "express";
 import { Frame, Image } from "imagescript/";
+import { Input, Output } from "kevin-http";
 import { stop } from "../models/result";
 import { createImageEditor } from "../tools";
-export async function imageFlop(
-  req: express.Request,
-  res: express.Response
-): Promise<void> {
+export async function imageFlop(req: Input, res: Output): Promise<void> {
   return createImageEditor(req, res, async (editor) => {
-    const method = (req.query.method as MirrorMethods) || MirrorMethods.LEFT;
+    const method =
+      (req.query.get("method") as MirrorMethods) || MirrorMethods.LEFT;
     if (!(method in MirrorMethods)) {
       stop(res, 400, `Invalid method: ${method}`);
     }

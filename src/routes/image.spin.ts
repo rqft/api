@@ -1,17 +1,13 @@
-import express from "express";
 import { Frame, GIF } from "imagescript";
-import fetch from "node-fetch";
+import { Input, Output } from "kevin-http";
 import { stop } from "../models/result";
-import { decodeImage } from "../tools";
+import { decodeImage, fetch } from "../tools";
 export const MAX_IMAGE_SIZE = 256;
-export async function imageSpin(
-  req: express.Request,
-  res: express.Response
-): Promise<void> {
-  const url = req.query.url as string;
+export async function imageSpin(req: Input, res: Output): Promise<void> {
+  const url = req.query.get("url") as string;
   if (url) {
-    const request = await fetch(url);
-    const data = await request.buffer();
+    const { payload: data } = await fetch(url, "buffer");
+
     const editor = await decodeImage(data, true);
 
     editor.resize(MAX_IMAGE_SIZE, MAX_IMAGE_SIZE);
@@ -36,7 +32,7 @@ export async function imageSpin(
     const u8: Uint8Array = await gif.encode();
 
     const sent = Buffer.from(u8);
-    res.setHeader("Content-Type", "image/gif");
+    res.setHeader("content-type", "image/gif");
     res.send(sent);
   } else {
     stop(res, 400, "No image URL provided");

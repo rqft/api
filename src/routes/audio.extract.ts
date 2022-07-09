@@ -1,8 +1,8 @@
 // ffmpeg -i - output.mp3
-import { Request, Response } from "express";
+import { Input, Output } from "kevin-http";
 import { createFFmpegEditor } from "../tools";
 
-export async function audioExtract(req: Request, res: Response) {
+export async function audioExtract(req: Input, res: Output) {
   return await createFFmpegEditor(req, res, {
     args: [],
     mimetype: "audio/mp3",

@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
 import { decode, Frame, GIF, Image } from "imagescript";
-import fetch from "node-fetch";
+import { Input, Output } from "kevin-http";
+import { Request } from "node-fetch";
 import { execSync } from "node:child_process";
 import { readFileSync } from "node:fs";
+import { Data, Pariah } from "pariah";
 import { stop } from "./models/result";
 
 export async function decodeImage(
@@ -37,7 +38,7 @@ export async function decodeImage(
 export function fillColorCode(
   color: string | undefined,
   opacity: number,
-  response: Response
+  response: Output
 ) {
   if (!color) {
     stop(response, 400, "No color provided");
@@ -78,17 +79,16 @@ export type ArrayOr<T> = T | Array<T>;
 export type PromiseOr<T> = T | Promise<T>;
 
 export async function createImageEditor(
-  req: Request,
-  res: Response,
+  req: Input,
+  res: Output,
   callee: (
     editor: Array<Image>
   ) => PromiseOr<ArrayOr<Image>> | PromiseOr<ArrayOr<Frame>> | never
 ) {
-  const url = req.query.url as string;
+  const url = req.query.get("url");
 
   if (url) {
-    const request = await fetch(url);
-    const data = await request.buffer();
+    const { payload: data } = await fetch(url, "buffer");
     let editor: Awaited<ReturnType<typeof callee>> = await decodeImage(
       data,
       false
@@ -137,7 +137,7 @@ export async function createImageEditor(
 
     if (u8) {
       const sent = Buffer.from(u8);
-      res.setHeader("Content-Type", contentType);
+      res.setHeader("content-type", contentType);
 
       res.send(sent);
     }
@@ -151,15 +151,14 @@ export interface FFMpegOptions {
   destination: string;
 }
 export async function createFFmpegEditor(
-  req: Request,
-  res: Response,
+  req: Input,
+  res: Output,
   options: FFMpegOptions
 ) {
-  const url = req.query.url as string;
+  const url = req.query.get("url");
 
   if (url) {
-    const request = await fetch(url);
-    const data = await request.buffer();
+    const { payload: data } = await fetch(url, "buffer");
 
     const args = [
       "-y",
@@ -171,9 +170,9 @@ export async function createFFmpegEditor(
 
     execSync(`ffmpeg ${args.join(" ")}`, { input: data });
 
-    res.setHeader("Content-Type", options.mimetype);
+    res.setHeader("content-type", options.mimetype);
     res.setHeader(
-      "Content-Disposition",
+      "content-disposition",
       `attachment; filename="${options.destination}"`
     );
 
@@ -181,4 +180,45 @@ export async function createFFmpegEditor(
   } else {
     stop(res, 400, "No media URL provided");
   }
+}
+export type Transformer =
+  | "arrayBuffer"
+  | "json"
+  | "text"
+  | "blob"
+  | "buffer"
+  | "request";
+export async function fetch(
+  uri: string | URL,
+  transformer: "arrayBuffer"
+): Promise<Data<ArrayBuffer>>;
+export async function fetch<T>(
+  uri: string | URL,
+  transformer: "json"
+): Promise<Data<T>>;
+export async function fetch(
+  uri: string | URL,
+  transformer: "text"
+): Promise<Data<string>>;
+export async function fetch(
+  uri: string | URL,
+  transformer: "blob"
+): Promise<Data<Blob>>;
+export async function fetch(
+  uri: string | URL,
+  transformer: "buffer"
+): Promise<Data<Buffer>>;
+export async function fetch(
+  uri: string | URL,
+  transformer: "request"
+): Promise<Data<Request>>;
+
+export async function fetch(
+  uri: string | URL,
+  transformer: Transformer = "request"
+) {
+  const url = new URL(uri);
+  const pariah = new Pariah(url);
+
+  return pariah[transformer]("/");
 }

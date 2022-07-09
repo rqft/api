@@ -1,9 +1,8 @@
-import { auth } from "./auth";
-import { NeedsNoAuth, Sarah } from "./globals";
+import { Sarah } from "./globals";
 import { audioExtract } from "./routes/audio.extract";
 import { audioPitch } from "./routes/audio.pitch";
 import { audioVolume } from "./routes/audio.volume";
-import { authorized } from "./routes/authorized";
+
 import { endpoints } from "./routes/endpoints";
 import { imageAverageColor } from "./routes/image.averagecolor";
 import { imageBrightness } from "./routes/image.brightness";
@@ -32,65 +31,70 @@ import { todoPost } from "./routes/todo.post";
 import { todoPut } from "./routes/todo.put";
 import { todoSearch } from "./routes/todo.search";
 
-// middleware
-Sarah.use((req, res, next) => {
-  res.contentType("application/json");
-  if (NeedsNoAuth.includes(req.path)) {
-    next();
-    return;
-  }
-
-  auth(req, res, next);
+// middle ware
+Sarah.use((req, res, next, endpoint, client) => {
+  res.setHeader("content-type", "application/json");
+  res.setStatus(200);
+  next!(req, res, next!, endpoint, client);
 });
 
 // routes
-Sarah.get("/authorized", authorized);
-Sarah.get("/origin", origin);
-Sarah.get("/endpoints", endpoints);
+Sarah.create("GET /origin", origin);
+Sarah.create("GET /endpoints", endpoints);
 
-// tags
-Sarah.get("/tags/list", tagList);
-Sarah.get("/tags/inspect", tagInspect);
-Sarah.get("/tags/:key", tagGet);
-Sarah.post("/tags/:key", tagPost);
-Sarah.delete("/tags/:key", tagDelete);
-Sarah.get("/tags/search/:query", tagSearch);
+// // tags
+Sarah.create("GET /tags/list", tagList);
+Sarah.create("GET /tags/inspect", tagInspect);
+Sarah.create("GET /tags/{key}", tagGet);
+Sarah.create("POST /tags/{key}", tagPost);
+Sarah.create("DELETE /tags/{key}", tagDelete);
+Sarah.create("GET /tags/search/{query}", tagSearch);
 
-// image manip
-Sarah.get("/image/average-color", imageAverageColor);
-Sarah.get("/image/brightness/:amount", imageBrightness);
-Sarah.get("/image/color/:size/:color", imageColor);
-Sarah.get("/image/fisheye/:amount", imageFisheye);
-Sarah.get("/image/mirror", imageFlop);
-Sarah.get("/image/invert/:method", imageInvert);
-Sarah.get("/image/resize/:size", imageResize);
-Sarah.get("/image/rotate/:deg", imageRotate);
-Sarah.get("/image/saturation/:amount", imageSaturation);
-Sarah.get("/image/spin", imageSpin);
-Sarah.get("/image/tilt/:amount", imageTilt);
-Sarah.get("/image/tint/:color", imageTint);
+// // image manip
+Sarah.create("GET /image/average-color", imageAverageColor);
+Sarah.create("GET /image/brightness/{amount}", imageBrightness);
+Sarah.create("GET /image/color/{size}/{color}", imageColor);
+Sarah.create("GET /image/fisheye/{amount}", imageFisheye);
+Sarah.create("GET /image/mirror", imageFlop);
+Sarah.create("GET /image/invert/{method}", imageInvert);
+Sarah.create("GET /image/resize/{size}", imageResize);
+Sarah.create("GET /image/rotate/{deg}", imageRotate);
+Sarah.create("GET /image/saturation/{amount}", imageSaturation);
+Sarah.create("GET /image/spin", imageSpin);
+Sarah.create("GET /image/tilt/{amount}", imageTilt);
+Sarah.create("GET /image/tint/{color}", imageTint);
 
-// audio manip
-Sarah.get("/audio/volume/:amount", audioVolume);
-Sarah.get("/audio/pitch/:amount", audioPitch);
-Sarah.get("/audio/extract", audioExtract);
+// // audio manip
+Sarah.create("GET /audio/volume/{amount}", audioVolume);
+Sarah.create("GET /audio/pitch/{amount}", audioPitch);
+Sarah.create("GET /audio/extract", audioExtract);
 
-// text manip
-Sarah.get("/text/convert/:conversion/:method", textConvert);
+// // text manip
+Sarah.create("GET /text/convert/{conversion}/{method}", textConvert);
 
-// todos
-Sarah.get("/todos/:userId", todoList);
-Sarah.get("/todos/:userId/:id", todoGet);
-Sarah.post("/todos/:userId", todoPost);
-Sarah.delete("/todos/:userId/:id", todoDelete);
-Sarah.put("/todos/:userId/:id", todoPut);
-Sarah.get("/todos/search/:userId/:query", todoSearch);
+// // todos
+Sarah.create("GET /todos/{userId}", todoList);
+Sarah.create("GET /todos/{userId}/{id}", todoGet);
+Sarah.create("POST /todos/{userId}", todoPost);
+Sarah.create("DELETE /todos/{userId}/{id}", todoDelete);
+Sarah.create("PUT /todos/{userId}/{id}", todoPut);
+Sarah.create("GET /todos/search/{userId}/{query}", todoSearch);
 
-Sarah.listen(3000, () => {
+Sarah.initialize();
+
+Sarah.listen(() => {
   console.log("ok started on api.clancy.lol");
 });
 
 process.on("unhandledRejection", (reason) => {
+  if (reason === null) {
+    return;
+  }
+
+  console.error(reason);
+});
+
+process.on("uncaughtException", (reason) => {
   if (reason === null) {
     return;
   }

@@ -4,9 +4,9 @@ exports.todoSearch = void 0;
 const globals_1 = require("../globals");
 const result_1 = require("../models/result");
 function todoSearch(req, res) {
-    const userId = req.params.userId;
+    const userId = req.params.get("userId");
     if (userId) {
-        const query = req.params.query;
+        const query = req.params.get("query");
         let choices = (globals_1.KV.todo.get(userId) || []).map((x, i) => ({
             data: x,
             index: i + 1,

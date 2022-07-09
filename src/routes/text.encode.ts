@@ -1,19 +1,16 @@
-import { Request, Response } from "express";
+import { Input, Output } from "kevin-http";
 import { give, stop } from "../models/result";
-export function textConvert(req: Request, res: Response): void {
-  const conversion = req.params.conversion as Conversion;
-  const method = req.params.method as ConversionMethods;
+export function textConvert(req: Input, res: Output): void {
+  const conversion = req.params.get("conversion") as Conversion;
+  const method = req.params.get("method") as ConversionMethods;
 
-  const data = req.query.data as string | undefined;
+  const data = req.query.get("data") as string | undefined;
 
   if (!data) {
     stop(res, 400, "No data provided");
   }
 
-  const result = Encoders[conversion][method](
-    data,
-    req.query as Record<string, string>
-  );
+  const result = Encoders[conversion][method](data, req.query.toJSON());
 
   return give(res, result);
 }

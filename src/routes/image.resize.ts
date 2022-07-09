@@ -1,13 +1,10 @@
-import express from "express";
 import { Image } from "imagescript/";
+import { Input, Output } from "kevin-http";
 import { stop } from "../models/result";
 import { createImageEditor } from "../tools";
-export async function imageResize(
-  req: express.Request,
-  res: express.Response
-): Promise<void> {
+export async function imageResize(req: Input, res: Output): Promise<void> {
   return createImageEditor(req, res, async (editor) => {
-    let size: string = req.params.size || "1";
+    let size: string = req.params.get("size") || "1";
 
     const frames: Array<Image> = [];
 

@@ -4,7 +4,7 @@ exports.tagDelete = void 0;
 const globals_1 = require("../globals");
 const result_1 = require("../models/result");
 function tagDelete(req, res) {
-    const key = req.params.key;
+    const key = req.params.get("key");
     if (key) {
         const value = globals_1.KV.tags.get(key);
         if (value) {

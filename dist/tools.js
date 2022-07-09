@@ -1,13 +1,10 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createFFmpegEditor = exports.createImageEditor = exports.fillColorCode = exports.decodeImage = void 0;
+exports.fetch = exports.createFFmpegEditor = exports.createImageEditor = exports.fillColorCode = exports.decodeImage = void 0;
 const imagescript_1 = require("imagescript");
-const node_fetch_1 = __importDefault(require("node-fetch"));
 const node_child_process_1 = require("node:child_process");
 const node_fs_1 = require("node:fs");
+const pariah_1 = require("pariah");
 const result_1 = require("./models/result");
 async function decodeImage(data, first) {
     const output = await (0, imagescript_1.decode)(data, first);
@@ -59,10 +56,9 @@ function fillColorCode(color, opacity, response) {
 }
 exports.fillColorCode = fillColorCode;
 async function createImageEditor(req, res, callee) {
-    const url = req.query.url;
+    const url = req.query.get("url");
     if (url) {
-        const request = await (0, node_fetch_1.default)(url);
-        const data = await request.buffer();
+        const { payload: data } = await fetch(url, "buffer");
         let editor = await decodeImage(data, false);
         if (!Array.isArray(editor)) {
             editor = [editor];
@@ -98,7 +94,7 @@ async function createImageEditor(req, res, callee) {
         }
         if (u8) {
             const sent = Buffer.from(u8);
-            res.setHeader("Content-Type", contentType);
+            res.setHeader("content-type", contentType);
             res.send(sent);
         }
     }
@@ -108,10 +104,9 @@ async function createImageEditor(req, res, callee) {
 }
 exports.createImageEditor = createImageEditor;
 async function createFFmpegEditor(req, res, options) {
-    const url = req.query.url;
+    const url = req.query.get("url");
     if (url) {
-        const request = await (0, node_fetch_1.default)(url);
-        const data = await request.buffer();
+        const { payload: data } = await fetch(url, "buffer");
         const args = [
             "-y",
             "-i",
@@ -120,8 +115,8 @@ async function createFFmpegEditor(req, res, options) {
             `output/${options.destination}`,
         ];
         (0, node_child_process_1.execSync)(`ffmpeg ${args.join(" ")}`, { input: data });
-        res.setHeader("Content-Type", options.mimetype);
-        res.setHeader("Content-Disposition", `attachment; filename="${options.destination}"`);
+        res.setHeader("content-type", options.mimetype);
+        res.setHeader("content-disposition", `attachment; filename="${options.destination}"`);
         res.send((0, node_fs_1.readFileSync)(`output/${options.destination}`));
     }
     else {
@@ -129,3 +124,9 @@ async function createFFmpegEditor(req, res, options) {
     }
 }
 exports.createFFmpegEditor = createFFmpegEditor;
+async function fetch(uri, transformer = "request") {
+    const url = new URL(uri);
+    const pariah = new pariah_1.Pariah(url);
+    return pariah[transformer]("/");
+}
+exports.fetch = fetch;

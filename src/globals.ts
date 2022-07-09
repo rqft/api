@@ -1,13 +1,6 @@
-import express from "express";
+import { Client } from "kevin-http";
 import { Wilson } from "wilson-kv";
-import { User } from "./models/user";
-export const Sarah = express();
-export const Authorized: Array<User> = [
-  { username: "admin", password: "admin" },
-  { username: "insyri", password: "abcd" },
-  { username: "sern", password: "sern" },
-];
-export const NeedsNoAuth: Array<string> = ["/authorized", "/endpoints"];
+export const Sarah = new Client({});
 
 export namespace KV {
   export const prefixes = new Wilson("kv/prefixes");

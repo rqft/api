@@ -5,7 +5,7 @@ const result_1 = require("../models/result");
 const tools_1 = require("../tools");
 async function imageInvert(req, res) {
     return (0, tools_1.createImageEditor)(req, res, async (images) => {
-        const method = req.params.method || InvertMethods.INVERT;
+        const method = req.params.get("method") || InvertMethods.INVERT;
         const frames = [];
         for (const editor of images) {
             switch (method) {

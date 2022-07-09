@@ -1,13 +1,10 @@
-import express from "express";
 import { Image } from "imagescript";
+import { Input, Output } from "kevin-http";
 import { stop } from "../models/result";
 import { createImageEditor } from "../tools";
-export async function imageRotate(
-  req: express.Request,
-  res: express.Response
-): Promise<void> {
+export async function imageRotate(req: Input, res: Output): Promise<void> {
   return createImageEditor(req, res, async (editor) => {
-    const deg = Number.parseInt(req.params.deg || "0");
+    const deg = Number.parseInt(req.params.get("deg") || "0");
 
     if (Number.isNaN(deg)) {
       stop(res, 400, "No angle provided");

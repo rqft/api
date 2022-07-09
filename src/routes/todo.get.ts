@@ -1,16 +1,13 @@
-import express from "express";
+import { Input, Output } from "kevin-http";
 import { KV } from "../globals";
 import { give, stop } from "../models/result";
-export async function todoGet(
-  req: express.Request,
-  res: express.Response
-): Promise<void> {
-  const userId = req.params.userId;
+export async function todoGet(req: Input, res: Output): Promise<void> {
+  const userId = req.params.get("userId");
   if (userId) {
     if (!KV.todo.has(userId)) {
       stop(res, 404, "No todos found for that user");
     } else {
-      const id = Number(req.params.id);
+      const id = Number(req.params.get("id"));
 
       if (Number.isNaN(id)) {
         stop(res, 400, "Invalid id");

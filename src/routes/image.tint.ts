@@ -1,14 +1,11 @@
-import express from "express";
 import { Image } from "imagescript";
+import { Input, Output } from "kevin-http";
 import { stop } from "../models/result";
 import { createImageEditor, fillColorCode } from "../tools";
 
-export async function imageTint(
-  req: express.Request,
-  res: express.Response
-): Promise<void> {
+export async function imageTint(req: Input, res: Output): Promise<void> {
   return createImageEditor(req, res, async (editor) => {
-    const opacity = Number(req.query.opacity) || 0.5;
+    const opacity = Number(req.query.get("opacity")) || 0.5;
 
     if (opacity < 0 || opacity > 1) {
       stop(res, 400, "Invalid opacity");
@@ -17,7 +14,7 @@ export async function imageTint(
     const frames: Array<Image> = [];
 
     for (const image of editor) {
-      const color = fillColorCode(req.params.color, opacity, res);
+      const color = fillColorCode(req.params.get("color"), opacity, res);
 
       const copy = new Image(image.width, image.height);
       copy.fill(color);

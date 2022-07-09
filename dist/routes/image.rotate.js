@@ -5,7 +5,7 @@ const result_1 = require("../models/result");
 const tools_1 = require("../tools");
 async function imageRotate(req, res) {
     return (0, tools_1.createImageEditor)(req, res, async (editor) => {
-        const deg = Number.parseInt(req.params.deg || "0");
+        const deg = Number.parseInt(req.params.get("deg") || "0");
         if (Number.isNaN(deg)) {
             (0, result_1.stop)(res, 400, "No angle provided");
         }

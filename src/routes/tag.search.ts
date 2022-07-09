@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
+import { Input, Output } from "kevin-http";
 import { KV } from "../globals";
 import { give } from "../models/result";
 
-export function tagSearch(req: Request, res: Response): void {
-  const query = req.params.query;
+export function tagSearch(req: Input, res: Output): void {
+  const query = req.params.get("query");
   console.log(query);
 
   let choices = KV.todo.list();

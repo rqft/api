@@ -1,10 +1,10 @@
-import { Request, Response } from "express";
+import { Input, Output } from "kevin-http";
 import { stop } from "../models/result";
 
 import { createFFmpegEditor } from "../tools";
 
-export async function audioPitch(req: Request, res: Response) {
-  const pitch = req.params.amount as string;
+export async function audioPitch(req: Input, res: Output) {
+  const pitch = req.params.get("amount");
 
   const amount = Number(pitch) || 0;
 
