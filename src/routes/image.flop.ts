@@ -2,7 +2,10 @@ import { Frame, Image } from "imagescript/";
 import { Input, Output } from "kevin-http";
 import { stop } from "../models/result";
 import { createImageEditor } from "../tools";
-export async function imageFlop(req: Input, res: Output): Promise<void> {
+export async function imageMirror(
+  req: Input<"/image/mirror">,
+  res: Output
+): Promise<void> {
   return createImageEditor(req, res, async (editor) => {
     const method =
       (req.query.get("method") as MirrorMethods) || MirrorMethods.LEFT;

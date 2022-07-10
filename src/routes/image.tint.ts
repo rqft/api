@@ -3,7 +3,10 @@ import { Input, Output } from "kevin-http";
 import { stop } from "../models/result";
 import { createImageEditor, fillColorCode } from "../tools";
 
-export async function imageTint(req: Input, res: Output): Promise<void> {
+export async function imageTint(
+  req: Input<"/image/tint/{color}">,
+  res: Output
+): Promise<void> {
   return createImageEditor(req, res, async (editor) => {
     const opacity = Number(req.query.get("opacity")) || 0.5;
 

@@ -1,6 +1,9 @@
 import { Input, Output } from "kevin-http";
 import { give, stop } from "../models/result";
-export function textConvert(req: Input, res: Output): void {
+export function textConvert(
+  req: Input<"/text/convert/{conversion}/{method}">,
+  res: Output
+): void {
   const conversion = req.params.get("conversion") as Conversion;
   const method = req.params.get("method") as ConversionMethods;
 

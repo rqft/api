@@ -1,6 +1,9 @@
 import { Constants, Input, Output } from "kevin-http";
 import { give } from "../models/result";
-export async function endpoints(_req: Input, res: Output): Promise<void> {
+export async function endpoints(
+  _req: Input<"/endpoints">,
+  res: Output
+): Promise<void> {
   res.setHeader("content-type", "text/plain");
   const endpoints: Array<string> = [];
   for (const k in _req.client.endpoints) {

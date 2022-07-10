@@ -8,7 +8,7 @@ exports.MAX_IMAGE_SIZE = 256;
 async function imageSpin(req, res) {
     const url = req.query.get("url");
     if (url) {
-        const { payload: data } = await (0, tools_1.fetch)(url, "buffer");
+        const { payload: data } = await (0, tools_1.fetch)(url, "get", "buffer");
         const editor = await (0, tools_1.decodeImage)(data, true);
         editor.resize(exports.MAX_IMAGE_SIZE, exports.MAX_IMAGE_SIZE);
         editor.cropCircle();

@@ -2,7 +2,10 @@ import { Image } from "imagescript";
 import { Input, Output } from "kevin-http";
 import { stop } from "../models/result";
 import { createImageEditor } from "../tools";
-export async function imageBrightness(req: Input, res: Output): Promise<void> {
+export async function imageBrightness(
+  req: Input<"/image/brightness/{amount}">,
+  res: Output
+): Promise<void> {
   return createImageEditor(req, res, async (editor) => {
     const amount = Number.parseInt(req.params.get("amount") || "0");
     const scaled = req.query.get("amount") === "true";

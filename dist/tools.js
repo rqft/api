@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetch = exports.createFFmpegEditor = exports.createImageEditor = exports.fillColorCode = exports.decodeImage = void 0;
+exports.sleep = exports.fetch = exports.createFFmpegEditor = exports.createImageEditor = exports.fillColorCode = exports.decodeImage = void 0;
 const imagescript_1 = require("imagescript");
 const node_child_process_1 = require("node:child_process");
 const node_fs_1 = require("node:fs");
@@ -58,7 +58,7 @@ exports.fillColorCode = fillColorCode;
 async function createImageEditor(req, res, callee) {
     const url = req.query.get("url");
     if (url) {
-        const { payload: data } = await fetch(url, "buffer");
+        const { payload: data } = await fetch(url, "get", "buffer");
         let editor = await decodeImage(data, false);
         if (!Array.isArray(editor)) {
             editor = [editor];
@@ -106,7 +106,7 @@ exports.createImageEditor = createImageEditor;
 async function createFFmpegEditor(req, res, options) {
     const url = req.query.get("url");
     if (url) {
-        const { payload: data } = await fetch(url, "buffer");
+        const { payload: data } = await fetch(url, "get", "buffer");
         const args = [
             "-y",
             "-i",
@@ -124,9 +124,14 @@ async function createFFmpegEditor(req, res, options) {
     }
 }
 exports.createFFmpegEditor = createFFmpegEditor;
-async function fetch(uri, transformer = "request") {
+async function fetch(uri, method, transformer = "request", init) {
     const url = new URL(uri);
     const pariah = new pariah_1.Pariah(url);
-    return pariah[transformer]("/");
+    return pariah[method][transformer]("/", {}, init);
 }
 exports.fetch = fetch;
+function sleep(ms) {
+    Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+    return;
+}
+exports.sleep = sleep;

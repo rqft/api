@@ -1,7 +1,10 @@
 import { Input, Output } from "kevin-http";
 import { KV } from "../globals";
 import { give, stop } from "../models/result";
-export async function todoPut(req: Input, res: Output): Promise<void> {
+export async function todoPut(
+  req: Input<"/todos/{userId}/{id}">,
+  res: Output
+): Promise<void> {
   const userId = req.params.get("userId");
   if (userId) {
     if (!KV.todo.has(userId)) {

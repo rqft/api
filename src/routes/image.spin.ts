@@ -3,10 +3,13 @@ import { Input, Output } from "kevin-http";
 import { stop } from "../models/result";
 import { decodeImage, fetch } from "../tools";
 export const MAX_IMAGE_SIZE = 256;
-export async function imageSpin(req: Input, res: Output): Promise<void> {
+export async function imageSpin(
+  req: Input<"/image/spin">,
+  res: Output
+): Promise<void> {
   const url = req.query.get("url") as string;
   if (url) {
-    const { payload: data } = await fetch(url, "buffer");
+    const { payload: data } = await fetch(url, "get", "buffer");
 
     const editor = await decodeImage(data, true);
 

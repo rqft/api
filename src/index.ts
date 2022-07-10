@@ -1,4 +1,5 @@
 import { Sarah } from "./globals";
+import { Result } from "./models/result";
 import { audioExtract } from "./routes/audio.extract";
 import { audioPitch } from "./routes/audio.pitch";
 import { audioVolume } from "./routes/audio.volume";
@@ -8,7 +9,7 @@ import { imageAverageColor } from "./routes/image.averagecolor";
 import { imageBrightness } from "./routes/image.brightness";
 import { imageColor } from "./routes/image.color";
 import { imageFisheye } from "./routes/image.fisheye";
-import { imageFlop } from "./routes/image.flop";
+import { imageMirror } from "./routes/image.flop";
 import { imageInvert } from "./routes/image.invert";
 import { imageResize } from "./routes/image.resize";
 import { imageRotate } from "./routes/image.rotate";
@@ -31,12 +32,18 @@ import { todoPost } from "./routes/todo.post";
 import { todoPut } from "./routes/todo.put";
 import { todoSearch } from "./routes/todo.search";
 
+import { wombo } from "./routes/wombo";
+import { fetch } from "./tools";
+
 // middle ware
-Sarah.use((req, res, next, endpoint, client) => {
+Sarah.use((_, res, next) => {
   res.setHeader("content-type", "application/json");
   res.setStatus(200);
-  next!(req, res, next!, endpoint, client);
+  next();
 });
+
+// // wombo
+Sarah.create("GET /wombo/{style}/{query}", wombo);
 
 // routes
 Sarah.create("GET /origin", origin);
@@ -55,7 +62,7 @@ Sarah.create("GET /image/average-color", imageAverageColor);
 Sarah.create("GET /image/brightness/{amount}", imageBrightness);
 Sarah.create("GET /image/color/{size}/{color}", imageColor);
 Sarah.create("GET /image/fisheye/{amount}", imageFisheye);
-Sarah.create("GET /image/mirror", imageFlop);
+Sarah.create("GET /image/mirror", imageMirror);
 Sarah.create("GET /image/invert/{method}", imageInvert);
 Sarah.create("GET /image/resize/{size}", imageResize);
 Sarah.create("GET /image/rotate/{deg}", imageRotate);
@@ -101,3 +108,12 @@ process.on("uncaughtException", (reason) => {
 
   console.error(reason);
 });
+
+(async () => {
+  const d = await fetch<Result<string>>(
+    "http://localhost:3000/wombo/none/Shitting%20chicken%20nuggets%20on%20the%20Empire%20State%20Building",
+    "get",
+    "json"
+  );
+  console.log("final", d.payload.data);
+})();

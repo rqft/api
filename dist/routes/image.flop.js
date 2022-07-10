@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.mirror = exports.MirrorMethods = exports.imageFlop = void 0;
+exports.mirror = exports.MirrorMethods = exports.imageMirror = void 0;
 const result_1 = require("../models/result");
 const tools_1 = require("../tools");
-async function imageFlop(req, res) {
+async function imageMirror(req, res) {
     return (0, tools_1.createImageEditor)(req, res, async (editor) => {
         const method = req.query.get("method") || MirrorMethods.LEFT;
         if (!(method in MirrorMethods)) {
@@ -16,7 +16,7 @@ async function imageFlop(req, res) {
         return frames;
     });
 }
-exports.imageFlop = imageFlop;
+exports.imageMirror = imageMirror;
 var MirrorMethods;
 (function (MirrorMethods) {
     MirrorMethods["LEFT"] = "LEFT";

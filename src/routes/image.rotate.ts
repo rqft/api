@@ -2,7 +2,10 @@ import { Image } from "imagescript";
 import { Input, Output } from "kevin-http";
 import { stop } from "../models/result";
 import { createImageEditor } from "../tools";
-export async function imageRotate(req: Input, res: Output): Promise<void> {
+export async function imageRotate(
+  req: Input<"/image/rotate/{deg}">,
+  res: Output
+): Promise<void> {
   return createImageEditor(req, res, async (editor) => {
     const deg = Number.parseInt(req.params.get("deg") || "0");
 

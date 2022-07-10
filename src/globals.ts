@@ -1,6 +1,6 @@
 import { Client } from "kevin-http";
 import { Wilson } from "wilson-kv";
-export const Sarah = new Client({});
+export const Sarah = new Client({ port: 3000 });
 
 export namespace KV {
   export const prefixes = new Wilson("kv/prefixes");

@@ -2,7 +2,7 @@ import { Input, Output } from "kevin-http";
 import { give } from "../models/result";
 import { createImageEditor } from "../tools";
 export async function imageAverageColor(
-  req: Input,
+  req: Input<"/image/average-color">,
   res: Output
 ): Promise<void> {
   return createImageEditor(req, res, async (editor) => {

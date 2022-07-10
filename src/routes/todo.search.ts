@@ -2,7 +2,10 @@ import { Input, Output } from "kevin-http";
 import { KV } from "../globals";
 import { give, stop } from "../models/result";
 
-export function todoSearch(req: Input, res: Output): void {
+export function todoSearch(
+  req: Input<"/todos/search/{userId}/{query}">,
+  res: Output
+): void {
   const userId = req.params.get("userId");
 
   if (userId) {

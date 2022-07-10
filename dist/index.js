@@ -31,11 +31,14 @@ const todo_list_1 = require("./routes/todo.list");
 const todo_post_1 = require("./routes/todo.post");
 const todo_put_1 = require("./routes/todo.put");
 const todo_search_1 = require("./routes/todo.search");
-globals_1.Sarah.use((req, res, next, endpoint, client) => {
+const wombo_1 = require("./routes/wombo");
+const tools_1 = require("./tools");
+globals_1.Sarah.use((_, res, next) => {
     res.setHeader("content-type", "application/json");
     res.setStatus(200);
-    next(req, res, next, endpoint, client);
+    next();
 });
+globals_1.Sarah.create("GET /wombo/{style}/{query}", wombo_1.wombo);
 globals_1.Sarah.create("GET /origin", origin_1.origin);
 globals_1.Sarah.create("GET /endpoints", endpoints_1.endpoints);
 globals_1.Sarah.create("GET /tags/list", tag_list_1.tagList);
@@ -48,7 +51,7 @@ globals_1.Sarah.create("GET /image/average-color", image_averagecolor_1.imageAve
 globals_1.Sarah.create("GET /image/brightness/{amount}", image_brightness_1.imageBrightness);
 globals_1.Sarah.create("GET /image/color/{size}/{color}", image_color_1.imageColor);
 globals_1.Sarah.create("GET /image/fisheye/{amount}", image_fisheye_1.imageFisheye);
-globals_1.Sarah.create("GET /image/mirror", image_flop_1.imageFlop);
+globals_1.Sarah.create("GET /image/mirror", image_flop_1.imageMirror);
 globals_1.Sarah.create("GET /image/invert/{method}", image_invert_1.imageInvert);
 globals_1.Sarah.create("GET /image/resize/{size}", image_resize_1.imageResize);
 globals_1.Sarah.create("GET /image/rotate/{deg}", image_rotate_1.imageRotate);
@@ -82,3 +85,7 @@ process.on("uncaughtException", (reason) => {
     }
     console.error(reason);
 });
+(async () => {
+    const d = await (0, tools_1.fetch)("http://localhost:3000/wombo/none/Shitting%20chicken%20nuggets%20on%20the%20Empire%20State%20Building", "get", "json");
+    console.log("final", d.payload.data);
+})();

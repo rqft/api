@@ -2,7 +2,10 @@ import { Image } from "imagescript";
 import { Input, Output } from "kevin-http";
 import { stop } from "../models/result";
 import { fillColorCode } from "../tools";
-export async function imageColor(req: Input, res: Output): Promise<void> {
+export async function imageColor(
+  req: Input<"/image/color/{size}/{color}">,
+  res: Output
+): Promise<void> {
   let [width, height] = (req.params.get("size") || "512x512")
     .split("x")
     .map((x) => Number.parseInt(x));

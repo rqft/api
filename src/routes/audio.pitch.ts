@@ -3,7 +3,10 @@ import { stop } from "../models/result";
 
 import { createFFmpegEditor } from "../tools";
 
-export async function audioPitch(req: Input, res: Output) {
+export async function audioPitch(
+  req: Input<"/audio/pitch/{amount}">,
+  res: Output
+) {
   const pitch = req.params.get("amount");
 
   const amount = Number(pitch) || 0;

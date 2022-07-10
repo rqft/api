@@ -2,7 +2,10 @@ import { Input, Output } from "kevin-http";
 import { KV } from "../globals";
 import { give } from "../models/result";
 
-export function tagSearch(req: Input, res: Output): void {
+export function tagSearch(
+  req: Input<"/tags/search/{query}">,
+  res: Output
+): void {
   const query = req.params.get("query");
   console.log(query);
 
