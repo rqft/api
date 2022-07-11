@@ -1,5 +1,4 @@
 import { Sarah } from "./globals";
-import { Result } from "./models/result";
 import { audioExtract } from "./routes/audio.extract";
 import { audioPitch } from "./routes/audio.pitch";
 import { audioVolume } from "./routes/audio.volume";
@@ -24,6 +23,7 @@ import { tagInspect } from "./routes/tag.inspect";
 import { tagList } from "./routes/tag.list";
 import { tagPost } from "./routes/tag.post";
 import { tagSearch } from "./routes/tag.search";
+import { textEmojify } from "./routes/text.emojify";
 import { textConvert } from "./routes/text.encode";
 import { todoDelete } from "./routes/todo.delete";
 import { todoGet } from "./routes/todo.get";
@@ -33,7 +33,6 @@ import { todoPut } from "./routes/todo.put";
 import { todoSearch } from "./routes/todo.search";
 
 import { wombo } from "./routes/wombo";
-import { fetch } from "./tools";
 
 // middle ware
 Sarah.use((_, res, next) => {
@@ -42,7 +41,7 @@ Sarah.use((_, res, next) => {
   next();
 });
 
-// // wombo
+// wombo
 Sarah.create("GET /wombo/{style}/{query}", wombo);
 
 // routes
@@ -78,6 +77,7 @@ Sarah.create("GET /audio/extract", audioExtract);
 
 // // text manip
 Sarah.create("GET /text/convert/{conversion}/{method}", textConvert);
+Sarah.create("GET /text/emojify", textEmojify);
 
 // // todos
 Sarah.create("GET /todos/{userId}", todoList);
@@ -108,12 +108,3 @@ process.on("uncaughtException", (reason) => {
 
   console.error(reason);
 });
-
-(async () => {
-  const d = await fetch<Result<string>>(
-    "http://localhost:3000/wombo/none/Shitting%20chicken%20nuggets%20on%20the%20Empire%20State%20Building",
-    "get",
-    "json"
-  );
-  console.log("final", d.payload.data);
-})();

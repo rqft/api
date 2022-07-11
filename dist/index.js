@@ -24,6 +24,7 @@ const tag_inspect_1 = require("./routes/tag.inspect");
 const tag_list_1 = require("./routes/tag.list");
 const tag_post_1 = require("./routes/tag.post");
 const tag_search_1 = require("./routes/tag.search");
+const text_emojify_1 = require("./routes/text.emojify");
 const text_encode_1 = require("./routes/text.encode");
 const todo_delete_1 = require("./routes/todo.delete");
 const todo_get_1 = require("./routes/todo.get");
@@ -32,7 +33,6 @@ const todo_post_1 = require("./routes/todo.post");
 const todo_put_1 = require("./routes/todo.put");
 const todo_search_1 = require("./routes/todo.search");
 const wombo_1 = require("./routes/wombo");
-const tools_1 = require("./tools");
 globals_1.Sarah.use((_, res, next) => {
     res.setHeader("content-type", "application/json");
     res.setStatus(200);
@@ -63,6 +63,7 @@ globals_1.Sarah.create("GET /audio/volume/{amount}", audio_volume_1.audioVolume)
 globals_1.Sarah.create("GET /audio/pitch/{amount}", audio_pitch_1.audioPitch);
 globals_1.Sarah.create("GET /audio/extract", audio_extract_1.audioExtract);
 globals_1.Sarah.create("GET /text/convert/{conversion}/{method}", text_encode_1.textConvert);
+globals_1.Sarah.create("GET /text/emojify", text_emojify_1.textEmojify);
 globals_1.Sarah.create("GET /todos/{userId}", todo_list_1.todoList);
 globals_1.Sarah.create("GET /todos/{userId}/{id}", todo_get_1.todoGet);
 globals_1.Sarah.create("POST /todos/{userId}", todo_post_1.todoPost);
@@ -85,7 +86,3 @@ process.on("uncaughtException", (reason) => {
     }
     console.error(reason);
 });
-(async () => {
-    const d = await (0, tools_1.fetch)("http://localhost:3000/wombo/none/Shitting%20chicken%20nuggets%20on%20the%20Empire%20State%20Building", "get", "json");
-    console.log("final", d.payload.data);
-})();
