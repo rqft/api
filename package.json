@@ -25,7 +25,7 @@
   "dependencies": {
     "imagescript": "^1.2.9",
     "julian-utils": "^1.0.1",
-    "kevin-http": "^1.0.11",
+    "kevin-http": "^1.0.14",
     "pariah": "^2.8.91",
     "wilson-kv": "^1.0.4",
     "wombo-dream-api": "^0.1.6"
