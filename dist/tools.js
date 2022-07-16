@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sleep = exports.fetch = exports.createFFmpegEditor = exports.createImageEditor = exports.fillColorCode = exports.decodeImage = void 0;
 const imagescript_1 = require("imagescript");
+const constants_1 = require("kevin-http/dist/constants");
 const node_child_process_1 = require("node:child_process");
 const node_fs_1 = require("node:fs");
 const pariah_1 = require("pariah");
@@ -58,7 +59,7 @@ exports.fillColorCode = fillColorCode;
 async function createImageEditor(req, res, callee) {
     const url = req.query.get("url");
     if (url) {
-        const { payload: data } = await fetch(url, "get", "buffer");
+        const { payload: data } = await fetch(url, constants_1.HTTPVerbs.GET, "buffer");
         let editor = await decodeImage(data, false);
         if (!Array.isArray(editor)) {
             editor = [editor];
@@ -106,7 +107,7 @@ exports.createImageEditor = createImageEditor;
 async function createFFmpegEditor(req, res, options) {
     const url = req.query.get("url");
     if (url) {
-        const { payload: data } = await fetch(url, "get", "buffer");
+        const { payload: data } = await fetch(url, constants_1.HTTPVerbs.GET, "buffer");
         const args = [
             "-y",
             "-i",
@@ -127,7 +128,7 @@ exports.createFFmpegEditor = createFFmpegEditor;
 async function fetch(uri, method, transformer = "request", init) {
     const url = new URL(uri);
     const pariah = new pariah_1.Pariah(url);
-    return pariah[method][transformer]("/", {}, init);
+    return pariah[method.toLowerCase()][transformer]("/", {}, init);
 }
 exports.fetch = fetch;
 function sleep(ms) {

@@ -17,6 +17,7 @@ import { imageSpin } from "./routes/image.spin";
 import { imageTilt } from "./routes/image.tilt";
 import { imageTint } from "./routes/image.tint";
 import { origin } from "./routes/origin";
+import { proxy } from "./routes/proxy";
 import { tagDelete } from "./routes/tag.delete";
 import { tagGet } from "./routes/tag.get";
 import { tagInspect } from "./routes/tag.inspect";
@@ -86,6 +87,9 @@ Sarah.create("POST /todos/{userId}", todoPost);
 Sarah.create("DELETE /todos/{userId}/{id}", todoDelete);
 Sarah.create("PUT /todos/{userId}/{id}", todoPut);
 Sarah.create("GET /todos/search/{userId}/{query}", todoSearch);
+
+// // proxy
+Sarah.create("GET /proxy", proxy);
 
 Sarah.initialize();
 

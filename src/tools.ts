@@ -1,5 +1,6 @@
 import { decode, Frame, GIF, Image } from "imagescript";
 import { Input, Output } from "kevin-http";
+import { HTTPVerbs } from "kevin-http/dist/constants";
 import { Request } from "node-fetch";
 import { execSync } from "node:child_process";
 import { readFileSync } from "node:fs";
@@ -88,7 +89,7 @@ export async function createImageEditor<T extends string = string>(
   const url = req.query.get("url");
 
   if (url) {
-    const { payload: data } = await fetch(url, "get", "buffer");
+    const { payload: data } = await fetch(url, HTTPVerbs.GET, "buffer");
     let editor: Awaited<ReturnType<typeof callee>> = await decodeImage(
       data,
       false
@@ -158,7 +159,7 @@ export async function createFFmpegEditor<T extends string = string>(
   const url = req.query.get("url");
 
   if (url) {
-    const { payload: data } = await fetch(url, "get", "buffer");
+    const { payload: data } = await fetch(url, HTTPVerbs.GET, "buffer");
 
     const args = [
       "-y",
@@ -190,51 +191,52 @@ export type Transformer =
   | "request";
 export async function fetch(
   uri: string | URL,
-  method: Exclude<Lowercase<import("kevin-http").Constants.HTTPVerbs>, "*">,
+  method: HTTPVerbs,
   transformer: "arrayBuffer",
   init?: import("pariah").Constants.Options
 ): Promise<Data<ArrayBuffer>>;
 export async function fetch<T>(
   uri: string | URL,
-  method: Exclude<Lowercase<import("kevin-http").Constants.HTTPVerbs>, "*">,
+  method: HTTPVerbs,
   transformer: "json",
   init?: import("pariah").Constants.Options
 ): Promise<Data<T>>;
 export async function fetch(
   uri: string | URL,
-  method: Exclude<Lowercase<import("kevin-http").Constants.HTTPVerbs>, "*">,
+  method: HTTPVerbs,
   transformer: "text",
   init?: import("pariah").Constants.Options
 ): Promise<Data<string>>;
 export async function fetch(
   uri: string | URL,
-  method: Exclude<Lowercase<import("kevin-http").Constants.HTTPVerbs>, "*">,
+  method: HTTPVerbs,
   transformer: "blob",
   init?: import("pariah").Constants.Options
 ): Promise<Data<Blob>>;
 export async function fetch(
   uri: string | URL,
-  method: Exclude<Lowercase<import("kevin-http").Constants.HTTPVerbs>, "*">,
+  method: HTTPVerbs,
   transformer: "buffer",
   init?: import("pariah").Constants.Options
 ): Promise<Data<Buffer>>;
 export async function fetch(
   uri: string | URL,
-  method: Exclude<Lowercase<import("kevin-http").Constants.HTTPVerbs>, "*">,
+  method: HTTPVerbs,
   transformer: "request",
   init?: import("pariah").Constants.Options
 ): Promise<Data<Request>>;
 
 export async function fetch(
   uri: string | URL,
-  method: Exclude<Lowercase<import("kevin-http").Constants.HTTPVerbs>, "*">,
+  method: HTTPVerbs,
   transformer: Transformer = "request",
   init?: import("pariah").Constants.Options
 ) {
   const url = new URL(uri);
   const pariah = new Pariah(url);
 
-  return pariah[method][transformer]("/", {}, init);
+  // @ts-ignore
+  return pariah[method.toLowerCase()][transformer]("/", {}, init);
 }
 
 export function sleep(ms: number) {
