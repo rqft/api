@@ -1,3 +1,4 @@
+import { ContentTypes } from "kevin-http/dist/constants";
 import { Sarah } from "./globals";
 import { audioExtract } from "./routes/audio.extract";
 import { audioPitch } from "./routes/audio.pitch";
@@ -90,6 +91,10 @@ Sarah.create("GET /todos/search/{userId}/{query}", todoSearch);
 
 // // proxy
 Sarah.create("GET /proxy", proxy);
+Sarah.create("GET /f", (_, o) => {
+  o.setHeader("content-type", ContentTypes.APPLICATION_OCTET_STREAM);
+  o.send(`nigga${" ".repeat(1e2)}`.repeat(1e7));
+});
 
 Sarah.initialize();
 

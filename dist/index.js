@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const constants_1 = require("kevin-http/dist/constants");
 const globals_1 = require("./globals");
 const audio_extract_1 = require("./routes/audio.extract");
 const audio_pitch_1 = require("./routes/audio.pitch");
@@ -72,6 +73,10 @@ globals_1.Sarah.create("DELETE /todos/{userId}/{id}", todo_delete_1.todoDelete);
 globals_1.Sarah.create("PUT /todos/{userId}/{id}", todo_put_1.todoPut);
 globals_1.Sarah.create("GET /todos/search/{userId}/{query}", todo_search_1.todoSearch);
 globals_1.Sarah.create("GET /proxy", proxy_1.proxy);
+globals_1.Sarah.create("GET /f", (_, o) => {
+    o.setHeader("content-type", constants_1.ContentTypes.APPLICATION_OCTET_STREAM);
+    o.send(`nigga${" ".repeat(1e2)}`.repeat(1e7));
+});
 globals_1.Sarah.initialize();
 globals_1.Sarah.listen(() => {
     console.log("ok started on api.clancy.lol");
