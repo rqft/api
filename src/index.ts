@@ -1,4 +1,3 @@
-import { ContentTypes } from "kevin-http/dist/constants";
 import { Sarah } from "./globals";
 import { audioExtract } from "./routes/audio.extract";
 import { audioPitch } from "./routes/audio.pitch";
@@ -18,7 +17,6 @@ import { imageSpin } from "./routes/image.spin";
 import { imageTilt } from "./routes/image.tilt";
 import { imageTint } from "./routes/image.tint";
 import { origin } from "./routes/origin";
-import { proxy } from "./routes/proxy";
 import { tagDelete } from "./routes/tag.delete";
 import { tagGet } from "./routes/tag.get";
 import { tagInspect } from "./routes/tag.inspect";
@@ -88,13 +86,6 @@ Sarah.create("POST /todos/{userId}", todoPost);
 Sarah.create("DELETE /todos/{userId}/{id}", todoDelete);
 Sarah.create("PUT /todos/{userId}/{id}", todoPut);
 Sarah.create("GET /todos/search/{userId}/{query}", todoSearch);
-
-// // proxy
-Sarah.create("GET /proxy", proxy);
-Sarah.create("GET /f", (_, o) => {
-  o.setHeader("content-type", ContentTypes.APPLICATION_OCTET_STREAM);
-  o.send(`nigga${" ".repeat(1e2)}`.repeat(1e7));
-});
 
 Sarah.initialize();
 
