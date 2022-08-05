@@ -2,7 +2,7 @@ import { Input, Output } from "kevin-http";
 import { KV } from "../globals";
 import { give, stop } from "../models/result";
 
-export function tagPost(req: Input<"/tags/{key}">, res: Output): void {
+export function tagPost(req: Input<"/tags/post/{key}">, res: Output): void {
   const key = req.params.get("key");
   const value = req.query.get("value") as string;
   if (key && value) {

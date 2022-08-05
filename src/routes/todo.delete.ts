@@ -2,7 +2,7 @@ import { Input, Output } from "kevin-http";
 import { KV } from "../globals";
 import { give, stop } from "../models/result";
 export async function todoDelete(
-  req: Input<"/todos/{userId}/{id}">,
+  req: Input<"/todos/delete/{userId}/{id}">,
   res: Output
 ): Promise<void> {
   const userId = req.params.get("userId");

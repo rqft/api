@@ -2,7 +2,7 @@ import { Input, Output } from "kevin-http";
 import { KV } from "../globals";
 import { give, stop } from "../models/result";
 export async function todoList(
-  req: Input<"/todos/{userId}">,
+  req: Input<"/todos/list/{userId}">,
   res: Output
 ): Promise<void> {
   const userId = req.params.get("userId");

@@ -51,9 +51,9 @@ Sarah.create("GET /endpoints", endpoints);
 // // tags
 Sarah.create("GET /tags/list", tagList);
 Sarah.create("GET /tags/inspect", tagInspect);
-Sarah.create("GET /tags/{key}", tagGet);
-Sarah.create("POST /tags/{key}", tagPost);
-Sarah.create("DELETE /tags/{key}", tagDelete);
+Sarah.create("GET /tags/get/{key}", tagGet);
+Sarah.create("POST /tags/post/{key}", tagPost);
+Sarah.create("DELETE /tags/delete/{key}", tagDelete);
 Sarah.create("GET /tags/search/{query}", tagSearch);
 
 // // image manip
@@ -80,11 +80,11 @@ Sarah.create("GET /text/convert/{conversion}/{method}", textConvert);
 Sarah.create("GET /text/emojify", textEmojify);
 
 // // todos
-Sarah.create("GET /todos/{userId}", todoList);
-Sarah.create("GET /todos/{userId}/{id}", todoGet);
-Sarah.create("POST /todos/{userId}", todoPost);
-Sarah.create("DELETE /todos/{userId}/{id}", todoDelete);
-Sarah.create("PUT /todos/{userId}/{id}", todoPut);
+Sarah.create("GET /todos/list/{userId}", todoList);
+Sarah.create("GET /todos/get/{userId}/{id}", todoGet);
+Sarah.create("POST /todos/post/{userId}", todoPost);
+Sarah.create("DELETE /todos/delete/{userId}/{id}", todoDelete);
+Sarah.create("PUT /todos/put/{userId}/{id}", todoPut);
 Sarah.create("GET /todos/search/{userId}/{query}", todoSearch);
 
 Sarah.initialize();
