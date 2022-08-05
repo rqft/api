@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.endpoints = void 0;
 const result_1 = require("../models/result");
 async function endpoints(_req, res) {
-    res.setHeader("content-type", "text/plain");
     const endpoints = [];
     for (const k in _req.client.endpoints) {
         const key = k;

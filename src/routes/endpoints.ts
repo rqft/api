@@ -4,7 +4,6 @@ export async function endpoints(
   _req: Input<"/endpoints">,
   res: Output
 ): Promise<void> {
-  res.setHeader("content-type", "text/plain");
   const endpoints: Array<string> = [];
   for (const k in _req.client.endpoints) {
     const key: Constants.HTTPVerbs = k as Constants.HTTPVerbs;
