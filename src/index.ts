@@ -1,3 +1,4 @@
+import { Frame, GIF } from "imagescript";
 import { Sarah } from "./globals";
 import { audioExtract } from "./routes/audio.extract";
 import { audioPitch } from "./routes/audio.pitch";
@@ -17,6 +18,8 @@ import { imageSpin } from "./routes/image.spin";
 import { imageTilt } from "./routes/image.tilt";
 import { imageTint } from "./routes/image.tint";
 import { origin } from "./routes/origin";
+import { pixelInspect } from "./routes/pixel.inspect";
+import { pixelTimelapse } from "./routes/pixel.timelapse";
 import { tagDelete } from "./routes/tag.delete";
 import { tagGet } from "./routes/tag.get";
 import { tagInspect } from "./routes/tag.inspect";
@@ -36,6 +39,10 @@ import { wombo } from "./routes/wombo";
 
 // middle ware
 Sarah.use((_, res, next) => {
+  // if (_.url.pathname === "/favicon.ico") {
+  //   // res.setStatus(404).send("Not found");
+  //   return;
+  // }
   res.setHeader("content-type", "application/json");
   res.setStatus(200);
   next();
@@ -86,6 +93,21 @@ Sarah.create("POST /todos/post/{userId}", todoPost);
 Sarah.create("DELETE /todos/delete/{userId}/{id}", todoDelete);
 Sarah.create("PUT /todos/put/{userId}/{id}", todoPut);
 Sarah.create("GET /todos/search/{userId}/{query}", todoSearch);
+
+// // pixel canvas
+Sarah.create("GET /pixel/inspect", pixelInspect);
+Sarah.create("GET /pixel/timelapse/{frame}", pixelTimelapse);
+
+Sarah.create("GET /generate/gif/{frames}", async (q, s) => {
+  const f = new Frame(1, 1).fill(0xffffffff);
+  const frames = Array(Number(q.params.get("frames"))).fill(f);
+  const gif = new GIF(frames);
+  const u8 = await gif.encode();
+
+  s.setHeader("content-type", "image/gif");
+
+  s.send(u8);
+});
 
 Sarah.initialize();
 

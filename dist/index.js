@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const imagescript_1 = require("imagescript");
 const globals_1 = require("./globals");
 const audio_extract_1 = require("./routes/audio.extract");
 const audio_pitch_1 = require("./routes/audio.pitch");
@@ -18,6 +19,8 @@ const image_spin_1 = require("./routes/image.spin");
 const image_tilt_1 = require("./routes/image.tilt");
 const image_tint_1 = require("./routes/image.tint");
 const origin_1 = require("./routes/origin");
+const pixel_inspect_1 = require("./routes/pixel.inspect");
+const pixel_timelapse_1 = require("./routes/pixel.timelapse");
 const tag_delete_1 = require("./routes/tag.delete");
 const tag_get_1 = require("./routes/tag.get");
 const tag_inspect_1 = require("./routes/tag.inspect");
@@ -70,6 +73,16 @@ globals_1.Sarah.create("POST /todos/post/{userId}", todo_post_1.todoPost);
 globals_1.Sarah.create("DELETE /todos/delete/{userId}/{id}", todo_delete_1.todoDelete);
 globals_1.Sarah.create("PUT /todos/put/{userId}/{id}", todo_put_1.todoPut);
 globals_1.Sarah.create("GET /todos/search/{userId}/{query}", todo_search_1.todoSearch);
+globals_1.Sarah.create("GET /pixel/inspect", pixel_inspect_1.pixelInspect);
+globals_1.Sarah.create("GET /pixel/timelapse/{frame}", pixel_timelapse_1.pixelTimelapse);
+globals_1.Sarah.create("GET /generate/gif/{frames}", async (q, s) => {
+    const f = new imagescript_1.Frame(1, 1).fill(0xffffffff);
+    const frames = Array(Number(q.params.get("frames"))).fill(f);
+    const gif = new imagescript_1.GIF(frames);
+    const u8 = await gif.encode();
+    s.setHeader("content-type", "image/gif");
+    s.send(u8);
+});
 globals_1.Sarah.initialize();
 globals_1.Sarah.listen(() => {
     console.log("ok started on api.clancy.lol");

@@ -5,7 +5,9 @@ import { Request } from "node-fetch";
 import { execSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { Data, Pariah } from "pariah";
+import { CanvasSize } from "./globals";
 import { stop } from "./models/result";
+import { Action, ExpandPixel } from "./types";
 
 export async function decodeImage(
   data: Buffer | Uint8Array,
@@ -242,4 +244,15 @@ export async function fetch(
 export function sleep(ms: number) {
   Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
   return;
+}
+
+export function generateCanvas(actions: Array<Action>) {
+  const image = new Image(CanvasSize, CanvasSize);
+
+  for (const action of actions) {
+    const [x, y, color] = action;
+    image.setPixelAt(x, y, ExpandPixel[color]);
+  }
+
+  return image;
 }

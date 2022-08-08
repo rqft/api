@@ -8,4 +8,7 @@ export namespace KV {
   export const colors = new Wilson("kv/colors");
   export const mutes = new Wilson("kv/mutes");
   export const todo = new Wilson("kv/todo");
+  export const pixel = new Wilson("kv/pixel");
 }
+
+export const CanvasSize = 4;

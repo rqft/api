@@ -1,12 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sleep = exports.fetch = exports.createFFmpegEditor = exports.createImageEditor = exports.fillColorCode = exports.decodeImage = void 0;
+exports.generateCanvas = exports.sleep = exports.fetch = exports.createFFmpegEditor = exports.createImageEditor = exports.fillColorCode = exports.decodeImage = void 0;
 const imagescript_1 = require("imagescript");
 const constants_1 = require("kevin-http/dist/constants");
 const node_child_process_1 = require("node:child_process");
 const node_fs_1 = require("node:fs");
 const pariah_1 = require("pariah");
+const globals_1 = require("./globals");
 const result_1 = require("./models/result");
+const types_1 = require("./types");
 async function decodeImage(data, first) {
     const output = await (0, imagescript_1.decode)(data, first);
     if (output instanceof imagescript_1.Image) {
@@ -136,3 +138,12 @@ function sleep(ms) {
     return;
 }
 exports.sleep = sleep;
+function generateCanvas(actions) {
+    const image = new imagescript_1.Image(globals_1.CanvasSize, globals_1.CanvasSize);
+    for (const action of actions) {
+        const [x, y, color] = action;
+        image.setPixelAt(x, y, types_1.ExpandPixel[color]);
+    }
+    return image;
+}
+exports.generateCanvas = generateCanvas;
