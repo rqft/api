@@ -1,5 +1,5 @@
-import { Client } from "kevin-http";
-import { Wilson } from "wilson-kv";
+import { Client } from "@rqft/http";
+import { Wilson } from "@rqft/kv";
 export const Sarah = new Client({ port: 3000 });
 
 export namespace KV {

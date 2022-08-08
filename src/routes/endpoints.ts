@@ -1,4 +1,4 @@
-import { Constants, Input, Output } from "kevin-http";
+import { Constants, Input, Output } from "@rqft/http";
 import { give } from "../models/result";
 export async function endpoints(
   _req: Input<"/endpoints">,

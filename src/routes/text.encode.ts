@@ -1,4 +1,4 @@
-import { Input, Output } from "kevin-http";
+import { Input, Output } from "@rqft/http";
 import { give, stop } from "../models/result";
 export function textConvert(
   req: Input<"/text/convert/{conversion}/{method}">,

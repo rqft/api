@@ -1,4 +1,4 @@
-import { Input, Output } from "kevin-http";
+import { Input, Output } from "@rqft/http";
 import { buildDefaultInstance } from "wombo-dream-api";
 import { give, stop } from "../models/result";
 export async function wombo(req: Input<"/wombo/{style}/{query}">, res: Output) {

@@ -1,5 +1,5 @@
 // ffmpeg -i - output.mp3
-import { Input, Output } from "kevin-http";
+import { Input, Output } from "@rqft/http";
 import { createFFmpegEditor } from "../tools";
 
 export async function audioExtract(req: Input<"/audio/extract">, res: Output) {

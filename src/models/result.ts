@@ -1,4 +1,4 @@
-import { Output } from "kevin-http";
+import { Output } from "@rqft/http";
 
 export interface Result<T> {
   data: T;

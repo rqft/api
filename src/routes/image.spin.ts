@@ -1,6 +1,5 @@
+import { Constants, Input, Output } from "@rqft/http";
 import { Frame, GIF } from "imagescript";
-import { Input, Output } from "kevin-http";
-import { HTTPVerbs } from "kevin-http/dist/constants";
 import { stop } from "../models/result";
 import { decodeImage, fetch } from "../tools";
 export const MAX_IMAGE_SIZE = 256;
@@ -10,7 +9,11 @@ export async function imageSpin(
 ): Promise<void> {
   const url = req.query.get("url") as string;
   if (url) {
-    const { payload: data } = await fetch(url, HTTPVerbs.GET, "buffer");
+    const { payload: data } = await fetch(
+      url,
+      Constants.HTTPVerbs.GET,
+      "buffer"
+    );
 
     const editor = await decodeImage(data, true);
 

@@ -1,5 +1,5 @@
+import { Input, Output } from "@rqft/http";
 import { Frame, GIF } from "imagescript";
-import { Input, Output } from "kevin-http";
 import { CanvasSize, KV } from "../globals";
 import { Action, ExpandPixel, RawPixelColors } from "../types";
 
