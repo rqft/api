@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateCanvas = exports.sleep = exports.fetch = exports.createFFmpegEditor = exports.createImageEditor = exports.fillColorCode = exports.decodeImage = void 0;
+exports.scale = exports.generateCanvas = exports.sleep = exports.fetch = exports.createFFmpegEditor = exports.createImageEditor = exports.fillColorCode = exports.decodeImage = void 0;
 const fetch_1 = require("@rqft/fetch");
 const http_1 = require("@rqft/http");
 const imagescript_1 = require("imagescript");
@@ -147,3 +147,7 @@ function generateCanvas(actions) {
     return image;
 }
 exports.generateCanvas = generateCanvas;
+function scale(v, [xn, xm], [yn, ym]) {
+    return ((v - xn) / (xm - xn)) * (ym - yn) + yn;
+}
+exports.scale = scale;

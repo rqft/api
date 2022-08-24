@@ -6,6 +6,7 @@ const audio_extract_1 = require("./routes/audio.extract");
 const audio_pitch_1 = require("./routes/audio.pitch");
 const audio_volume_1 = require("./routes/audio.volume");
 const endpoints_1 = require("./routes/endpoints");
+const graph_1 = require("./routes/graph");
 const image_averagecolor_1 = require("./routes/image.averagecolor");
 const image_brightness_1 = require("./routes/image.brightness");
 const image_color_1 = require("./routes/image.color");
@@ -75,6 +76,7 @@ globals_1.Sarah.create("PUT /todos/put/{userId}/{id}", todo_put_1.todoPut);
 globals_1.Sarah.create("GET /todos/search/{userId}/{query}", todo_search_1.todoSearch);
 globals_1.Sarah.create("GET /pixel/inspect", pixel_inspect_1.pixelInspect);
 globals_1.Sarah.create("GET /pixel/timelapse/{frame}", pixel_timelapse_1.pixelTimelapse);
+globals_1.Sarah.create("GET /graph", graph_1.graph);
 globals_1.Sarah.create("GET /generate/gif/{frames}", async (q, s) => {
     const f = new imagescript_1.Frame(1, 1).fill(0xffffffff);
     const frames = Array(Number(q.params.get("frames"))).fill(f);

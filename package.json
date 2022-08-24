@@ -23,11 +23,12 @@
   },
   "homepage": "https://github.com/rqft/api#readme",
   "dependencies": {
-    "imagescript": "^1.2.9",
-    "@rqft/utils": "^1.0.0",
-    "@rqft/http": "^1.0.0",
     "@rqft/fetch": "^1.0.0",
+    "@rqft/http": "^1.0.1",
     "@rqft/kv": "^1.0.0",
+    "@rqft/utils": "^1.0.0",
+    "imagescript": "^1.2.9",
+    "mathjs": "^11.1.0",
     "wombo-dream-api": "^0.1.6"
   },
   "devDependencies": {

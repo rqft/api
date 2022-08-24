@@ -5,6 +5,7 @@ import { audioPitch } from "./routes/audio.pitch";
 import { audioVolume } from "./routes/audio.volume";
 
 import { endpoints } from "./routes/endpoints";
+import { graph } from "./routes/graph";
 import { imageAverageColor } from "./routes/image.averagecolor";
 import { imageBrightness } from "./routes/image.brightness";
 import { imageColor } from "./routes/image.color";
@@ -97,6 +98,8 @@ Sarah.create("GET /todos/search/{userId}/{query}", todoSearch);
 // // pixel canvas
 Sarah.create("GET /pixel/inspect", pixelInspect);
 Sarah.create("GET /pixel/timelapse/{frame}", pixelTimelapse);
+
+Sarah.create("GET /graph", graph);
 
 Sarah.create("GET /generate/gif/{frames}", async (q, s) => {
   const f = new Frame(1, 1).fill(0xffffffff);
