@@ -10,6 +10,7 @@ const colors = [
     0x00ffffff,
 ];
 async function graph(i, o) {
+    console.log("test");
     const e = i.query.get("expr");
     if (!e) {
         (0, result_1.stop)(o, 400, "no expressions");
@@ -18,11 +19,28 @@ async function graph(i, o) {
     if (Number.isNaN(s)) {
         (0, result_1.stop)(o, 400, "invalid size");
     }
+    const splot = Number.parseInt(i.query.get("splot") || "1");
+    if (Number.isNaN(splot) || splot < 1) {
+        (0, result_1.stop)(o, 400, "invalid splot area");
+    }
+    const scalar = Number.parseInt(i.query.get("scale") || "1");
+    if (Number.isNaN(scalar)) {
+        (0, result_1.stop)(o, 400, "invalid scalar");
+    }
     const l = new ImageScript_1.Image(s, s);
     const [h, w] = [l.height / 2, l.width / 2];
     l.fill(0xffffffff);
     function set(x, y, c) {
-        return l.setPixelAt((0, tools_1.scale)(x, [-w, w], [1, l.width]), l.height - (0, tools_1.scale)(y, [-h, h], [1, l.height]) + 1, c);
+        for (let i = -splot; i <= splot; i++) {
+            for (let j = -splot; j <= splot; j++) {
+                const z = (0, tools_1.scale)(x, [-w, w], [1, l.width]) + i;
+                const d = l.height - (0, tools_1.scale)(y, [-h, h], [1, l.height]) + 1 + j;
+                if (z > l.width || z < 1 || d > l.height || d < 1) {
+                    continue;
+                }
+                l.setPixelAt(z, d, c);
+            }
+        }
     }
     for (let i = 1; i < l.width; i++) {
         l.setPixelAt(l.width / 2, i, 0x888888ff);
@@ -39,7 +57,7 @@ async function graph(i, o) {
             if (dy === undefined || c === undefined) {
                 continue;
             }
-            const y = globals_1.mathjs.evaluate(dy, { x });
+            const y = globals_1.mathjs.evaluate(dy, { x: x / scalar }) * scalar;
             if (y > h || y < -h) {
                 continue;
             }
@@ -47,8 +65,9 @@ async function graph(i, o) {
         }
     }
     if (l.width < 1024) {
-        l.resize(1024, 1024);
+        l.resize(1024, 1024, ImageScript_1.Image.RESIZE_NEAREST_NEIGHBOR);
     }
+    console.log("finished");
     o.setHeader("content-type", "image/png");
     o.send(await l.encode());
 }
