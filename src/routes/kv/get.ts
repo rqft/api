@@ -7,6 +7,7 @@ export function kvRead(input: Input<"/kv/{guildId}/read">, output: Output) {
 }
 
 export function kvWrite(input: Input<"/kv/{guildId}/write">, output: Output) {
+  console.log("writing");
   const i = input.params.get("guildId");
-  return give(output, KV.kv.put(i, JSON.parse(input.body)).get(i));
+  return give(output, KV.kv.put(i, JSON.parse(input.query.get("data"))).get(i));
 }

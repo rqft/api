@@ -8,7 +8,8 @@ function kvRead(input, output) {
 }
 exports.kvRead = kvRead;
 function kvWrite(input, output) {
+    console.log("writing");
     const i = input.params.get("guildId");
-    return (0, result_1.give)(output, globals_1.KV.kv.put(i, JSON.parse(input.body)).get(i));
+    return (0, result_1.give)(output, globals_1.KV.kv.put(i, JSON.parse(input.query.get("data"))).get(i));
 }
 exports.kvWrite = kvWrite;
