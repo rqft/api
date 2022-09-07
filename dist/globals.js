@@ -13,6 +13,7 @@ var KV;
     KV.mutes = new kv_1.Wilson("kv/mutes");
     KV.todo = new kv_1.Wilson("kv/todo");
     KV.pixel = new kv_1.Wilson("kv/pixel");
+    KV.kv = new kv_1.Wilson("kv/kv");
 })(KV = exports.KV || (exports.KV = {}));
 exports.CanvasSize = 4;
 exports.mathjs = (0, mathjs_1.create)(mathjs_1.all, { matrix: "Array", predictable: false });

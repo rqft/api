@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.scale = exports.generateCanvas = exports.sleep = exports.fetch = exports.createFFmpegEditor = exports.createImageEditor = exports.fillColorCode = exports.decodeImage = void 0;
+exports.IdBasedKv = exports.scale = exports.generateCanvas = exports.sleep = exports.fetch = exports.createFFmpegEditor = exports.createImageEditor = exports.fillColorCode = exports.decodeImage = void 0;
 const fetch_1 = require("@rqft/fetch");
 const http_1 = require("@rqft/http");
+const kv_1 = require("@rqft/kv");
 const imagescript_1 = require("imagescript");
 const node_child_process_1 = require("node:child_process");
 const node_fs_1 = require("node:fs");
@@ -151,3 +152,18 @@ function scale(v, [xn, xm], [yn, ym]) {
     return ((v - xn) / (xm - xn)) * (ym - yn) + yn;
 }
 exports.scale = scale;
+class IdBasedKv extends kv_1.Wilson {
+    guildId;
+    constructor(guildId) {
+        super("kv/kv");
+        this.guildId = guildId;
+    }
+    read() {
+        const w = new kv_1.Wilson("kv/kv");
+        return w.get(this.guildId) || {};
+    }
+    write(data) {
+        return super.put(this.guildId, data[this.guildId]);
+    }
+}
+exports.IdBasedKv = IdBasedKv;

@@ -1,5 +1,6 @@
 import { Data, Pariah } from "@rqft/fetch";
 import { Constants, Input, Output } from "@rqft/http";
+import { Wilson } from "@rqft/kv";
 import { decode, Frame, GIF, Image } from "imagescript";
 
 import { Request } from "node-fetch";
@@ -271,4 +272,21 @@ export function scale(
   [yn, ym]: [number, number]
 ) {
   return ((v - xn) / (xm - xn)) * (ym - yn) + yn;
+}
+
+export class IdBasedKv<T> extends Wilson<Record<string, T>> {
+  public readonly guildId: string;
+  constructor(guildId: string) {
+    super("kv/kv");
+    this.guildId = guildId;
+  }
+
+  public read() {
+    const w = new Wilson<Record<string, T>>("kv/kv");
+    return w.get(this.guildId) || {};
+  }
+
+  public write(data: Record<string, T>) {
+    return super.put(this.guildId, data[this.guildId]!);
+  }
 }

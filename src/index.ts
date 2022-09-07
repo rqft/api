@@ -1,40 +1,41 @@
 import { Frame, GIF } from "imagescript";
 import { Sarah } from "./globals";
-import { audioExtract } from "./routes/audio.extract";
-import { audioPitch } from "./routes/audio.pitch";
-import { audioVolume } from "./routes/audio.volume";
+import { audioExtract } from "./routes/audio/extract";
+import { audioPitch } from "./routes/audio/pitch";
+import { audioVolume } from "./routes/audio/volume";
 
 import { endpoints } from "./routes/endpoints";
 import { graph } from "./routes/graph";
-import { imageAverageColor } from "./routes/image.averagecolor";
-import { imageBrightness } from "./routes/image.brightness";
-import { imageColor } from "./routes/image.color";
-import { imageFisheye } from "./routes/image.fisheye";
-import { imageMirror } from "./routes/image.flop";
-import { imageInvert } from "./routes/image.invert";
-import { imageResize } from "./routes/image.resize";
-import { imageRotate } from "./routes/image.rotate";
-import { imageSaturation } from "./routes/image.saturation";
-import { imageSpin } from "./routes/image.spin";
-import { imageTilt } from "./routes/image.tilt";
-import { imageTint } from "./routes/image.tint";
+import { imageAverageColor } from "./routes/image/averagecolor";
+import { imageBrightness } from "./routes/image/brightness";
+import { imageColor } from "./routes/image/color";
+import { imageFisheye } from "./routes/image/fisheye";
+import { imageMirror } from "./routes/image/flop";
+import { imageInvert } from "./routes/image/invert";
+import { imageResize } from "./routes/image/resize";
+import { imageRotate } from "./routes/image/rotate";
+import { imageSaturation } from "./routes/image/saturation";
+import { imageSpin } from "./routes/image/spin";
+import { imageTilt } from "./routes/image/tilt";
+import { imageTint } from "./routes/image/tint";
+import { kvRead, kvWrite } from "./routes/kv/get";
 import { origin } from "./routes/origin";
-import { pixelInspect } from "./routes/pixel.inspect";
-import { pixelTimelapse } from "./routes/pixel.timelapse";
-import { tagDelete } from "./routes/tag.delete";
-import { tagGet } from "./routes/tag.get";
-import { tagInspect } from "./routes/tag.inspect";
-import { tagList } from "./routes/tag.list";
-import { tagPost } from "./routes/tag.post";
-import { tagSearch } from "./routes/tag.search";
-import { textEmojify } from "./routes/text.emojify";
-import { textConvert } from "./routes/text.encode";
-import { todoDelete } from "./routes/todo.delete";
-import { todoGet } from "./routes/todo.get";
-import { todoList } from "./routes/todo.list";
-import { todoPost } from "./routes/todo.post";
-import { todoPut } from "./routes/todo.put";
-import { todoSearch } from "./routes/todo.search";
+import { pixelInspect } from "./routes/pixel/inspect";
+import { pixelTimelapse } from "./routes/pixel/timelapse";
+import { tagDelete } from "./routes/tag/delete";
+import { tagGet } from "./routes/tag/get";
+import { tagInspect } from "./routes/tag/inspect";
+import { tagList } from "./routes/tag/list";
+import { tagPost } from "./routes/tag/post";
+import { tagSearch } from "./routes/tag/search";
+import { textEmojify } from "./routes/text/emojify";
+import { textConvert } from "./routes/text/encode";
+import { todoDelete } from "./routes/todo/delete";
+import { todoGet } from "./routes/todo/get";
+import { todoList } from "./routes/todo/list";
+import { todoPost } from "./routes/todo/post";
+import { todoPut } from "./routes/todo/put";
+import { todoSearch } from "./routes/todo/search";
 
 import { wombo } from "./routes/wombo";
 
@@ -100,6 +101,9 @@ Sarah.create("GET /pixel/inspect", pixelInspect);
 Sarah.create("GET /pixel/timelapse/{frame}", pixelTimelapse);
 
 Sarah.create("GET /graph", graph);
+
+Sarah.create("GET /kv/{guildId}/read", kvRead);
+Sarah.create("GET /kv/{guildId}/write", kvWrite);
 
 Sarah.create("GET /generate/gif/{frames}", async (q, s) => {
   const f = new Frame(1, 1).fill(0xffffffff);

@@ -1,0 +1,35 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.todoDelete = void 0;
+const globals_1 = require("../../globals");
+const result_1 = require("../../models/result");
+async function todoDelete(req, res) {
+    const userId = req.params.get("userId");
+    if (userId) {
+        if (!globals_1.KV.todo.has(userId)) {
+            (0, result_1.stop)(res, 404, "No todos found for user");
+        }
+        else {
+            const todos = globals_1.KV.todo.get(userId);
+            const id = Number(req.params.get("id"));
+            if (Number.isNaN(id)) {
+                (0, result_1.stop)(res, 400, "Invalid id");
+            }
+            else {
+                const todo = todos[id - 1];
+                if (todo) {
+                    todos.splice(id - 1, 1);
+                    globals_1.KV.todo.put(userId, todos);
+                    (0, result_1.give)(res, true);
+                }
+                else {
+                    (0, result_1.stop)(res, 404, `No todo found for user ${userId} with id ${id}`);
+                }
+            }
+        }
+    }
+    else {
+        (0, result_1.stop)(res, 400, "No user provided");
+    }
+}
+exports.todoDelete = todoDelete;
