@@ -102,8 +102,8 @@ Sarah.create("GET /pixel/timelapse/{frame}", pixelTimelapse);
 
 Sarah.create("GET /graph", graph);
 
-Sarah.create("GET /kv/{guildId}/read", kvRead);
-Sarah.create("GET /kv/{guildId}/write", kvWrite);
+Sarah.create("GET /kv/r/{guildId}", kvRead);
+Sarah.create("GET /kv/w/{guildId}", kvWrite);
 
 Sarah.create("GET /generate/gif/{frames}", async (q, s) => {
   const f = new Frame(1, 1).fill(0xffffffff);
