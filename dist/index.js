@@ -79,7 +79,7 @@ globals_1.Sarah.create("GET /pixel/inspect", inspect_1.pixelInspect);
 globals_1.Sarah.create("GET /pixel/timelapse/{frame}", timelapse_1.pixelTimelapse);
 globals_1.Sarah.create("GET /graph", graph_1.graph);
 globals_1.Sarah.create("GET /kv/{guildId}/read", get_1.kvRead);
-globals_1.Sarah.create("GET /kv/{guildId}/write", get_1.kvWrite);
+globals_1.Sarah.create("POST /kv/{guildId}/write", get_1.kvWrite);
 globals_1.Sarah.create("GET /generate/gif/{frames}", async (q, s) => {
     const f = new imagescript_1.Frame(1, 1).fill(0xffffffff);
     const frames = Array(Number(q.params.get("frames"))).fill(f);
