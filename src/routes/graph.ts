@@ -79,7 +79,7 @@ export async function graph(i: Input<"/graph">, o: Output) {
         stop(o, 400, String(e));
       }
 
-      if (y === undefined) {
+      if (y === undefined || y === NaN) {
         continue;
       }
 

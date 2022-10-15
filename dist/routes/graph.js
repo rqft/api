@@ -66,7 +66,7 @@ async function graph(i, o) {
             catch (e) {
                 (0, result_1.stop)(o, 400, String(e));
             }
-            if (y === undefined) {
+            if (y === undefined || y === NaN) {
                 continue;
             }
             if (y > h || y < -h) {
