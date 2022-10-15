@@ -72,6 +72,7 @@ export async function graph(i: Input<"/graph">, o: Output) {
 
       let y: number | undefined = undefined;
       try {
+        console.log(dy);
         y = mathjs.evaluate(dy, { x: x / scalar }) * scalar;
         console.log(dy, "->", y);
       } catch (e) {

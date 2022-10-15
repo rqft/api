@@ -59,6 +59,7 @@ async function graph(i, o) {
             }
             let y = undefined;
             try {
+                console.log(dy);
                 y = globals_1.mathjs.evaluate(dy, { x: x / scalar }) * scalar;
                 console.log(dy, "->", y);
             }
