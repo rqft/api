@@ -66,7 +66,7 @@ async function graph(i, o) {
             catch (e) {
                 (0, result_1.stop)(o, 400, String(e));
             }
-            if (y === undefined || y === NaN) {
+            if (y === undefined || Number.isNaN(y) || !Number.isFinite(y)) {
                 continue;
             }
             if (y > h || y < -h) {
