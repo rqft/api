@@ -57,7 +57,16 @@ export async function graph(i: Input<"/graph">, o: Output) {
     l.setPixelAt(i, l.width / 2, 0x888888ff);
   }
 
+  const domain_min = Number(i.query.get("dn"));
+  const domain_max = Number(i.query.get("dm"));
+  const range_min = Number(i.query.get("rn"));
+  const range_max = Number(i.query.get("rm"));
+
   for (let x = -w; x < w; x++) {
+    if ((domain_min && x < domain_min) || (domain_max && x > domain_max)) {
+      continue;
+    }
+
     const z = e.split(";");
     if (z.length > colors.length) {
       stop(o, 400, `too many expressions (max ${colors.length})`);
@@ -72,18 +81,20 @@ export async function graph(i: Input<"/graph">, o: Output) {
 
       let y: number | undefined = undefined;
       try {
-        console.log(dy);
         y = mathjs.evaluate(dy, { x: x / scalar }) * scalar;
-        console.log(dy, "->", y);
       } catch (e) {
         stop(o, 400, String(e));
       }
 
-      if (y === undefined || Number.isNaN(y) || !Number.isFinite(y)) {
-        continue;
-      }
-
-      if (y > h || y < -h) {
+      if (
+        y === undefined ||
+        Number.isNaN(y) ||
+        !Number.isFinite(y) ||
+        y > h ||
+        y < -h ||
+        (range_min && y < range_min) ||
+        (range_max && y > range_max)
+      ) {
         continue;
       }
 
