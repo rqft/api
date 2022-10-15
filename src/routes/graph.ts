@@ -89,6 +89,16 @@ export async function graph(i: Input<"/graph">, o: Output) {
         stop(o, 400, String(e));
       }
 
+      if (
+        y === undefined ||
+        Number.isNaN(y) ||
+        !Number.isFinite(y) ||
+        y > h ||
+        y < -h
+      ) {
+        continue;
+      }
+
       let domain_min: number | undefined,
         domain_max: number | undefined,
         range_min: number | undefined,
@@ -96,22 +106,26 @@ export async function graph(i: Input<"/graph">, o: Output) {
       try {
         if (i.query.has(keys.domain_min)) {
           domain_min =
-            mathjs.evaluate(i.query.get(keys.domain_min), { x: x / scalar }) *
-            scalar;
+            mathjs.evaluate(i.query.get(keys.domain_min), {
+              x: x / scalar,
+              y,
+            }) * scalar;
         }
         if (i.query.has(keys.domain_max)) {
           domain_max =
-            mathjs.evaluate(i.query.get(keys.domain_max), { x: x / scalar }) *
-            scalar;
+            mathjs.evaluate(i.query.get(keys.domain_max), {
+              x: x / scalar,
+              y,
+            }) * scalar;
         }
         if (i.query.has(keys.range_min)) {
           range_min =
-            mathjs.evaluate(i.query.get(keys.range_min), { x: x / scalar }) *
+            mathjs.evaluate(i.query.get(keys.range_min), { x: x / scalar, y }) *
             scalar;
         }
         if (i.query.has(keys.range_max)) {
           range_max =
-            mathjs.evaluate(i.query.get(keys.range_max), { x: x / scalar }) *
+            mathjs.evaluate(i.query.get(keys.range_max), { x: x / scalar, y }) *
             scalar;
         }
       } catch (e) {
@@ -119,11 +133,6 @@ export async function graph(i: Input<"/graph">, o: Output) {
       }
 
       if (
-        y === undefined ||
-        Number.isNaN(y) ||
-        !Number.isFinite(y) ||
-        y > h ||
-        y < -h ||
         (range_min && y < range_min) ||
         (range_max && y > range_max) ||
         (domain_min && x < domain_min) ||

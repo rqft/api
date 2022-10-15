@@ -75,38 +75,44 @@ async function graph(i, o) {
             catch (e) {
                 (0, result_1.stop)(o, 400, String(e));
             }
+            if (y === undefined ||
+                Number.isNaN(y) ||
+                !Number.isFinite(y) ||
+                y > h ||
+                y < -h) {
+                continue;
+            }
             let domain_min, domain_max, range_min, range_max;
             try {
                 if (i.query.has(keys.domain_min)) {
                     domain_min =
-                        globals_1.mathjs.evaluate(i.query.get(keys.domain_min), { x: x / scalar }) *
-                            scalar;
+                        globals_1.mathjs.evaluate(i.query.get(keys.domain_min), {
+                            x: x / scalar,
+                            y,
+                        }) * scalar;
                 }
                 if (i.query.has(keys.domain_max)) {
                     domain_max =
-                        globals_1.mathjs.evaluate(i.query.get(keys.domain_max), { x: x / scalar }) *
-                            scalar;
+                        globals_1.mathjs.evaluate(i.query.get(keys.domain_max), {
+                            x: x / scalar,
+                            y,
+                        }) * scalar;
                 }
                 if (i.query.has(keys.range_min)) {
                     range_min =
-                        globals_1.mathjs.evaluate(i.query.get(keys.range_min), { x: x / scalar }) *
+                        globals_1.mathjs.evaluate(i.query.get(keys.range_min), { x: x / scalar, y }) *
                             scalar;
                 }
                 if (i.query.has(keys.range_max)) {
                     range_max =
-                        globals_1.mathjs.evaluate(i.query.get(keys.range_max), { x: x / scalar }) *
+                        globals_1.mathjs.evaluate(i.query.get(keys.range_max), { x: x / scalar, y }) *
                             scalar;
                 }
             }
             catch (e) {
                 (0, result_1.stop)(o, 400, "Invalid domain/range: " + String(e));
             }
-            if (y === undefined ||
-                Number.isNaN(y) ||
-                !Number.isFinite(y) ||
-                y > h ||
-                y < -h ||
-                (range_min && y < range_min) ||
+            if ((range_min && y < range_min) ||
                 (range_max && y > range_max) ||
                 (domain_min && x < domain_min) ||
                 (domain_max && x > domain_max)) {
