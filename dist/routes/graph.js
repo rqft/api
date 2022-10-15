@@ -46,10 +46,16 @@ async function graph(i, o) {
         l.setPixelAt(l.width / 2, i, 0x888888ff);
         l.setPixelAt(i, l.width / 2, 0x888888ff);
     }
-    const domain_min = Number(i.query.get("dn"));
-    const domain_max = Number(i.query.get("dm"));
-    const range_min = Number(i.query.get("rn"));
-    const range_max = Number(i.query.get("rm"));
+    let domain_min, domain_max, range_min, range_max;
+    try {
+        domain_min = globals_1.mathjs.evaluate(i.query.get("dn")) * scalar;
+        domain_max = globals_1.mathjs.evaluate(i.query.get("dm")) * scalar;
+        range_min = globals_1.mathjs.evaluate(i.query.get("rn")) * scalar;
+        range_max = globals_1.mathjs.evaluate(i.query.get("rm")) * scalar;
+    }
+    catch (e) {
+        (0, result_1.stop)(o, 400, "Invalid domain/range: " + String(e));
+    }
     for (let x = -w; x < w; x++) {
         if ((domain_min && x < domain_min) || (domain_max && x > domain_max)) {
             continue;
