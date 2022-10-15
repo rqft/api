@@ -69,34 +69,7 @@ export async function graph(i: Input<"/graph">, o: Output) {
     l.setPixelAt(i, l.width / 2, 0x888888ff);
   }
 
-  let domain_min: number | undefined,
-    domain_max: number | undefined,
-    range_min: number | undefined,
-    range_max: number | undefined;
-  try {
-    if (i.query.has(keys.domain_min)) {
-      domain_min = mathjs.evaluate(i.query.get(keys.domain_min)) * scalar;
-    }
-    if (i.query.has(keys.domain_max)) {
-      domain_max = mathjs.evaluate(i.query.get(keys.domain_max)) * scalar;
-    }
-    if (i.query.has(keys.range_min)) {
-      range_min = mathjs.evaluate(i.query.get(keys.range_min)) * scalar;
-    }
-    if (i.query.has(keys.range_max)) {
-      range_max = mathjs.evaluate(i.query.get(keys.range_max)) * scalar;
-    }
-  } catch (e) {
-    stop(o, 400, "Invalid domain/range: " + String(e));
-  }
-
-  console.log(domain_min);
-
   for (let x = -w; x < w; x++) {
-    if ((domain_min && x < domain_min) || (domain_max && x > domain_max)) {
-      continue;
-    }
-
     const z = e.split(";");
     if (z.length > colors.length) {
       stop(o, 400, `too many expressions (max ${colors.length})`);
@@ -116,6 +89,35 @@ export async function graph(i: Input<"/graph">, o: Output) {
         stop(o, 400, String(e));
       }
 
+      let domain_min: number | undefined,
+        domain_max: number | undefined,
+        range_min: number | undefined,
+        range_max: number | undefined;
+      try {
+        if (i.query.has(keys.domain_min)) {
+          domain_min =
+            mathjs.evaluate(i.query.get(keys.domain_min), { x: x / scalar }) *
+            scalar;
+        }
+        if (i.query.has(keys.domain_max)) {
+          domain_max =
+            mathjs.evaluate(i.query.get(keys.domain_max), { x: x / scalar }) *
+            scalar;
+        }
+        if (i.query.has(keys.range_min)) {
+          range_min =
+            mathjs.evaluate(i.query.get(keys.range_min), { x: x / scalar }) *
+            scalar;
+        }
+        if (i.query.has(keys.range_max)) {
+          range_max =
+            mathjs.evaluate(i.query.get(keys.range_max), { x: x / scalar }) *
+            scalar;
+        }
+      } catch (e) {
+        stop(o, 400, "Invalid domain/range: " + String(e));
+      }
+
       if (
         y === undefined ||
         Number.isNaN(y) ||
@@ -123,7 +125,9 @@ export async function graph(i: Input<"/graph">, o: Output) {
         y > h ||
         y < -h ||
         (range_min && y < range_min) ||
-        (range_max && y > range_max)
+        (range_max && y > range_max) ||
+        (domain_min && x < domain_min) ||
+        (domain_max && x > domain_max)
       ) {
         continue;
       }
