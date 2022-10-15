@@ -20,6 +20,7 @@ const spin_1 = require("./routes/image/spin");
 const tilt_1 = require("./routes/image/tilt");
 const tint_1 = require("./routes/image/tint");
 const get_1 = require("./routes/kv/get");
+const math_1 = require("./routes/math");
 const origin_1 = require("./routes/origin");
 const inspect_1 = require("./routes/pixel/inspect");
 const timelapse_1 = require("./routes/pixel/timelapse");
@@ -78,6 +79,7 @@ globals_1.Sarah.create("GET /todos/search/{userId}/{query}", search_2.todoSearch
 globals_1.Sarah.create("GET /pixel/inspect", inspect_1.pixelInspect);
 globals_1.Sarah.create("GET /pixel/timelapse/{frame}", timelapse_1.pixelTimelapse);
 globals_1.Sarah.create("GET /graph", graph_1.graph);
+globals_1.Sarah.create("GET /math", math_1.math);
 globals_1.Sarah.create("GET /kv/r/{guildId}", get_1.kvRead);
 globals_1.Sarah.create("GET /kv/w/{guildId}", get_1.kvWrite);
 globals_1.Sarah.create("GET /generate/gif/{frames}", async (q, s) => {

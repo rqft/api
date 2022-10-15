@@ -57,7 +57,17 @@ async function graph(i, o) {
             if (dy === undefined || c === undefined) {
                 continue;
             }
-            const y = globals_1.mathjs.evaluate(dy, { x: x / scalar }) * scalar;
+            let y = undefined;
+            try {
+                y = globals_1.mathjs.evaluate(dy, { x: x / scalar }) * scalar;
+                console.log(dy, "->", y);
+            }
+            catch (e) {
+                (0, result_1.stop)(o, 400, String(e));
+            }
+            if (y === undefined) {
+                continue;
+            }
             if (y > h || y < -h) {
                 continue;
             }

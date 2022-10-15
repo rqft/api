@@ -70,7 +70,17 @@ export async function graph(i: Input<"/graph">, o: Output) {
         continue;
       }
 
-      const y = mathjs.evaluate(dy, { x: x / scalar }) * scalar;
+      let y: number | undefined = undefined;
+      try {
+        y = mathjs.evaluate(dy, { x: x / scalar }) * scalar;
+        console.log(dy, "->", y);
+      } catch (e) {
+        stop(o, 400, String(e));
+      }
+
+      if (y === undefined) {
+        continue;
+      }
 
       if (y > h || y < -h) {
         continue;

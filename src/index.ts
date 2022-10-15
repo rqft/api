@@ -19,6 +19,7 @@ import { imageSpin } from "./routes/image/spin";
 import { imageTilt } from "./routes/image/tilt";
 import { imageTint } from "./routes/image/tint";
 import { kvRead, kvWrite } from "./routes/kv/get";
+import { math } from "./routes/math";
 import { origin } from "./routes/origin";
 import { pixelInspect } from "./routes/pixel/inspect";
 import { pixelTimelapse } from "./routes/pixel/timelapse";
@@ -101,6 +102,7 @@ Sarah.create("GET /pixel/inspect", pixelInspect);
 Sarah.create("GET /pixel/timelapse/{frame}", pixelTimelapse);
 
 Sarah.create("GET /graph", graph);
+Sarah.create("GET /math", math);
 
 Sarah.create("GET /kv/r/{guildId}", kvRead);
 Sarah.create("GET /kv/w/{guildId}", kvWrite);
