@@ -46,7 +46,7 @@ async function graph(i, o) {
         l.setPixelAt(l.width / 2, i, 0x888888ff);
         l.setPixelAt(i, l.width / 2, 0x888888ff);
     }
-    let domain_min, domain_max, range_min, range_max;
+    let domain_min = Number(i.query.get("dn")), domain_max = Number(i.query.get("dm")), range_min = Number(i.query.get("rn")), range_max = Number(i.query.get("rm"));
     try {
         domain_min = globals_1.mathjs.evaluate(i.query.get("dn")) * scalar;
         domain_max = globals_1.mathjs.evaluate(i.query.get("dm")) * scalar;

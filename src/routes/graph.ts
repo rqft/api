@@ -57,10 +57,10 @@ export async function graph(i: Input<"/graph">, o: Output) {
     l.setPixelAt(i, l.width / 2, 0x888888ff);
   }
 
-  let domain_min: number,
-    domain_max: number,
-    range_min: number,
-    range_max: number;
+  let domain_min: number = Number(i.query.get("dn")),
+    domain_max: number = Number(i.query.get("dm")),
+    range_min: number = Number(i.query.get("rn")),
+    range_max: number = Number(i.query.get("rm"));
   try {
     domain_min = mathjs.evaluate(i.query.get("dn")) * scalar;
     domain_max = mathjs.evaluate(i.query.get("dm")) * scalar;
