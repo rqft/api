@@ -245,11 +245,11 @@ export async function fetch(
 ) {
   const url = new URL(uri);
   console.log("fetching", url.href);
-  const pariah = new Pariah(url);
+  const pariah = new Pariah(new URL(url.host));
 
   // @ts-ignore
   return pariah[method.toLowerCase()][transformer](
-    "/",
+    url.pathname,
     {},
     Object.assign(
       {
