@@ -245,7 +245,7 @@ export async function fetch(
 ) {
   const url = new URL(uri);
   console.log("fetching", url.href);
-  const pariah = new Pariah(new URL(url.host));
+  const pariah = new Pariah(new URL(url.origin));
 
   // @ts-ignore
   return pariah[method.toLowerCase()][transformer](
