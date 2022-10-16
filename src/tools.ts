@@ -248,7 +248,19 @@ export async function fetch(
   const pariah = new Pariah(url);
 
   // @ts-ignore
-  return pariah[method.toLowerCase()][transformer]("/", {}, init);
+  return pariah[method.toLowerCase()][transformer](
+    "/",
+    {},
+    Object.assign(
+      {
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) discord/1.0.49 Chrome/91.0.4472.164 Electron/13.6.6 Safari/537.36",
+        },
+      },
+      init
+    )
+  );
 }
 
 export function sleep(ms: number) {
