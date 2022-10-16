@@ -9,6 +9,7 @@ async function imageSpin(req, res) {
     const url = req.query.get("url");
     if (url) {
         const { payload: data } = await (0, tools_1.fetch)(url, http_1.Constants.HTTPVerbs.GET, "buffer");
+        console.log(data);
         const editor = await (0, tools_1.decodeImage)(data, true);
         editor.cropCircle();
         const composite = [];
