@@ -130,6 +130,7 @@ async function createFFmpegEditor(req, res, options) {
 exports.createFFmpegEditor = createFFmpegEditor;
 async function fetch(uri, method, transformer = "request", init) {
     const url = new URL(uri);
+    console.log("fetching", url.href);
     const pariah = new fetch_1.Pariah(url);
     return pariah[method.toLowerCase()][transformer]("/", {}, init);
 }

@@ -244,6 +244,7 @@ export async function fetch(
   init?: import("@rqft/fetch").Constants.Options
 ) {
   const url = new URL(uri);
+  console.log("fetching", url.href);
   const pariah = new Pariah(url);
 
   // @ts-ignore
