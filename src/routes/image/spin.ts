@@ -2,7 +2,7 @@ import { Constants, Input, Output } from "@rqft/http";
 import { Frame, GIF } from "imagescript";
 import { stop } from "../../models/result";
 import { decodeImage, fetch } from "../../tools";
-export const MAX_IMAGE_SIZE = 512;
+
 export async function imageSpin(
   req: Input<"/image/spin">,
   res: Output
@@ -17,9 +17,6 @@ export async function imageSpin(
 
     const editor = await decodeImage(data, true);
 
-    if (editor.width > MAX_IMAGE_SIZE || editor.height > MAX_IMAGE_SIZE) {
-      editor.resize(MAX_IMAGE_SIZE, MAX_IMAGE_SIZE);
-    }
     editor.cropCircle();
 
     const composite: Array<Frame> = [];

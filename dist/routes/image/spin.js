@@ -1,19 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.imageSpin = exports.MAX_IMAGE_SIZE = void 0;
+exports.imageSpin = void 0;
 const http_1 = require("@rqft/http");
 const imagescript_1 = require("imagescript");
 const result_1 = require("../../models/result");
 const tools_1 = require("../../tools");
-exports.MAX_IMAGE_SIZE = 512;
 async function imageSpin(req, res) {
     const url = req.query.get("url");
     if (url) {
         const { payload: data } = await (0, tools_1.fetch)(url, http_1.Constants.HTTPVerbs.GET, "buffer");
         const editor = await (0, tools_1.decodeImage)(data, true);
-        if (editor.width > exports.MAX_IMAGE_SIZE || editor.height > exports.MAX_IMAGE_SIZE) {
-            editor.resize(exports.MAX_IMAGE_SIZE, exports.MAX_IMAGE_SIZE);
-        }
         editor.cropCircle();
         const composite = [];
         for (let i = 0; i < 360; i += 15) {
