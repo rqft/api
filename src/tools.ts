@@ -97,6 +97,7 @@ export async function createImageEditor<T extends string = string>(
       Constants.HTTPVerbs.GET,
       "buffer"
     );
+
     let editor: Awaited<ReturnType<typeof callee>> = await decodeImage(
       data,
       false
@@ -250,13 +251,10 @@ export async function fetch(
   // @ts-ignore
   return pariah[method.toLowerCase()][transformer](
     url.pathname,
-    {},
+    Object.fromEntries(url.searchParams),
     Object.assign(
       {
-        headers: {
-          "User-Agent":
-            "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) discord/1.0.49 Chrome/91.0.4472.164 Electron/13.6.6 Safari/537.36",
-        },
+        
       },
       init
     )

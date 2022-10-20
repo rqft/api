@@ -132,11 +132,7 @@ async function fetch(uri, method, transformer = "request", init) {
     const url = new URL(uri);
     console.log("fetching", url.href);
     const pariah = new fetch_1.Pariah(new URL(url.origin));
-    return pariah[method.toLowerCase()][transformer](url.pathname, {}, Object.assign({
-        headers: {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) discord/1.0.49 Chrome/91.0.4472.164 Electron/13.6.6 Safari/537.36",
-        },
-    }, init));
+    return pariah[method.toLowerCase()][transformer](url.pathname, Object.fromEntries(url.searchParams), Object.assign({}, init));
 }
 exports.fetch = fetch;
 function sleep(ms) {
