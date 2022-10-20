@@ -91,8 +91,9 @@ function emojify(data) {
     if (data.length === 0) {
         return "";
     }
+    data = data.toLowerCase();
     for (const [k, v] of Object.entries(emoji)) {
-        data = data.split(k).join("\u200b" + v);
+        data = data.split(k).join("\u200d" + v);
     }
     return data;
 }
