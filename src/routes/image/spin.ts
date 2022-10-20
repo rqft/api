@@ -15,8 +15,6 @@ export async function imageSpin(
       "buffer"
     );
 
-    console.log(new TextDecoder().decode(data));
-
     const editor = await decodeImage(data, true);
 
     editor.cropCircle();
