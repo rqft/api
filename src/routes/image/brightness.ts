@@ -7,8 +7,8 @@ export async function imageBrightness(
   res: Output
 ): Promise<void> {
   return createImageEditor(req, res, async (editor) => {
-    const amount = Number.parseInt(req.params.get("amount") || "0");
-    const scaled = req.query.get("amount") === "true";
+    const amount = Number.parseFloat(req.params.get("amount") || "0");
+    const scaled = req.query.get("scale") === "true";
 
     if (Number.isNaN(amount)) {
       stop(res, 400, "No amount provided");
