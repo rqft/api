@@ -12,6 +12,7 @@ function textEmojify(req, res) {
 }
 exports.textEmojify = textEmojify;
 const emoji = {
+    100: "💯",
     "0": "0️⃣",
     zero: "0️⃣",
     "1": "1️⃣",
@@ -93,7 +94,7 @@ function emojify(data) {
     }
     data = data.toLowerCase();
     for (const [k, v] of Object.entries(emoji)) {
-        data = data.split(k).join("\u17B5" + v);
+        data = data.split(k).join("\u200b" + v);
     }
     return data;
 }
