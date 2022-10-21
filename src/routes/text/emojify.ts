@@ -14,7 +14,7 @@ export function textEmojify(req: Input<"/text/emojify">, res: Output): void {
 }
 
 const emoji = {
-  100: "💯",
+  "100": "💯",
   "0": "0️⃣",
   zero: "0️⃣",
   "1": "1️⃣",

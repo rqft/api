@@ -12,7 +12,7 @@ function textEmojify(req, res) {
 }
 exports.textEmojify = textEmojify;
 const emoji = {
-    100: "💯",
+    "100": "💯",
     "0": "0️⃣",
     zero: "0️⃣",
     "1": "1️⃣",
