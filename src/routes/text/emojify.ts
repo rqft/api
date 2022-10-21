@@ -98,7 +98,7 @@ function emojify(data: string): string {
   data = data.toLowerCase()
 
   for (const [k, v] of Object.entries(emoji)) {
-    data = data.split(k).join("\u200d" + v);
+    data = data.split(k).join("\u17B5" + v);
   }
 
   return data;
