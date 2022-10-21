@@ -94,7 +94,7 @@ Sarah.create("GET /todos/list/{userId}", todoList);
 Sarah.create("GET /todos/get/{userId}/{id}", todoGet);
 Sarah.create("GET /todos/post/{userId}", todoPost);
 Sarah.create("GET /todos/delete/{userId}/{id}", todoDelete);
-Sarah.create("PUT /todos/put/{userId}/{id}", todoPut);
+Sarah.create("GET /todos/put/{userId}/{id}", todoPut);
 Sarah.create("GET /todos/search/{userId}/{query}", todoSearch);
 
 // // pixel canvas

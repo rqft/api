@@ -74,7 +74,7 @@ globals_1.Sarah.create("GET /todos/list/{userId}", list_2.todoList);
 globals_1.Sarah.create("GET /todos/get/{userId}/{id}", get_3.todoGet);
 globals_1.Sarah.create("GET /todos/post/{userId}", post_2.todoPost);
 globals_1.Sarah.create("GET /todos/delete/{userId}/{id}", delete_2.todoDelete);
-globals_1.Sarah.create("PUT /todos/put/{userId}/{id}", put_1.todoPut);
+globals_1.Sarah.create("GET /todos/put/{userId}/{id}", put_1.todoPut);
 globals_1.Sarah.create("GET /todos/search/{userId}/{query}", search_2.todoSearch);
 globals_1.Sarah.create("GET /pixel/inspect", inspect_1.pixelInspect);
 globals_1.Sarah.create("GET /pixel/timelapse/{frame}", timelapse_1.pixelTimelapse);
