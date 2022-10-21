@@ -7,7 +7,7 @@ export async function imageSaturation(
   res: Output
 ): Promise<void> {
   return createImageEditor(req, res, async (editor) => {
-    const amount = Number(req.params.get("amount") || 1);
+    const amount = Number.parseFloat(req.params.get("amount") || '1');
     const scaled = req.query.get("scale") === "true";
 
     if (Number.isNaN(amount)) {
