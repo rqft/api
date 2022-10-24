@@ -4,8 +4,10 @@ import { createFFmpegEditor } from "../../tools";
 
 export async function audioExtract(req: Input<"/audio/extract">, res: Output) {
   return await createFFmpegEditor(req, res, {
-    args: [],
+    args: [
+    ],
     mimetype: "audio/mp3",
     destination: "extract.mp3",
+    source: "extract"
   });
 }

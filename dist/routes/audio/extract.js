@@ -7,6 +7,7 @@ async function audioExtract(req, res) {
         args: [],
         mimetype: "audio/mp3",
         destination: "extract.mp3",
+        source: "extract"
     });
 }
 exports.audioExtract = audioExtract;

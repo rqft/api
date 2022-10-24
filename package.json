@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/rqft/api#readme",
   "dependencies": {
-    "@rqft/fetch": "^1.0.0",
+    "@rqft/fetch": "^1.0.13",
     "@rqft/http": "^1.0.1",
     "@rqft/kv": "^1.0.2",
     "@rqft/utils": "^1.0.0",

@@ -1,12 +1,15 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.IdBasedKv = exports.scale = exports.generateCanvas = exports.sleep = exports.fetch = exports.createFFmpegEditor = exports.createImageEditor = exports.fillColorCode = exports.decodeImage = void 0;
+exports.getUrlExtension = exports.IdBasedKv = exports.scale = exports.generateCanvas = exports.sleep = exports.fetch = exports.createFFmpegEditor = exports.createImageEditor = exports.fillColorCode = exports.decodeImage = void 0;
 const fetch_1 = require("@rqft/fetch");
-const http_1 = require("@rqft/http");
 const kv_1 = require("@rqft/kv");
 const imagescript_1 = require("imagescript");
 const node_child_process_1 = require("node:child_process");
 const node_fs_1 = require("node:fs");
+const node_path_1 = __importDefault(require("node:path"));
 const globals_1 = require("./globals");
 const result_1 = require("./models/result");
 const types_1 = require("./types");
@@ -62,8 +65,8 @@ exports.fillColorCode = fillColorCode;
 async function createImageEditor(req, res, callee) {
     const url = req.query.get("url");
     if (url) {
-        const { payload: data } = await fetch(url, http_1.Constants.HTTPVerbs.GET, "buffer");
-        let editor = await decodeImage(data, false);
+        const payload = await fetch(url, fetch_1.Constants.HTTPVerbs.GET, "buffer");
+        let editor = await decodeImage(payload.unwrap(), false);
         if (!Array.isArray(editor)) {
             editor = [editor];
         }
@@ -110,18 +113,30 @@ exports.createImageEditor = createImageEditor;
 async function createFFmpegEditor(req, res, options) {
     const url = req.query.get("url");
     if (url) {
-        const { payload: data } = await fetch(url, http_1.Constants.HTTPVerbs.GET, "buffer");
+        const payload = await fetch(url, fetch_1.Constants.HTTPVerbs.GET, "buffer");
+        const int = node_path_1.default.resolve('./input', options.source + '.' + getUrlExtension(payload.uri().href));
+        console.log('writing to', int);
+        (0, node_fs_1.writeFileSync)(int, payload.unwrap());
+        const out = node_path_1.default.resolve('./output', options.destination);
         const args = [
-            "-y",
-            "-i",
-            "-",
+            '-i',
+            int,
             ...options.args.flat(1),
-            `output/${options.destination}`,
+            '-y',
+            out,
         ];
-        (0, node_child_process_1.execSync)(`ffmpeg ${args.join(" ")}`, { input: data });
+        console.log('ffmpeg', args.join(" "));
+        try {
+            (0, node_child_process_1.execSync)(`ffmpeg ${args.join(" ")}`);
+        }
+        catch {
+            console.error("what!!");
+            throw null;
+        }
         res.setHeader("content-type", options.mimetype);
         res.setHeader("content-disposition", `attachment; filename="${options.destination}"`);
-        res.send((0, node_fs_1.readFileSync)(`output/${options.destination}`));
+        console.log('reading from ', out);
+        res.send((0, node_fs_1.readFileSync)(out));
     }
     else {
         (0, result_1.stop)(res, 400, "No media URL provided");
@@ -129,10 +144,7 @@ async function createFFmpegEditor(req, res, options) {
 }
 exports.createFFmpegEditor = createFFmpegEditor;
 async function fetch(uri, method, transformer = "request", init) {
-    const url = new URL(uri);
-    console.log("fetching", url.href);
-    const pariah = new fetch_1.Pariah(new URL(url.origin));
-    return pariah[method.toLowerCase()][transformer](url.pathname, Object.fromEntries(url.searchParams), Object.assign({}, init));
+    return new fetch_1.Requester(uri)[transformer](`${method} `, {}, init);
 }
 exports.fetch = fetch;
 function sleep(ms) {
@@ -168,3 +180,7 @@ class IdBasedKv extends kv_1.Wilson {
     }
 }
 exports.IdBasedKv = IdBasedKv;
+function getUrlExtension(url) {
+    return url.split(/[#?]/)[0]?.split('.').pop()?.trim() || '';
+}
+exports.getUrlExtension = getUrlExtension;

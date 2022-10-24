@@ -1,4 +1,5 @@
-import { Constants, Input, Output } from "@rqft/http";
+import { Constants } from "@rqft/fetch";
+import { Input, Output } from "@rqft/http";
 import { Frame, GIF } from "imagescript";
 import { stop } from "../../models/result";
 import { decodeImage, fetch } from "../../tools";
@@ -9,13 +10,13 @@ export async function imageSpin(
 ): Promise<void> {
   const url = req.query.get("url") as string;
   if (url) {
-    const { payload: data } = await fetch(
+    const payload = await fetch(
       url,
       Constants.HTTPVerbs.GET,
       "buffer"
     );
 
-    const editor = await decodeImage(data, true);
+    const editor = await decodeImage(payload.unwrap(), true);
 
     editor.cropCircle();
 

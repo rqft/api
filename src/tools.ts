@@ -1,11 +1,12 @@
-import { Data, Pariah } from "@rqft/fetch";
-import { Constants, Input, Output } from "@rqft/http";
+import { Constants, Payload, Requester } from "@rqft/fetch";
+import { Input, Output } from "@rqft/http";
 import { Wilson } from "@rqft/kv";
 import { decode, Frame, GIF, Image } from "imagescript";
 
 import { Request } from "node-fetch";
 import { execSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
+import path from "node:path";
 import { CanvasSize } from "./globals";
 import { stop } from "./models/result";
 import { Action, ExpandPixel } from "./types";
@@ -92,14 +93,14 @@ export async function createImageEditor<T extends string = string>(
   const url = req.query.get("url");
 
   if (url) {
-    const { payload: data } = await fetch(
+    const payload = await fetch(
       url,
       Constants.HTTPVerbs.GET,
       "buffer"
     );
 
     let editor: Awaited<ReturnType<typeof callee>> = await decodeImage(
-      data,
+      payload.unwrap(),
       false
     );
 
@@ -155,9 +156,10 @@ export async function createImageEditor<T extends string = string>(
   }
 }
 export interface FFMpegOptions {
-  args: Array<[string, string]>;
+  args: Array<[string, string?]>;
   mimetype: string;
   destination: string;
+  source: string;
 }
 export async function createFFmpegEditor<T extends string = string>(
   req: Input<T>,
@@ -167,21 +169,35 @@ export async function createFFmpegEditor<T extends string = string>(
   const url = req.query.get("url");
 
   if (url) {
-    const { payload: data } = await fetch(
+    const payload = await fetch(
       url,
       Constants.HTTPVerbs.GET,
       "buffer"
     );
 
+    
+    const int = path.resolve('./input', options.source + '.' + getUrlExtension(payload.uri().href));
+    console.log('writing to', int)
+    writeFileSync(int, payload.unwrap());
+    
+    const out = path.resolve('./output', options.destination)
+
     const args = [
-      "-y",
-      "-i",
-      "-",
+      '-i',
+      int,
       ...options.args.flat(1),
-      `output/${options.destination}`,
+      '-y',
+      out,
     ];
 
-    execSync(`ffmpeg ${args.join(" ")}`, { input: data });
+    console.log('ffmpeg', args.join(" "))
+    
+    try {
+      execSync(`ffmpeg ${args.join(" ")}`)
+    } catch {
+      console.error("what!!")
+      throw null
+    }
 
     res.setHeader("content-type", options.mimetype);
     res.setHeader(
@@ -189,11 +205,13 @@ export async function createFFmpegEditor<T extends string = string>(
       `attachment; filename="${options.destination}"`
     );
 
-    res.send(readFileSync(`output/${options.destination}`));
+    console.log('reading from ', out)
+    res.send(readFileSync(out));
   } else {
     stop(res, 400, "No media URL provided");
   }
 }
+type Data<T> = Payload<T>
 export type Transformer =
   | "arrayBuffer"
   | "json"
@@ -244,21 +262,8 @@ export async function fetch(
   transformer: Transformer = "request",
   init?: import("@rqft/fetch").Constants.Options
 ) {
-  const url = new URL(uri);
-  console.log("fetching", url.href);
-  const pariah = new Pariah(new URL(url.origin));
+  return new Requester(uri)[transformer as 'json'](`${method} ` as '/', {}, init)
 
-  // @ts-ignore
-  return pariah[method.toLowerCase()][transformer](
-    url.pathname,
-    Object.fromEntries(url.searchParams),
-    Object.assign(
-      {
-        
-      },
-      init
-    )
-  );
 }
 
 export function sleep(ms: number) {
@@ -300,4 +305,8 @@ export class IdBasedKv<T> extends Wilson<Record<string, T>> {
   public write(data: Record<string, T>) {
     return super.put(this.guildId, data[this.guildId]!);
   }
+}
+
+export function getUrlExtension(url: string): string {
+  return url.split(/[#?]/)[0]?.split('.').pop()?.trim() || '';
 }
