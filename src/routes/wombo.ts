@@ -1,7 +1,7 @@
-import { Input, Output } from "@rqft/http";
-import { buildDefaultInstance } from "wombo-dream-api";
-import { give, stop } from "../models/result";
-export async function wombo(req: Input<"/wombo/{style}/{query}">, res: Output) {
+import type { Input, Output } from '@rqft/http';
+import { buildDefaultInstance } from 'wombo-dream-api';
+import { give, stop } from '../models/result';
+export async function wombo(req: Input<'/wombo/{style}/{query}'>, res: Output) {
   const WomboStyles = {
     psychedelic: 21,
     surreal: 23,
@@ -27,16 +27,16 @@ export async function wombo(req: Input<"/wombo/{style}/{query}">, res: Output) {
   };
 
   const style = (
-    req.params.get("style") || "none"
+    req.params.get('style') || 'none'
   ).toLowerCase() as keyof typeof WomboStyles;
-  const query = req.params.get("query");
+  const query = req.params.get('query');
 
   if (!(style in WomboStyles)) {
-    stop(res, 400, "Invalid style");
+    stop(res, 400, 'Invalid style');
   }
 
   if (!query) {
-    stop(res, 400, "No query provided");
+    stop(res, 400, 'No query provided');
   }
 
   console.log(style, query);

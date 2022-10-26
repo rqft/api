@@ -4,7 +4,7 @@ exports.tagSearch = void 0;
 const globals_1 = require("../../globals");
 const result_1 = require("../../models/result");
 function tagSearch(req, res) {
-    const query = req.params.get("query");
+    const query = req.params.get('query');
     console.log(query);
     let choices = globals_1.KV.todo.list();
     if (query) {

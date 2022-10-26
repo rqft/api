@@ -5,7 +5,7 @@ const result_1 = require("../../models/result");
 const tools_1 = require("../../tools");
 async function imageMirror(req, res) {
     return (0, tools_1.createImageEditor)(req, res, async (editor) => {
-        const method = req.query.get("method") || MirrorMethods.LEFT;
+        const method = req.query.get('method') || MirrorMethods.LEFT;
         if (!(method in MirrorMethods)) {
             (0, result_1.stop)(res, 400, `Invalid method: ${method}`);
         }

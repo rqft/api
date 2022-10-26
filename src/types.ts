@@ -40,3 +40,7 @@ export const ExpandPixel: Record<PixelColors, RawPixelColors> = {
 };
 
 export type Action = [x: number, y: number, color: PixelColors];
+
+export type Rgb = [number,number,number];
+export type Rgba = [number,number,number,number]
+

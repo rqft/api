@@ -4,10 +4,10 @@ exports.math = void 0;
 const globals_1 = require("../globals");
 const result_1 = require("../models/result");
 function math(i, o) {
-    console.log("on lh");
+    console.log('on lh');
     let z;
     try {
-        z = globals_1.mathjs.evaluate(i.query.get("expr"));
+        z = globals_1.mathjs.evaluate(i.query.get('expr'));
     }
     catch (e) {
         (0, result_1.stop)(o, 500, e.message);

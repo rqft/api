@@ -6,9 +6,9 @@ const imagescript_1 = require("imagescript");
 const result_1 = require("../../models/result");
 const tools_1 = require("../../tools");
 async function imageSpin(req, res) {
-    const url = req.query.get("url");
+    const url = req.query.get('url');
     if (url) {
-        const payload = await (0, tools_1.fetch)(url, fetch_1.Constants.HTTPVerbs.GET, "buffer");
+        const payload = await (0, tools_1.fetch)(url, fetch_1.Constants.HTTPVerbs.GET, 'buffer');
         const editor = await (0, tools_1.decodeImage)(payload.unwrap(), true);
         editor.cropCircle();
         const composite = [];
@@ -20,11 +20,11 @@ async function imageSpin(req, res) {
         const gif = new imagescript_1.GIF(composite);
         const u8 = await gif.encode();
         const sent = Buffer.from(u8);
-        res.setHeader("content-type", "image/gif");
+        res.setHeader('content-type', 'image/gif');
         res.send(sent);
     }
     else {
-        (0, result_1.stop)(res, 400, "No image URL provided");
+        (0, result_1.stop)(res, 400, 'No image URL provided');
     }
 }
 exports.imageSpin = imageSpin;

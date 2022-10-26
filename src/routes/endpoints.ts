@@ -1,7 +1,7 @@
-import { Constants, Input, Output } from "@rqft/http";
-import { give } from "../models/result";
+import type { Constants, Input, Output } from '@rqft/http';
+import { give } from '../models/result';
 export async function endpoints(
-  _req: Input<"/endpoints">,
+  _req: Input<'/endpoints'>,
   res: Output
 ): Promise<void> {
   const endpoints: Array<string> = [];

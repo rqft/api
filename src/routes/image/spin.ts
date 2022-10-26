@@ -1,19 +1,19 @@
-import { Constants } from "@rqft/fetch";
-import { Input, Output } from "@rqft/http";
-import { Frame, GIF } from "imagescript";
-import { stop } from "../../models/result";
-import { decodeImage, fetch } from "../../tools";
+import { Constants } from '@rqft/fetch';
+import type { Input, Output } from '@rqft/http';
+import { Frame, GIF } from 'imagescript';
+import { stop } from '../../models/result';
+import { decodeImage, fetch } from '../../tools';
 
 export async function imageSpin(
-  req: Input<"/image/spin">,
+  req: Input<'/image/spin'>,
   res: Output
 ): Promise<void> {
-  const url = req.query.get("url") as string;
+  const url = req.query.get('url') as string;
   if (url) {
     const payload = await fetch(
       url,
       Constants.HTTPVerbs.GET,
-      "buffer"
+      'buffer'
     );
 
     const editor = await decodeImage(payload.unwrap(), true);
@@ -39,9 +39,9 @@ export async function imageSpin(
     const u8: Uint8Array = await gif.encode();
 
     const sent = Buffer.from(u8);
-    res.setHeader("content-type", "image/gif");
+    res.setHeader('content-type', 'image/gif');
     res.send(sent);
   } else {
-    stop(res, 400, "No image URL provided");
+    stop(res, 400, 'No image URL provided');
   }
 }

@@ -10,6 +10,8 @@ const graph_1 = require("./routes/graph");
 const averagecolor_1 = require("./routes/image/averagecolor");
 const brightness_1 = require("./routes/image/brightness");
 const color_1 = require("./routes/image/color");
+const deepfry_1 = require("./routes/image/deepfry");
+const bit_1 = require("./routes/image/dual/bit");
 const fisheye_1 = require("./routes/image/fisheye");
 const flop_1 = require("./routes/image/flop");
 const invert_1 = require("./routes/image/invert");
@@ -40,67 +42,70 @@ const put_1 = require("./routes/todo/put");
 const search_2 = require("./routes/todo/search");
 const wombo_1 = require("./routes/wombo");
 globals_1.Sarah.use((_, res, next) => {
-    res.setHeader("content-type", "application/json");
+    res.setHeader('content-type', 'application/json');
     res.setStatus(200);
     next();
 });
-globals_1.Sarah.create("GET /wombo/{style}/{query}", wombo_1.wombo);
-globals_1.Sarah.create("GET /origin", origin_1.origin);
-globals_1.Sarah.create("GET /endpoints", endpoints_1.endpoints);
-globals_1.Sarah.create("GET /tags/list", list_1.tagList);
-globals_1.Sarah.create("GET /tags/inspect", inspect_2.tagInspect);
-globals_1.Sarah.create("GET /tags/get/{key}", get_2.tagGet);
-globals_1.Sarah.create("GET /tags/post/{key}", post_1.tagPost);
-globals_1.Sarah.create("GET /tags/delete/{key}", delete_1.tagDelete);
-globals_1.Sarah.create("GET /tags/search/{query}", search_1.tagSearch);
-globals_1.Sarah.create("GET /image/average-color", averagecolor_1.imageAverageColor);
-globals_1.Sarah.create("GET /image/brightness/{amount}", brightness_1.imageBrightness);
-globals_1.Sarah.create("GET /image/color/{size}/{color}", color_1.imageColor);
-globals_1.Sarah.create("GET /image/fisheye/{amount}", fisheye_1.imageFisheye);
-globals_1.Sarah.create("GET /image/mirror", flop_1.imageMirror);
-globals_1.Sarah.create("GET /image/invert/{method}", invert_1.imageInvert);
-globals_1.Sarah.create("GET /image/resize/{size}", resize_1.imageResize);
-globals_1.Sarah.create("GET /image/rotate/{deg}", rotate_1.imageRotate);
-globals_1.Sarah.create("GET /image/saturation/{amount}", saturation_1.imageSaturation);
-globals_1.Sarah.create("GET /image/spin", spin_1.imageSpin);
-globals_1.Sarah.create("GET /image/tilt/{amount}", tilt_1.imageTilt);
-globals_1.Sarah.create("GET /image/tint/{color}", tint_1.imageTint);
-globals_1.Sarah.create("GET /audio/volume/{amount}", volume_1.audioVolume);
-globals_1.Sarah.create("GET /audio/pitch/{amount}", pitch_1.audioPitch);
-globals_1.Sarah.create("GET /audio/extract", extract_1.audioExtract);
-globals_1.Sarah.create("GET /text/convert/{conversion}/{method}", encode_1.textConvert);
-globals_1.Sarah.create("GET /text/emojify", emojify_1.textEmojify);
-globals_1.Sarah.create("GET /todos/list/{userId}", list_2.todoList);
-globals_1.Sarah.create("GET /todos/get/{userId}/{id}", get_3.todoGet);
-globals_1.Sarah.create("GET /todos/post/{userId}", post_2.todoPost);
-globals_1.Sarah.create("GET /todos/delete/{userId}/{id}", delete_2.todoDelete);
-globals_1.Sarah.create("GET /todos/put/{userId}/{id}", put_1.todoPut);
-globals_1.Sarah.create("GET /todos/search/{userId}/{query}", search_2.todoSearch);
-globals_1.Sarah.create("GET /pixel/inspect", inspect_1.pixelInspect);
-globals_1.Sarah.create("GET /pixel/timelapse/{frame}", timelapse_1.pixelTimelapse);
-globals_1.Sarah.create("GET /graph", graph_1.graph);
-globals_1.Sarah.create("GET /math", math_1.math);
-globals_1.Sarah.create("GET /kv/r/{guildId}", get_1.kvRead);
-globals_1.Sarah.create("GET /kv/w/{guildId}", get_1.kvWrite);
-globals_1.Sarah.create("GET /generate/gif/{frames}", async (q, s) => {
+globals_1.Sarah.create('GET /wombo/{style}/{query}', wombo_1.wombo);
+globals_1.Sarah.create('GET /origin', origin_1.origin);
+globals_1.Sarah.create('GET /endpoints', endpoints_1.endpoints);
+globals_1.Sarah.create('GET /tags/list', list_1.tagList);
+globals_1.Sarah.create('GET /tags/inspect', inspect_2.tagInspect);
+globals_1.Sarah.create('GET /tags/get/{key}', get_2.tagGet);
+globals_1.Sarah.create('GET /tags/post/{key}', post_1.tagPost);
+globals_1.Sarah.create('GET /tags/delete/{key}', delete_1.tagDelete);
+globals_1.Sarah.create('GET /tags/search/{query}', search_1.tagSearch);
+globals_1.Sarah.create('GET /image/average-color', averagecolor_1.imageAverageColor);
+globals_1.Sarah.create('GET /image/brightness/{amount}', brightness_1.imageBrightness);
+globals_1.Sarah.create('GET /image/color/{size}/{color}', color_1.imageColor);
+globals_1.Sarah.create('GET /image/fisheye/{amount}', fisheye_1.imageFisheye);
+globals_1.Sarah.create('GET /image/mirror', flop_1.imageMirror);
+globals_1.Sarah.create('GET /image/invert/{method}', invert_1.imageInvert);
+globals_1.Sarah.create('GET /image/resize/{size}', resize_1.imageResize);
+globals_1.Sarah.create('GET /image/rotate/{deg}', rotate_1.imageRotate);
+globals_1.Sarah.create('GET /image/saturation/{amount}', saturation_1.imageSaturation);
+globals_1.Sarah.create('GET /image/spin', spin_1.imageSpin);
+globals_1.Sarah.create('GET /image/tilt/{amount}', tilt_1.imageTilt);
+globals_1.Sarah.create('GET /image/tint/{color}', tint_1.imageTint);
+globals_1.Sarah.create('GET /image/deepfry/{threshold}', deepfry_1.imageDeepfry);
+globals_1.Sarah.create('GET /image/dual/xor', bit_1.imageDualXor);
+globals_1.Sarah.create('GET /image/dual/and', bit_1.imageDualAnd);
+globals_1.Sarah.create('GET /audio/volume/{amount}', volume_1.audioVolume);
+globals_1.Sarah.create('GET /audio/pitch/{amount}', pitch_1.audioPitch);
+globals_1.Sarah.create('GET /audio/extract', extract_1.audioExtract);
+globals_1.Sarah.create('GET /text/convert/{conversion}/{method}', encode_1.textConvert);
+globals_1.Sarah.create('GET /text/emojify', emojify_1.textEmojify);
+globals_1.Sarah.create('GET /todos/list/{userId}', list_2.todoList);
+globals_1.Sarah.create('GET /todos/get/{userId}/{id}', get_3.todoGet);
+globals_1.Sarah.create('GET /todos/post/{userId}', post_2.todoPost);
+globals_1.Sarah.create('GET /todos/delete/{userId}/{id}', delete_2.todoDelete);
+globals_1.Sarah.create('GET /todos/put/{userId}/{id}', put_1.todoPut);
+globals_1.Sarah.create('GET /todos/search/{userId}/{query}', search_2.todoSearch);
+globals_1.Sarah.create('GET /pixel/inspect', inspect_1.pixelInspect);
+globals_1.Sarah.create('GET /pixel/timelapse/{frame}', timelapse_1.pixelTimelapse);
+globals_1.Sarah.create('GET /graph', graph_1.graph);
+globals_1.Sarah.create('GET /math', math_1.math);
+globals_1.Sarah.create('GET /kv/r/{guildId}', get_1.kvRead);
+globals_1.Sarah.create('GET /kv/w/{guildId}', get_1.kvWrite);
+globals_1.Sarah.create('GET /generate/gif/{frames}', async (q, s) => {
     const f = new imagescript_1.Frame(1, 1).fill(0xffffffff);
-    const frames = Array(Number(q.params.get("frames"))).fill(f);
+    const frames = Array(Number(q.params.get('frames'))).fill(f);
     const gif = new imagescript_1.GIF(frames);
     const u8 = await gif.encode();
-    s.setHeader("content-type", "image/gif");
+    s.setHeader('content-type', 'image/gif');
     s.send(u8);
 });
 globals_1.Sarah.initialize();
 globals_1.Sarah.listen(() => {
-    console.log("ok started on api.clancy.lol");
+    console.log('ok started on api.clancy.lol');
 });
-process.on("unhandledRejection", (reason) => {
+process.on('unhandledRejection', (reason) => {
     if (reason === null) {
         return;
     }
     console.error(reason);
 });
-process.on("uncaughtException", (reason) => {
+process.on('uncaughtException', (reason) => {
     if (reason === null) {
         return;
     }

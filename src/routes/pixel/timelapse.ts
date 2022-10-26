@@ -1,16 +1,16 @@
-import { Input, Output } from "@rqft/http";
-import { Frame, GIF } from "imagescript";
-import { CanvasSize, KV } from "../../globals";
-import { ExpandPixel, RawPixelColors } from "../../types";
+import type { Input, Output } from '@rqft/http';
+import { Frame, GIF } from 'imagescript';
+import { CanvasSize, KV } from '../../globals';
+import { ExpandPixel, RawPixelColors } from '../../types';
 
 export async function pixelTimelapse(
-  _: Input<"/pixel/timelapse/{frame}">,
+  _: Input<'/pixel/timelapse/{frame}'>,
   res: Output
 ): Promise<void> {
-  const actions = KV.pixel.get("actions");
+  const actions = KV.pixel.get('actions');
 
   if (!actions) {
-    throw new Error("No actions found");
+    throw new Error('No actions found');
   }
 
   const base = new Frame(CanvasSize, CanvasSize);
@@ -28,7 +28,7 @@ export async function pixelTimelapse(
   const gif = new GIF(frames);
   const u8 = await gif.encode();
 
-  res.setHeader("content-type", "image/gif");
+  res.setHeader('content-type', 'image/gif');
   res.send(u8);
   return;
 }

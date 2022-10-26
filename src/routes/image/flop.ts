@@ -1,14 +1,14 @@
-import { Input, Output } from "@rqft/http";
-import { Frame, Image } from "imagescript/";
-import { stop } from "../../models/result";
-import { createImageEditor } from "../../tools";
+import type { Input, Output } from '@rqft/http';
+import type { Frame, Image } from 'imagescript/';
+import { stop } from '../../models/result';
+import { createImageEditor } from '../../tools';
 export async function imageMirror(
-  req: Input<"/image/mirror">,
+  req: Input<'/image/mirror'>,
   res: Output
 ): Promise<void> {
   return createImageEditor(req, res, async (editor) => {
     const method =
-      (req.query.get("method") as MirrorMethods) || MirrorMethods.LEFT;
+      (req.query.get('method') as MirrorMethods | undefined) || MirrorMethods.LEFT;
     if (!(method in MirrorMethods)) {
       stop(res, 400, `Invalid method: ${method}`);
     }
@@ -23,38 +23,38 @@ export async function imageMirror(
   });
 }
 export enum MirrorMethods {
-  LEFT = "LEFT",
-  RIGHT = "RIGHT",
-  TOP = "TOP",
-  BOTTOM = "BOTTOM",
+  LEFT = 'LEFT',
+  RIGHT = 'RIGHT',
+  TOP = 'TOP',
+  BOTTOM = 'BOTTOM',
 }
-export function mirror<T extends Image | Frame>(
+export function mirror<T extends Frame | Image>(
   frame: T,
   method: MirrorMethods = MirrorMethods.LEFT
 ): T {
   for (let x = 1; x < frame.width; x++) {
     for (let y = 1; y < frame.height; y++) {
       switch (method) {
-        case MirrorMethods.LEFT: {
-          const pixel = frame.getPixelAt(x, y);
-          frame.setPixelAt(frame.width - x, y, pixel);
-          break;
-        }
-        case MirrorMethods.RIGHT: {
-          const pixel = frame.getPixelAt(frame.width - x, y);
-          frame.setPixelAt(x, y, pixel);
-          break;
-        }
-        case MirrorMethods.TOP: {
-          const pixel = frame.getPixelAt(x, y);
-          frame.setPixelAt(x, frame.height - y, pixel);
-          break;
-        }
-        case MirrorMethods.BOTTOM: {
-          const pixel = frame.getPixelAt(x, frame.height - y);
-          frame.setPixelAt(x, y, pixel);
-          break;
-        }
+      case MirrorMethods.LEFT: {
+        const pixel = frame.getPixelAt(x, y);
+        frame.setPixelAt(frame.width - x, y, pixel);
+        break;
+      }
+      case MirrorMethods.RIGHT: {
+        const pixel = frame.getPixelAt(frame.width - x, y);
+        frame.setPixelAt(x, y, pixel);
+        break;
+      }
+      case MirrorMethods.TOP: {
+        const pixel = frame.getPixelAt(x, y);
+        frame.setPixelAt(x, frame.height - y, pixel);
+        break;
+      }
+      case MirrorMethods.BOTTOM: {
+        const pixel = frame.getPixelAt(x, frame.height - y);
+        frame.setPixelAt(x, y, pixel);
+        break;
+      }
       }
     }
   }

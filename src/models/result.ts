@@ -1,4 +1,4 @@
-import { Output } from "@rqft/http";
+import type { Output } from '@rqft/http';
 
 export interface Result<T> {
   data: T;
@@ -18,8 +18,8 @@ export function give<T>(
 }
 
 export enum ResultState {
-  OK = "ok",
-  ERROR = "error",
+  OK = 'ok',
+  ERROR = 'error',
 }
 
 export interface Ok {
@@ -34,7 +34,7 @@ export interface Err {
   state: ResultState.ERROR;
 }
 
-export type Status = Ok | Err;
+export type Status = Err | Ok;
 export function stop(res: Output, code: number, message: string): never {
   res.setStatus(code);
   give(res, null, { state: ResultState.ERROR, message, code });

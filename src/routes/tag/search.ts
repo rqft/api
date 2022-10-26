@@ -1,12 +1,12 @@
-import { Input, Output } from "@rqft/http";
-import { KV } from "../../globals";
-import { give } from "../../models/result";
+import type { Input, Output } from '@rqft/http';
+import { KV } from '../../globals';
+import { give } from '../../models/result';
 
 export function tagSearch(
-  req: Input<"/tags/search/{query}">,
+  req: Input<'/tags/search/{query}'>,
   res: Output
 ): void {
-  const query = req.params.get("query");
+  const query = req.params.get('query');
   console.log(query);
 
   let choices = KV.todo.list();

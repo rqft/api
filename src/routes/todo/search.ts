@@ -1,15 +1,15 @@
-import { Input, Output } from "@rqft/http";
-import { KV } from "../../globals";
-import { give, stop } from "../../models/result";
+import type { Input, Output } from '@rqft/http';
+import { KV } from '../../globals';
+import { give, stop } from '../../models/result';
 
 export function todoSearch(
-  req: Input<"/todos/search/{userId}/{query}">,
+  req: Input<'/todos/search/{userId}/{query}'>,
   res: Output
 ): void {
-  const userId = req.params.get("userId");
+  const userId = req.params.get('userId');
 
   if (userId) {
-    const query = req.params.get("query");
+    const query = req.params.get('query');
 
     let choices = (KV.todo.get(userId) || []).map((x, i) => ({
       data: x,
@@ -30,7 +30,7 @@ export function todoSearch(
         .map((choice) => {
           return {
             name: `#${choice.index} - ${choice.data.slice(0, 10)}${
-              choice.data.length > 10 ? "..." : ""
+              choice.data.length > 10 ? '...' : ''
             }`,
             value: choice.index,
           };
@@ -38,6 +38,6 @@ export function todoSearch(
         .slice(0, 25)
     );
   } else {
-    stop(res, 400, "No user provided");
+    stop(res, 400, 'No user provided');
   }
 }

@@ -5,9 +5,9 @@ const imagescript_1 = require("imagescript");
 const globals_1 = require("../../globals");
 const types_1 = require("../../types");
 async function pixelTimelapse(_, res) {
-    const actions = globals_1.KV.pixel.get("actions");
+    const actions = globals_1.KV.pixel.get('actions');
     if (!actions) {
-        throw new Error("No actions found");
+        throw new Error('No actions found');
     }
     const base = new imagescript_1.Frame(globals_1.CanvasSize, globals_1.CanvasSize);
     base.fill(types_1.RawPixelColors.WHITE);
@@ -20,7 +20,7 @@ async function pixelTimelapse(_, res) {
     }
     const gif = new imagescript_1.GIF(frames);
     const u8 = await gif.encode();
-    res.setHeader("content-type", "image/gif");
+    res.setHeader('content-type', 'image/gif');
     res.send(u8);
     return;
 }

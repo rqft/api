@@ -27,13 +27,13 @@ async function wombo(req, res) {
         ukiyoe: 2,
         rosegold: 18,
     };
-    const style = (req.params.get("style") || "none").toLowerCase();
-    const query = req.params.get("query");
+    const style = (req.params.get('style') || 'none').toLowerCase();
+    const query = req.params.get('query');
     if (!(style in WomboStyles)) {
-        (0, result_1.stop)(res, 400, "Invalid style");
+        (0, result_1.stop)(res, 400, 'Invalid style');
     }
     if (!query) {
-        (0, result_1.stop)(res, 400, "No query provided");
+        (0, result_1.stop)(res, 400, 'No query provided');
     }
     console.log(style, query);
     await (0, wombo_dream_api_1.buildDefaultInstance)().generatePicture(query, WomboStyles[style], async (task) => {

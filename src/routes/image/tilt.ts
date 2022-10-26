@@ -1,17 +1,17 @@
-import { Input, Output } from "@rqft/http";
-import { stop } from "../../models/result";
-import { createImageEditor } from "../../tools";
+import type { Input, Output } from '@rqft/http';
+import { stop } from '../../models/result';
+import { createImageEditor } from '../../tools';
 export async function imageTilt(
-  req: Input<"/image/tilt/{amount}">,
+  req: Input<'/image/tilt/{amount}'>,
   res: Output
 ): Promise<void> {
   return createImageEditor(req, res, async (editor) => {
-    const amount = Number(req.params.get("amount")) || 12;
+    const amount = Number(req.params.get('amount')) || 12;
 
     const [image] = editor;
 
     if (!image) {
-      stop(res, 400, "No image provided");
+      stop(res, 400, 'No image provided');
     }
 
     for (let i = 0; i < amount; i++) {

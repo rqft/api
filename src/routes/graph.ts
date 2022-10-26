@@ -1,8 +1,8 @@
-import { Input, Output } from "@rqft/http";
-import { Image } from "imagescript/ImageScript";
-import { mathjs } from "../globals";
-import { stop } from "../models/result";
-import { scale } from "../tools";
+import type { Input, Output } from '@rqft/http';
+import { Image } from 'imagescript/ImageScript';
+import { mathjs } from '../globals';
+import { stop } from '../models/result';
+import { scale } from "../scale";
 
 const colors = [
   0x000000ff, 0xff0000ff, 0x00ff00ff, 0x0000ffff, 0xffff00ff, 0xff00ffff,
@@ -10,40 +10,40 @@ const colors = [
 ];
 
 const keys = {
-  domain_min: "dm",
-  domain_max: "dx",
-  range_min: "rm",
-  range_max: "rx",
-  expression: "expr",
-  size: "size",
-  splot: "splot",
-  scalar: "scale",
+  domain_min: 'dm',
+  domain_max: 'dx',
+  range_min: 'rm',
+  range_max: 'rx',
+  expression: 'expr',
+  size: 'size',
+  splot: 'splot',
+  scalar: 'scale',
 };
 
-export async function graph(i: Input<"/graph">, o: Output) {
-  console.log("test");
+export async function graph(i: Input<'/graph'>, o: Output) {
+  console.log('test');
   console.log(i.query.toJSON());
   const e = i.query.get(keys.expression);
   if (!e) {
-    stop(o, 400, "no expressions");
+    stop(o, 400, 'no expressions');
   }
 
-  const s = Number.parseInt(i.query.get(keys.size) || "1024");
+  const s = Number.parseInt(i.query.get(keys.size) || '1024');
 
   if (Number.isNaN(s)) {
-    stop(o, 400, "invalid size");
+    stop(o, 400, 'invalid size');
   }
 
-  const splot = Number.parseInt(i.query.get(keys.splot) || "1");
+  const splot = Number.parseInt(i.query.get(keys.splot) || '1');
 
   if (Number.isNaN(splot) || splot < 1) {
-    stop(o, 400, "invalid splot area");
+    stop(o, 400, 'invalid splot area');
   }
 
-  const scalar = Number.parseInt(i.query.get(keys.scalar) || "1");
+  const scalar = Number.parseInt(i.query.get(keys.scalar) || '1');
 
   if (Number.isNaN(scalar)) {
-    stop(o, 400, "invalid scalar");
+    stop(o, 400, 'invalid scalar');
   }
 
   const l = new Image(s, s);
@@ -70,7 +70,7 @@ export async function graph(i: Input<"/graph">, o: Output) {
   }
 
   for (let x = -w; x < w; x++) {
-    const z = e.split(";");
+    const z = e.split(';');
     if (z.length > colors.length) {
       stop(o, 400, `too many expressions (max ${colors.length})`);
     }
@@ -129,7 +129,7 @@ export async function graph(i: Input<"/graph">, o: Output) {
             scalar;
         }
       } catch (e) {
-        stop(o, 400, "Invalid domain/range: " + String(e));
+        stop(o, 400, 'Invalid domain/range: ' + String(e));
       }
 
       if (
@@ -149,8 +149,8 @@ export async function graph(i: Input<"/graph">, o: Output) {
     l.resize(1024, 1024, Image.RESIZE_NEAREST_NEIGHBOR);
   }
 
-  console.log("finished");
+  console.log('finished');
 
-  o.setHeader("content-type", "image/png");
+  o.setHeader('content-type', 'image/png');
   o.send(await l.encode());
 }

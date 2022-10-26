@@ -1,19 +1,19 @@
-import { Input, Output } from "@rqft/http";
-import { KV } from "../../globals";
-import { give, stop } from "../../models/result";
+import type { Input, Output } from '@rqft/http';
+import { KV } from '../../globals';
+import { give, stop } from '../../models/result';
 export async function todoGet(
-  req: Input<"/todos/get/{userId}/{id}">,
+  req: Input<'/todos/get/{userId}/{id}'>,
   res: Output
 ): Promise<void> {
-  const userId = req.params.get("userId");
+  const userId = req.params.get('userId');
   if (userId) {
     if (!KV.todo.has(userId)) {
-      stop(res, 404, "No todos found for that user");
+      stop(res, 404, 'No todos found for that user');
     } else {
-      const id = Number(req.params.get("id"));
+      const id = Number(req.params.get('id'));
 
       if (Number.isNaN(id)) {
-        stop(res, 400, "Invalid id");
+        stop(res, 400, 'Invalid id');
       } else {
         const todo = KV.todo.get(userId)![id - 1];
         if (todo) {
@@ -24,6 +24,6 @@ export async function todoGet(
       }
     }
   } else {
-    stop(res, 400, "No user provided");
+    stop(res, 400, 'No user provided');
   }
 }
