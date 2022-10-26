@@ -406,3 +406,6 @@ export function zip<T, U>(a: Array<T>, b: Array<U>): Array<readonly [T, U]> {
 
   return out;
 }
+export function u8(int: number) {
+  return Math.max(0, Math.min(int, 255)) | 0;
+}

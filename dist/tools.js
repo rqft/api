@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.zip = exports.getUrlExtension = exports.IdBasedKv = exports.scale = exports.generateCanvas = exports.sleep = exports.fetch = exports.createFFmpegEditor = exports.createDualEditor = exports.createImageEditor = exports.fillColorCode = exports.decodeImage = void 0;
+exports.u8 = exports.zip = exports.getUrlExtension = exports.IdBasedKv = exports.scale = exports.generateCanvas = exports.sleep = exports.fetch = exports.createFFmpegEditor = exports.createDualEditor = exports.createImageEditor = exports.fillColorCode = exports.decodeImage = void 0;
 const fetch_1 = require("@rqft/fetch");
 const kv_1 = require("@rqft/kv");
 const imagescript_1 = require("imagescript");
@@ -244,3 +244,7 @@ function zip(a, b) {
     return out;
 }
 exports.zip = zip;
+function u8(int) {
+    return Math.max(0, Math.min(int, 255)) | 0;
+}
+exports.u8 = u8;

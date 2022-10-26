@@ -10,7 +10,9 @@ import { imageAverageColor } from './routes/image/averagecolor';
 import { imageBrightness } from './routes/image/brightness';
 import { imageColor } from './routes/image/color';
 import { imageDeepfry } from './routes/image/deepfry';
-import { imageDualAnd, imageDualXor } from './routes/image/dual/bit';
+import { imageDualAdd, imageDualAnd, imageDualDiv, imageDualMul, imageDualOr, imageDualSub, imageDualXor } from './routes/image/dual/bit';
+import { imageDualOverlay } from './routes/image/dual/blend';
+import { imageDualComposite } from './routes/image/dual/composite';
 import { imageFisheye } from './routes/image/fisheye';
 import { imageMirror } from './routes/image/flop';
 import { imageInvert } from './routes/image/invert';
@@ -86,7 +88,15 @@ Sarah.create('GET /image/deepfry/{threshold}', imageDeepfry);
 // // dual image manip
 Sarah.create('GET /image/dual/xor', imageDualXor);
 Sarah.create('GET /image/dual/and', imageDualAnd);
-// Sarah.create('GET /image/dual/or', imageDualOr);
+Sarah.create('GET /image/dual/or', imageDualOr);
+Sarah.create('GET /image/dual/add', imageDualAdd);
+Sarah.create('GET /image/dual/sub', imageDualSub);
+Sarah.create('GET /image/dual/mul', imageDualMul);
+Sarah.create('GET /image/dual/div', imageDualDiv);
+Sarah.create('GET /image/dual/composite', imageDualComposite);
+Sarah.create('GET /image/dual/overlay', imageDualOverlay);
+
+
 
 // // audio manip
 Sarah.create('GET /audio/volume/{amount}', audioVolume);

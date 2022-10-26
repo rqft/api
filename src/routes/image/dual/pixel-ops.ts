@@ -1,6 +1,6 @@
 import type { Input, Output } from '@rqft/http';
 import { Image } from 'imagescript';
-import { createDualEditor, zip } from '../../../tools';
+import { createDualEditor, u8, zip } from '../../../tools';
 import type { Rgba } from '../../../types';
 
 export function pixelOps<T extends `/${string}`>(
@@ -16,7 +16,7 @@ export function pixelOps<T extends `/${string}`>(
             const r = Image.colorToRGBA(color) as Rgba;
             const t = b.getRGBAAt(x,y) as never as Rgba;
 
-            a.setPixelAt(x, y, Image.rgbaToColor(...f(t,r)));
+            a.setPixelAt(x, y, Image.rgbaToColor(...f(t,r).map(u8) as Rgba));
           } catch { 
             continue;
           }
@@ -29,3 +29,5 @@ export function pixelOps<T extends `/${string}`>(
     });
   };
 }
+
+

@@ -12,7 +12,7 @@ function pixelOps(f) {
                     try {
                         const r = imagescript_1.Image.colorToRGBA(color);
                         const t = b.getRGBAAt(x, y);
-                        a.setPixelAt(x, y, imagescript_1.Image.rgbaToColor(...f(t, r)));
+                        a.setPixelAt(x, y, imagescript_1.Image.rgbaToColor(...f(t, r).map(tools_1.u8)));
                     }
                     catch {
                         continue;
