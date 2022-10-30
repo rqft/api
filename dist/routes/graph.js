@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.graph = void 0;
-const ImageScript_1 = require("imagescript/ImageScript");
+const imagescript_1 = require("imagescript");
 const globals_1 = require("../globals");
 const result_1 = require("../models/result");
 const scale_1 = require("../scale");
@@ -38,7 +38,7 @@ async function graph(i, o) {
     if (Number.isNaN(scalar)) {
         (0, result_1.stop)(o, 400, 'invalid scalar');
     }
-    const l = new ImageScript_1.Image(s, s);
+    const l = new imagescript_1.Image(s, s);
     const [h, w] = [l.height / 2, l.width / 2];
     l.fill(0xffffffff);
     function set(x, y, c) {
@@ -75,7 +75,7 @@ async function graph(i, o) {
             catch (e) {
                 (0, result_1.stop)(o, 400, String(e));
             }
-            if (y === undefined ||
+            if ((y || undefined) === undefined ||
                 Number.isNaN(y) ||
                 !Number.isFinite(y) ||
                 y > h ||
@@ -122,7 +122,7 @@ async function graph(i, o) {
         }
     }
     if (l.width < 1024) {
-        l.resize(1024, 1024, ImageScript_1.Image.RESIZE_NEAREST_NEIGHBOR);
+        l.resize(1024, 1024, imagescript_1.Image.RESIZE_NEAREST_NEIGHBOR);
     }
     console.log('finished');
     o.setHeader('content-type', 'image/png');

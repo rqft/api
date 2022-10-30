@@ -1,5 +1,5 @@
 import type { Input, Output } from '@rqft/http';
-import type { Frame, Image } from 'imagescript/';
+import type { Frame, Image } from 'imagescript';
 import { stop } from '../../models/result';
 import { createImageEditor } from '../../tools';
 export async function imageMirror(

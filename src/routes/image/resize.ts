@@ -1,5 +1,5 @@
 import type { Input, Output } from '@rqft/http';
-import { Image } from 'imagescript/';
+import { Image } from 'imagescript';
 import { stop } from '../../models/result';
 import { createImageEditor } from '../../tools';
 export async function imageResize(
@@ -15,7 +15,7 @@ export async function imageResize(
       switch (true) {
       case /^\d+x\d+$/.test(size): {
         const [width, height] = size.split('x').map(Number);
-        image.resize(width!, height!);
+        image.resize(width || 1, height || 1);
         break;
       }
       case /^x\d+$/.test(size): {

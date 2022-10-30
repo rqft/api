@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.imageResize = void 0;
-const imagescript_1 = require("imagescript/");
+const imagescript_1 = require("imagescript");
 const result_1 = require("../../models/result");
 const tools_1 = require("../../tools");
 async function imageResize(req, res) {
@@ -12,7 +12,7 @@ async function imageResize(req, res) {
             switch (true) {
                 case /^\d+x\d+$/.test(size): {
                     const [width, height] = size.split('x').map(Number);
-                    image.resize(width, height);
+                    image.resize(width || 1, height || 1);
                     break;
                 }
                 case /^x\d+$/.test(size): {

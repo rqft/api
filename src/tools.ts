@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
+
 import type { Payload } from '@rqft/fetch';
 import { Constants, Requester } from '@rqft/fetch';
 import type { Input, Output } from '@rqft/http';

@@ -1,8 +1,8 @@
 import type { Input, Output } from '@rqft/http';
-import { Image } from 'imagescript/ImageScript';
+import { Image } from 'imagescript';
 import { mathjs } from '../globals';
 import { stop } from '../models/result';
-import { scale } from "../scale";
+import { scale } from '../scale';
 
 const colors = [
   0x000000ff, 0xff0000ff, 0x00ff00ff, 0x0000ffff, 0xffff00ff, 0xff00ffff,
@@ -90,7 +90,7 @@ export async function graph(i: Input<'/graph'>, o: Output) {
       }
 
       if (
-        y === undefined ||
+        (y || undefined) === undefined ||
         Number.isNaN(y) ||
         !Number.isFinite(y) ||
         y > h ||
