@@ -3,9 +3,10 @@ import type { Payload } from '@rqft/fetch';
 import { Constants, Requester } from '@rqft/fetch';
 import type { Input, Output } from '@rqft/http';
 import { Wilson } from '@rqft/kv';
-import { V } from '@rqft/kv/dist/types';
+import type { V } from '@rqft/kv/dist/types';
 import { decode, Frame, GIF, Image } from 'imagescript';
 
+import type * as f from '@rqft/fetch';
 import type { Request } from 'node-fetch';
 import { execSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -307,44 +308,44 @@ export async function fetch(
   uri: URL | string,
   method: Constants.HTTPVerbs,
   transformer: 'arrayBuffer',
-  init?: import('@rqft/fetch').Constants.Options
+  init?: f.Constants.Options
 ): Promise<Data<ArrayBuffer>>;
 export async function fetch<T>(
   uri: URL | string,
   method: Constants.HTTPVerbs,
   transformer: 'json',
-  init?: import('@rqft/fetch').Constants.Options
+  init?: f.Constants.Options
 ): Promise<Data<T>>;
 export async function fetch(
   uri: URL | string,
   method: Constants.HTTPVerbs,
   transformer: 'text',
-  init?: import('@rqft/fetch').Constants.Options
+  init?: f.Constants.Options
 ): Promise<Data<string>>;
 export async function fetch(
   uri: URL | string,
   method: Constants.HTTPVerbs,
   transformer: 'blob',
-  init?: import('@rqft/fetch').Constants.Options
+  init?: f.Constants.Options
 ): Promise<Data<Blob>>;
 export async function fetch(
   uri: URL | string,
   method: Constants.HTTPVerbs,
   transformer: 'buffer',
-  init?: import('@rqft/fetch').Constants.Options
+  init?: f.Constants.Options
 ): Promise<Data<Buffer>>;
 export async function fetch(
   uri: URL | string,
   method: Constants.HTTPVerbs,
   transformer: 'request',
-  init?: import('@rqft/fetch').Constants.Options
+  init?: f.Constants.Options
 ): Promise<Data<Request>>;
 
 export async function fetch(
   uri: URL | string,
   method: Constants.HTTPVerbs,
   transformer: Transformer = 'request',
-  init?: import('@rqft/fetch').Constants.Options
+  init?: f.Constants.Options
 ): Promise<Data<ArrayBuffer> | Data<Blob> | Data<Buffer> | Data<Request> | Data<string> | Data<unknown>> {
   return new Requester(uri)[transformer as 'json'](`${method} ` as '/', {}, init);
 
